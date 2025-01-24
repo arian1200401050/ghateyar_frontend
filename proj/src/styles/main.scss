@@ -46,6 +46,11 @@ body {
 .bg-yellow-light { background-color: $yellow-400 }
 
 .w-f { width: fit-content }
+.w-0 { width: 0 }
+
+.h-0 { height: 0 }
+
+.rounded-circle-full { border-radius: 100% !important }
 
 
 // Common classes
@@ -56,6 +61,3 @@ body {
 
 // pseudo-elements rules
 
-.dropdown-toggle::after {
-    margin-right: 3px;
-}

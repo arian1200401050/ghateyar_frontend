@@ -1,14 +1,11 @@
 const menuItems = [  
     {  
-        label: 'خانه',  
-        url: '/',  
-    },  
-    {  
-        label: 'درباره ما',  
+        label: 'جاروبرقی',  
         url: '/about',  
     },  
     {  
-        label: 'خدمات',  
+        label: 'یخچال',  
+        url: '/refrigrator',
         children: [  
             {  
                 label: 'موتور',  
@@ -27,8 +24,20 @@ const menuItems = [
         ],  
     },  
     {  
-        label: 'ارتباط با ما',  
-        url: '/contact',  
+        label: 'لباس شویی',  
+        url: '/cloadwasher',  
+    },  
+    {  
+        label: 'کولر گازی',  
+        url: '/cooler',  
+    },  
+    {  
+        label: 'مایکروویو',  
+        url: '/microwave',  
+    },
+    {  
+        label: 'پنکه',  
+        url: '/fan',  
     },  
 ]; 
 

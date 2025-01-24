@@ -3,7 +3,7 @@ import config from "../../config.js";
 // src/MainSlider.js
 
 import React, { useState } from "react";
-import './styles/mainSlider.scss'; 
+import "./styles/mainSlider.scss";
 
 import { mainSlides } from "../../db/mainSlides.js";
 
@@ -21,21 +21,31 @@ const MainSlider = () => {
     };
 
     return (
-        <div className="mainSlider">
-            <div className="mainSlider__slide">
-                <div>
-                    <img className="slide__imageWrapper"
-                        src={`${config.MEDIA_ROOT}/${mainSlides[currentIndex].filepath}`} alt={`${mainSlides[currentIndex].title}`}
-                    />
+        <div className="main-slider-wrapper my-3">
+            <div className="main-slider">
+                <div className="main-slider__slide">
+                    <div>
+                        <img
+                            className="slide__image-wrapper"
+                            src={`${config.MEDIA_ROOT}/image/${mainSlides[currentIndex].filepath}`}
+                            alt={`${mainSlides[currentIndex].title}`}
+                        />
+                    </div>
+                    <div>
+                        <h2>{mainSlides[currentIndex].title}</h2>
+                        <p>{mainSlides[currentIndex].content}</p>
+                    </div>
                 </div>
-                <div>
-                    <h2>{mainSlides[currentIndex].title}</h2>
-                    <p>{mainSlides[currentIndex].content}</p>
+                <div className="main-slider__button-wrapper">
+                    <button
+                        className="slide__button slide__prev"
+                        onClick={prevSlide}
+                    ></button>
+                    <button
+                        className="slide__button slide__next"
+                        onClick={nextSlide}
+                    ></button>
                 </div>
-            </div>
-            <div className="mainSlider__buttonWrapper">
-                <button className="slide__button slide__prev" onClick={prevSlide}></button>
-                <button className="slide__button slide__next" onClick={nextSlide}></button>
             </div>
         </div>
     );
