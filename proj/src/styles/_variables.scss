@@ -9,10 +9,3 @@ $theme-colors: map-merge(
         "primary": $purple-500
     )
 );
-
-$position-values: map-merge(
-    $position-values,
-    (
-        "top-0-edge": -.5rem,
-    )
-);

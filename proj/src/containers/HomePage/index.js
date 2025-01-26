@@ -1,7 +1,9 @@
 import MainSlider from "../../components/Home/mainSlider.js";
-import BrandsBar from "../../components/Home/brandsBar.js";
-import CategoriesSection from "../../components/Home/categoriesSection.js";
+import BrandsBar from "../../components/Home/brandsSection.js";
+import CategoriesSection from "../../components/Home/categoriesBar.js";
 import SuggestedProductsCarousel from "../../components/Home/suggestedProductsCarousel.js";
+import SuggestedArticlesCarousel from "../../components/Home/suggestedArticlesCarousel.js";
+import ArticlesCarousel from "../../components/Home/suggestedArticlesCarousel.js";
 
 export default function HomePage() {
     return (
@@ -9,6 +11,7 @@ export default function HomePage() {
             <MainSlider />
             <CategoriesSection />
             <BrandsBar />
+            <SuggestedArticlesCarousel />
             <SuggestedProductsCarousel />
         </div>
     );

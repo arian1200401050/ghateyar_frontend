@@ -37,20 +37,27 @@ body {
 
 // Bootstrapic Classes
 
-.top-0-edge { top: map-get($position-values, top-0-edge) }
 
 .bg-purple { background-color: $purple-500 }
-
-.bg-gray { background-color: $gray-300 }
-
+.bg-gray-1 { background-color: $gray-400 }
+.bg-gray-2 { background-color: $gray-600 }
+.bg-gray-o1 { background-color: rgba($gray-600, .5)}
 .bg-yellow-light { background-color: $yellow-400 }
+
+.border-gray-9 { border-color: $gray-900 }
 
 .w-f { width: fit-content }
 .w-0 { width: 0 }
+.w-6 { width: $spacer * 6 }
 
 .h-0 { height: 0 }
+.h-3 { height: $spacer * 3 }
 
-.rounded-circle-full { border-radius: 100% !important }
+.top-e0 { top: -0.5rem }
+.bottom-m100 { bottom: -100% }
+
+.rounded-circle-full { border-radius: 100% }
+
 
 
 // Common classes

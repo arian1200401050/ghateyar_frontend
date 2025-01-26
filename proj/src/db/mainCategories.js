@@ -1,21 +1,5 @@
 const mainCategories = [
     {
-        id: 1,
-        title: "پاکت",
-        logo: `packet.svg`
-    },
-    {
-        id: 2,
-        title: "فیلتر",
-        logo: "filter.svg"
-        
-    },
-    {
-        id: 3,
-        title: "موتور",
-        logo: "motor.svg"
-    },
-    {
         id: 4,
         title: "برس",
         logo: "brush.svg"
@@ -30,6 +14,23 @@ const mainCategories = [
         title: "زانویی",
         logo: "zanooyi.svg"
     },
+    {
+        id: 2,
+        title: "فیلتر",
+        logo: "filter.svg"
+        
+    },
+    {
+        id: 3,
+        title: "موتور",
+        logo: "motor.svg"
+    },
+    {
+        id: 1,
+        title: "پاکت",
+        logo: `packet.svg`
+    }
+    /*
     {
         id: 7,
         title: "کمپرسور",
@@ -75,6 +76,7 @@ const mainCategories = [
         title: "موتور جوجه گردان",
         logo: "chicken_cycle_motor.svg"
     }
+    */
 ];
 
 export {
