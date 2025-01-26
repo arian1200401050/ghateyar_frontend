@@ -50,7 +50,7 @@ const NavBar = () => {
     const [isNavOpen, setIsNavOpen] = useState(false);
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light main-container border-top border-black py-0 mt-2">
+        <nav className="navbar navbar-expand-lg navbar-light main-container border-top border-black py-0 px-5 mt-2">
             <a className="navbar-brand" href="#!">
                 منو
             </a>

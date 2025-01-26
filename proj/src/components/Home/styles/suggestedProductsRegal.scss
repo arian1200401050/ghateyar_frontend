@@ -1,0 +1,13 @@
+@import "bootstrap/scss/functions";
+@import "../../../styles/_variables.scss";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+
+
+.product-card {
+    width: 15rem;
+}
+
+.product-card__image-wrapper {
+    height: 15rem
+}
