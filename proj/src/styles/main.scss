@@ -38,28 +38,32 @@ body {
 // Bootstrapic Classes
 
 
-.bg-purple-1 { background-color: $purple-400 }
-.bg-gray-1 { background-color: $gray-400 }
-.bg-gray-2 { background-color: $gray-600 }
-.bg-gray-o1 { background-color: rgba($gray-600, .5)}
-.bg-yellow-light { background-color: $yellow-400 }
-.bg-red-2 { background-color: $red-600 }
+.bg-purple-1 { background-color: $purple-400 !important }
+.bg-gray-1 { background-color: $gray-400 !important }
+.bg-gray-2 { background-color: $gray-600 !important }
+.bg-gray-3 { background-color: $gray-800 !important }
+.bg-gray-o1 { background-color: rgba($gray-600, .5) !important }
+.bg-yellow-1 { background-color: $yellow-200 !important }
+.bg-yellow-2 { background-color: $yellow-400 !important }
+.bg-red-2 { background-color: $red-600 !important }
 
-.border-gray-9 { border-color: $gray-900 }
+.border-gray-3 { border-color: $gray-600 !important }
+.border-gray-5 { border-color: $gray-900 !important }
 
-.w-f { width: fit-content }
-.w-0 { width: 0 }
-.w-6 { width: $spacer * 6 }
+.w-f { width: fit-content !important }
+.w-0 { width: 0 !important }
+.w-6 { width: $spacer * 6 !important }
+.w-fit-content { width: fit-content !important }
 
-.h-0 { height: 0 }
-.h-3 { height: $spacer * 3 }
+.h-0 { height: 0 !important }
+.h-3 { height: $spacer * 3 !important }
 
-.top-e0 { top: -0.5rem }
-.bottom-m100 { bottom: -100% }
+.top-e0 { top: -0.5rem !important }
+.bottom-m100 { bottom: -100% !important }
 
-.px-6 { padding-right: $spacer * 4; padding-left: $spacer * 4}
+.px-6 { padding-right: $spacer * 4; padding-left: $spacer * 4 !important }
 
-.rounded-circle-full { border-radius: 100% }
+.rounded-circle-full { border-radius: 100% !important }
 
 
 

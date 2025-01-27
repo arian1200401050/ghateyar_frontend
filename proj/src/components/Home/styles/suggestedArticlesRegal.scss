@@ -1,0 +1,9 @@
+@import "bootstrap/scss/functions";
+@import "../../../styles/_variables.scss";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+
+.article-card {
+    width: 20rem;
+    height: 8rem;
+}

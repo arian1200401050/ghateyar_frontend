@@ -1,9 +1,59 @@
 const mainBrands = [
     {
+        id: 11,
+        title: "ای جی",
+        alias: "LG",
+        isOriginal: true
+    },
+    {
         id: 1,
         title: "صنام",
-        alias: "sanam"
+        alias: "sanam",
+        isOriginal: true
     },
+    {
+        id: 31,
+        title: "امبراکو",
+        alias: "embraco",
+        isOriginal: true
+    },
+    {
+        id: 32,
+        title: "جی ام سی سی",
+        alias: "GMCC",
+        isOriginal: true
+    },
+    {
+        id: 28,
+        title: "جیتک",
+        alias: "jitek",
+        isOriginal: true
+    },
+    {
+        id: 27,
+        title: "دانپر",
+        alias: "danper",
+        isOriginal: true
+    },
+    {
+        id: 16,
+        title: "روسو",
+        alias: "roso",
+        isOriginal: true
+    },
+    {
+        id: 29,
+        title: "سکاپ",
+        alias: "sekap",
+        isOriginal: true
+    },
+    {
+        id: 30,
+        title: "سیبریا",
+        alias: "sibria",
+        isOriginal: true
+    },
+    /*
     {
         id: 2,
         title: "سامسونگ",
@@ -50,11 +100,6 @@ const mainBrands = [
         alias: "zirowat"
     },
     {
-        id: 11,
-        title: "ای جی",
-        alias: "LG"
-    },
-    {
         id: 12,
         title: "پارس خزر",
         alias: "pars_khazar"
@@ -73,11 +118,6 @@ const mainBrands = [
         id: 15,
         title: "سیندرسون",
         alias: "sinderson"
-    },
-    {
-        id: 16,
-        title: "روسو",
-        alias: "roso"
     },
     {
         id: 17,
@@ -129,36 +169,7 @@ const mainBrands = [
         title: "کنفی",
         alias: "kanafi"
     },
-    {
-        id: 27,
-        title: "دانپر",
-        alias: "danper"
-    },
-    {
-        id: 28,
-        title: "جیتک",
-        alias: "jitek"
-    },
-    {
-        id: 29,
-        title: "سکاپ",
-        alias: "sekap"
-    },
-    {
-        id: 30,
-        title: "سیبریا",
-        alias: "sibria"
-    },
-    {
-        id: 31,
-        title: "امبراکو",
-        alias: "embraco"
-    },
-    {
-        id: 32,
-        title: "جی ام سی سی",
-        alias: "GMCC"
-    },
+    */
 ]
 
 export {
