@@ -3,13 +3,13 @@ const mainSlides = [
         id: 1,  
         title: 'قطعه اول',  
         description: '...',  
-        filepath: 'banner_1.webp',
+        filepath: 'banner_1.png',
     },  
     {  
         id: 2,  
         title: 'قطعه دوم',  
         description: '...',  
-        filepath: 'banner_2.webp',
+        filepath: 'banner_2.png',
     },  
     {  
         id: 3,  
