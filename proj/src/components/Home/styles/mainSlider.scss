@@ -7,7 +7,7 @@
 
 .main-slider {  
     height: 25rem;
-    width: 60rem;
+    // width: 60rem;
 }  
 
 .main-slider__indecators-wrapper {
@@ -36,7 +36,7 @@
 }
 
 .slide-main__image {
-    object-fit: fill;
+    object-fit: contain;
 }
 
 .slide-main__caption {
@@ -44,4 +44,5 @@
     left: 0;
     right: 0;
     bottom: 0;  
+    display: none !important;
 }

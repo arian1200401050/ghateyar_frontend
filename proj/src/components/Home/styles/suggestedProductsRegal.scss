@@ -4,10 +4,37 @@
 @import "bootstrap/scss/mixins";
 
 
-.product-card {
+// .product-regal {
+//     width: var(--main-section-width);
+// }
+
+.product-regal__big-logo {
     width: 15rem;
+}
+
+.product-card {
+    width: calc((var(--main-section-width) / 4) - 1.66rem);
+    // height: 8rem;
 }
 
 .product-card__image-wrapper {
     height: 15rem
+}
+
+.product-regal .card-body {
+    border-radius: 0 0 .3rem .3rem;
+}
+
+.product-regal .card-title {
+    font-size: 1rem;
+    text-align: right;
+}
+
+.product-card__discount {
+    background-color: #d14d5a !important;
+}
+
+
+.product-card__discountic-price {
+    text-decoration: line-through;
 }

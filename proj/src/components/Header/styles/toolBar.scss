@@ -1,0 +1,13 @@
+@import "bootstrap/scss/functions";
+@import "../../../styles/_variables.scss";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+
+.tool-bar__log-title {
+    font-family: var(--bs-header-font-family);
+}
+
+.dropdown-toggle::after {
+    margin-right: 3px;
+}
+

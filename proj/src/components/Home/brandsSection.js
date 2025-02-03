@@ -5,7 +5,7 @@ import { mainBrands } from '../../db/mainBrands.js'
 import './styles/brandsSection.scss';
 
 
-const BrandItem = styled.span.attrs({className: 'd-block w-6 py-2 border border-2 rounded m-auto text-center'})`
+const BrandItem = styled.span.attrs({className: 'd-block py-2 border border-2 rounded m-auto text-center brand-item__button'})`
     background-image: ${({ logo }) => `url(${logo})`};
     background-size: 70%;
     background-position: center;
@@ -16,18 +16,18 @@ const BrandItem = styled.span.attrs({className: 'd-block w-6 py-2 border border-
 function BrandsSection () {
     return (  
         <div className="brands-section-wrapper">
-            <div className="brands-section my-5">
+            <div className="main-section main-section--greater brands-section my-5 mx-auto">
                 <div className="brnads-section__header mb-4">
-                    <h4 className="brands-section__header-title d-inline me-3 px-3 pb-1 border-bottom border-black">
-                        برندها
+                    <h4 className="brands-section__header-title d-inline me-3 px-3 pb-1">
+                        جذاب‌ترین برندها!
                     </h4>
                 </div>
-                <div className="brands-section d-flex flex-wrap">
+                <div className="brands-section__inner d-flex flex-wrap">
                     {mainBrands.map((item, index) => (
-                        <div className="brand-item-wrapper mx-2">
+                        <div key={index} className="brand-item-wrapper mx-2">
                             <div className="brand-item">
-                                <BrandItem key={index} logo={`${config.MEDIA_ROOT}/brand/${item.alias}.png`}>
-                                    {item.title}
+                                <BrandItem key={index} logo={`${config.MEDIA_ROOT}/image/${item.logo}`}>
+                                    {/* {item.title} */}
                                 </ BrandItem>
                             </div>
                         </div>

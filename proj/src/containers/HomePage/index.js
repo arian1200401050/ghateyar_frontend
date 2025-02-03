@@ -1,3 +1,5 @@
+import './styles/index.scss';
+
 import MainSlider from "../../components/Home/mainSlider.js";
 import BrandsBar from "../../components/Home/brandsSection.js";
 import CategoriesSection from "../../components/Home/categoriesBar.js";

@@ -1,5 +1,24 @@
+@import "bootstrap/scss/functions";
+@import "../../../styles/_variables.scss";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+
+
 .brands-section {
+    border: 1px solid #bbb;
+    border-radius: .5rem;
+    padding: 2rem 0;
+}
+
+.brands-section__inner {
     gap: 1rem 0;
+    overflow: hidden;
+    flex-wrap: nowrap !important;
+    padding: 1rem;
+}
+
+.brnads-section__header {
+    text-align: center;
 }
 
 .brand-item-wrapper {
@@ -8,4 +27,10 @@
 
 .brand-item-wrapper:not(:nth-child(8n + 1)) {
     margin-left: calc((100% - (12.5% * 8)) / 7);
+}
+
+.brand-item__button {
+    background-color: #ffffff;
+    width: 9rem;
+    height: 4rem;
 }

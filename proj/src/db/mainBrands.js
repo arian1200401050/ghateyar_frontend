@@ -3,57 +3,73 @@ const mainBrands = [
         id: 11,
         title: "ای جی",
         alias: "LG",
-        isOriginal: true
+        isOriginal: true,
+        logo: "brand/2.png"
     },
     {
-        id: 1,
-        title: "صنام",
-        alias: "sanam",
-        isOriginal: true
+        id: 8,
+        title: "همتا",
+        alias: "hamta",
+        isOriginal: true,
+        logo: "brand/12.jpg"
     },
     {
         id: 31,
         title: "امبراکو",
         alias: "embraco",
-        isOriginal: true
+        isOriginal: true,
+        logo: "brand/4.png"
     },
     {
         id: 32,
         title: "جی ام سی سی",
         alias: "GMCC",
-        isOriginal: true
+        isOriginal: true,
+        logo: "brand/15.png"
     },
     {
         id: 28,
         title: "جیتک",
         alias: "jitek",
-        isOriginal: true
+        isOriginal: true,
+        logo: "brand/10.jpg"
     },
     {
         id: 27,
         title: "دانپر",
         alias: "danper",
-        isOriginal: true
+        isOriginal: true,
+        logo: "brand/7.png"
     },
     {
         id: 16,
         title: "روسو",
         alias: "roso",
-        isOriginal: true
+        isOriginal: true,
+        logo: "brand/9.png"
     },
     {
         id: 29,
         title: "سکاپ",
         alias: "sekap",
-        isOriginal: true
+        isOriginal: true,
+        logo: "brand/12.jpg"
     },
     {
         id: 30,
         title: "سیبریا",
         alias: "sibria",
-        isOriginal: true
+        isOriginal: true,
+        logo: "brand/1.png"
     },
     /*
+    {
+        id: 1,
+        title: "صنام",
+        alias: "sanam",
+        isOriginal: true,
+        logo: "brand/"
+    },
     {
         id: 2,
         title: "سامسونگ",
@@ -84,11 +100,7 @@ const mainBrands = [
         title: "آاگ",
         alias: "AEG"
     },
-    {
-        id: 8,
-        title: "همتا",
-        alias: "hamta"
-    },
+    
     {
         id: 9,
         title: "آزمایش",

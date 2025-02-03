@@ -16,41 +16,64 @@
 // Configuring Fonts
 
 @font-face {
-    font-family: "Calibry New";
+    font-family: "Entezar";
     font-weight: regular;
     src:
-        url("../../public/font/calibry/calibri-regular.ttf") format("trutype");
+        url("../../public/font/Entezar_YasDL.com/Entezar_YasDL.com/EntezarB3_v2.0.1.ttf") format("trutype");
+}
+
+@font-face {
+    font-family: "Iraninan Sans";
+    font-weight: regular;
+    src:
+        url("../../public/font/A-Iranian-Sans/A-Iranian-Sans/Iranian Sans.ttf") format("trutype");
 }
 
 
 // Generic rules
 
 :root {
-    --bs-body-font-family: 'Calibry New';
-    --bs-body-font-family: 'Arial';
+    --bs-body-font-family: 'Iranian Sans';
+    --bs-header-font-family: 'Entezar';
 }
 
 body {  
     font-family: var(--bs-body-font-family);  
 }  
 
+a {
+    text-decoration: none;
+}
 
 // Bootstrapic Classes
 
+// color
+.bg-primary-1 { background-color: map-get($theme-colors, 'primary-1') !important }
+.bg-primary-2 { background-color: map-get($theme-colors, 'primary-2') !important }
 
-.bg-purple-1 { background-color: $purple-400 !important }
 .bg-gray-1 { background-color: $gray-400 !important }
 .bg-gray-2 { background-color: $gray-600 !important }
 .bg-gray-3 { background-color: $gray-800 !important }
-.bg-gray-o1 { background-color: rgba($gray-600, .5) !important }
+.bg-gray-2t { background-color: rgba($gray-600, .5) !important }
 .bg-yellow-1 { background-color: $yellow-200 !important }
 .bg-yellow-2 { background-color: $yellow-400 !important }
 .bg-red-2 { background-color: $red-600 !important }
+.bg-red-1c { background-color: #de314e !important }
+.bg-purple-1 { background-color: $purple-400 !important }
 
+.gray-2 { color: $gray-600 !important }
+.gray-3 { color: $gray-800 !important }
+
+.border-gray-1 { border-color: $gray-200 !important }
 .border-gray-3 { border-color: $gray-600 !important }
 .border-gray-5 { border-color: $gray-900 !important }
 
-.w-f { width: fit-content !important }
+
+// position
+.bottom-100m { bottom: -100% !important }
+.top-edge { top: $spacer * -0.5 !important }
+
+// size
 .w-0 { width: 0 !important }
 .w-6 { width: $spacer * 6 !important }
 .w-fit-content { width: fit-content !important }
@@ -58,13 +81,11 @@ body {
 .h-0 { height: 0 !important }
 .h-3 { height: $spacer * 3 !important }
 
-.top-e0 { top: -0.5rem !important }
-.bottom-m100 { bottom: -100% !important }
-
 .px-6 { padding-right: $spacer * 4; padding-left: $spacer * 4 !important }
 
+// other
 .rounded-circle-full { border-radius: 100% !important }
-
+.rounded-2 { border-radius: $spacer !important }
 
 
 // Common classes

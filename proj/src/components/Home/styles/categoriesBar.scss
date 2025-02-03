@@ -1,0 +1,16 @@
+@import "bootstrap/scss/functions";
+@import "../../../styles/_variables.scss";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+
+.main-categories {
+    background-color: #e9edec;
+    padding: 1rem;
+    border-radius: 1rem;
+}
+  
+.main-categories__item-logo {
+    background-color: #ffff;
+    padding: 2rem !important;
+    background-size: 80% !important;
+}

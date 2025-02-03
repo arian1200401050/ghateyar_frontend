@@ -25,7 +25,7 @@ const NavItem = ({ item, level }) => {
                     </a>
                     <ul
                         className={`dropdown-menu ${isOpen ? "show" : ""} ${
-                            level > 1 ? "end-100 top-e0" : ""
+                            level > 1 ? "end-100 top-edge" : ""
                         }`}
                     >
                         {item.children.map((child, index) => (
@@ -60,7 +60,6 @@ const NavBar = () => {
                 onMouseOver={() => setIsNavOpen((prev) => !prev)} // State to control navbar visibility
                 aria-controls="navbarNav"
                 aria-expanded={isNavOpen}
-                aria-title="Toggle navigation"
             >
                 <span className="navbar-toggler-icon"></span>
             </button>

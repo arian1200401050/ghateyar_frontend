@@ -2,79 +2,79 @@ const mainCategories = [
     {
         id: 4,
         title: "برس",
-        logo: "brush.svg"
+        logo: "icon/category/purch.png"
     },
     {
         id: 5,
         title: "خرطومی",
-        logo: "khortoomi.svg"
+        logo: "icon/category/khortumi.png"
     },
     {
         id: 6,
         title: "زانویی",
-        logo: "zanooyi.svg"
+        logo: "icon/category/teleskopi.png"
     },
     {
         id: 2,
         title: "فیلتر",
-        logo: "filter.svg"
+        logo: "icon/category/undefined.png"
         
     },
     {
         id: 3,
         title: "موتور",
-        logo: "motor.svg"
+        logo: "icon/category/motor_jaroobarghi.png"
     },
     {
         id: 1,
         title: "پاکت",
-        logo: `packet.svg`
+        logo: "icon/category/pukat_jaroobarghi.png"
     }
     /*
     {
         id: 7,
         title: "کمپرسور",
-        logo: "compressor.svg"
+        logo: "icon/category/compressor.svg"
     },
     {
         id: 8,
         title: "فیتر آب",
-        logo: "water_filter.svg"
+        logo: "icon/category/water_filter.svg"
     },
     {
         id: 9,
         title: "گیربکس",
-        logo: "geerbox.svg"
+        logo: "icon/category/geerbox.svg"
     },
     {
         id: 10,
         title: "فن",
-        logo: "fan.svg"
+        logo: "icon/category/fan.svg"
     },
     {
         id: 11,
         title: "موتور کف",
-        logo: "kaf_motor.svg"
+        logo: "icon/category/kaf_motor.svg"
     },
     {
         id: 12,
         title: "عایق میکا",
-        logo: "mika_ayegh.svg"
+        logo: "icon/category/mika_ayegh.svg"
     },
     {
         id: 13,
         title: "شیشه",
-        logo: "glass.svg"
+        logo: "icon/category/glass.svg"
     },
     {
         id: 14,
         title: "مگنترون",
-        logo: "magnetron.svg"
+        logo: "icon/category/magnetron.svg"
     },
     {
         id: 15,
         title: "موتور جوجه گردان",
-        logo: "chicken_cycle_motor.svg"
+        logo: "icon/category/chicken_cycle_motor.svg"
     }
     */
 ];

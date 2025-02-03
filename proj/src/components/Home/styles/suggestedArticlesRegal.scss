@@ -3,7 +3,28 @@
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/mixins";
 
+// .article-regal {
+//     width: var(--main-section-width);
+// }
+
 .article-card {
-    width: 20rem;
-    height: 8rem;
+    width: calc((var(--main-section-width) / 3) - 1.66rem);
+    box-shadow:  0 .2rem .2rem rgba($black, .5) !important;
 }
+
+.article-regal__header-title {
+    font-size: 1.2rem;
+}
+
+.article-regal__header-button {
+    font-size: .8rem;
+}
+
+.article-card__image-wrapper {
+    height: 12rem;
+}
+
+.article-card__text-wrapper {
+    font-size: .9rem;
+}
+ 

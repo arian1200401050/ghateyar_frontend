@@ -18,12 +18,13 @@ const MainSlider = () => {
         <div className="main-slider-wrapper">
             <div
                 id="main-slider"
-                className="carousel slide my-5 mx-auto border border-1 border-gray-3 rounded main-slider"
+                className="carousel slide my-5 mx-auto border border-1 border-gray-3 rounded main-section main-slider"
                 data-bs-ride="carousel"
             >
-                <div className="carousel-indicators rounded bg-gray-o1 main-slider__indecators-wrapper">
+                <div className="carousel-indicators rounded bg-gray-2t main-slider__indecators-wrapper">
                     {mainSlides.map((_, index) => (
-                        <button
+                        <button 
+                            key={index}
                             type="button"
                             data-bs-target="#main-slider"
                             data-bs-slide-to={index}
@@ -39,6 +40,7 @@ const MainSlider = () => {
                 <div className="carousel-inner w-100 h-100 slide-main-wrapper">
                     {mainSlides.map((item, index) => (
                         <div
+                            key={index}
                             className={`carousel-item w-100 h-100 slide-main ${
                                 activeIndex === index ? "active" : ""
                             }`}
@@ -50,7 +52,7 @@ const MainSlider = () => {
                                     alt={item.title}
                                 />
                             </div>
-                            <div className="carousel-caption d-none d-md-block w-100 rounded-top bg-gray-o1 slide-main__caption">
+                            <div className="carousel-caption d-none d-md-block w-100 rounded-top bg-gray-2t slide-main__caption">
                                 <h5 className="slide-main__title">
                                     {item.title}
                                 </h5>

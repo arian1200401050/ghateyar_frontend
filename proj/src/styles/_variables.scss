@@ -6,6 +6,7 @@
 $theme-colors: map-merge(
     $theme-colors,
     (
-        "primary": $purple-500
+        "primary-1": #3c6296,
+        "primary-2": #d9d9d9,
     )
 );
