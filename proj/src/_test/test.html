@@ -1,23 +1,24 @@
 <style>
-    .outer {  
-        display: flex;            /* Use flexbox */  
-        width: 100rem;           /* Set outer width */  
-        overflow: hidden;        /* Hide overflowing content from the outer div */  
-    }  
+   @font-face {
+        font-family: "Entezar";
+        /* font-weight: regular; */
+        src:
+            url("../../public/font/Entezar_YasDL.com/Entezar_YasDL.com/EntezarB3_v2.0.1.ttf") format("trutype");
+    }
 
-    .inner1 {  
-        width: 60rem;            /* Set width for the first inner div */  
-        background-color: lightblue; /* Just for visual distinction */  
-    }  
+    @font-face {
+        font-family: "Iraninan Sans";
+        /* font-weight: regular; */
+        src:
+            url("../../public/font/A-Iranian-Sans/A-Iranian-Sans/Iranian Sans.ttf") format("trutype");
+    }
 
-    .inner2 {  
-        width: 100rem;           /* Set width for the second inner div */  
-        background-color: lightcoral; /* Just for visual distinction */  
-        flex-shrink: 0;          /* Prevent the second div from shrinking */  
+    .p {
+        font-family: "Iranian Sans";
+        font-family: "Entezar";
     }
 </style>
 
-<div class="outer">  
-    <div class="inner1">First Inner Div</div>  
-    <div class="inner2">Second Inner Div</div>  
+<div>
+    <p class="p">السلام علیکم</p>
 </div>  

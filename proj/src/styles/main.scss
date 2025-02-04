@@ -15,26 +15,42 @@
 
 // Configuring Fonts
 
-@font-face {
-    font-family: "Entezar";
-    font-weight: regular;
-    src:
-        url("../../public/font/Entezar_YasDL.com/Entezar_YasDL.com/EntezarB3_v2.0.1.ttf") format("trutype");
-}
+
 
 @font-face {
-    font-family: "Iraninan Sans";
-    font-weight: regular;
-    src:
-        url("../../public/font/A-Iranian-Sans/A-Iranian-Sans/Iranian Sans.ttf") format("trutype");
+    font-family: 'A EntezareZohoor B4';
+    src: url('../../public/font/EntezarZohoor/AEntezareZohoorB4-Bold.eot');
+    src: url('../../public/font/EntezarZohoor/AEntezareZohoorB4-Bold.eot?#iefix') format('embedded-opentype'),
+        url('../../public/font/EntezarZohoor/AEntezareZohoorB4-Bold.woff2') format('woff2'),
+        url('../../public/font/EntezarZohoor/AEntezareZohoorB4-Bold.woff') format('woff'),
+        url('../../public/font/EntezarZohoor/AEntezareZohoorB4-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
 }
+
+
+@font-face {
+    font-family: 'A Iranian Sans';
+    src: url('../../public/font/IranianSans/AIranianSans.eot');
+    src: url('../../public/font/IranianSans/AIranianSans.eot?#iefix') format('embedded-opentype'),
+        url('../../public/font/IranianSans/AIranianSans.woff2') format('woff2'),
+        url('../../public/font/IranianSans/AIranianSans.woff') format('woff'),
+        url('../../public/font/IranianSans/AIranianSans.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+
 
 
 // Generic rules
 
 :root {
-    --bs-body-font-family: 'Iranian Sans';
-    --bs-header-font-family: 'Entezar';
+    --bs-body-font-family: 'A Iranian Sans';
+    --bs-header-font-family: 'A EntezareZohoor B4';
+    --bs-body-font-weight: 400;
 }
 
 body {  
@@ -50,6 +66,7 @@ a {
 // color
 .bg-primary-1 { background-color: map-get($theme-colors, 'primary-1') !important }
 .bg-primary-2 { background-color: map-get($theme-colors, 'primary-2') !important }
+.bg-primary-3 { background-color: map-get($theme-colors, 'primary-3') !important }
 
 .bg-gray-1 { background-color: $gray-400 !important }
 .bg-gray-2 { background-color: $gray-600 !important }
@@ -95,4 +112,3 @@ a {
 
 
 // pseudo-elements rules
-

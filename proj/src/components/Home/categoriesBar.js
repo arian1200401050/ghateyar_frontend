@@ -16,8 +16,7 @@ const CategoryLogo = styled.span.attrs({ className: "main-categories__item-logo 
 function CategoriesBar() {   
     return (
         <div className="main-categories-wrapper">
-            <div className="main-section main-section--greater main-categories my-5 mx-auto">
-                <h2></h2>
+            <div className="main-section main-section--greater main-categories my-5 mx-auto p-4 rounded-2 bg-primary-3">
                 <div className="main-categories d-flex justify-content-around">
                     {mainCategories.map((item, index) => (
                         <div key={index} className="main-categories__item d-flex flex-column mx-2">
