@@ -55,6 +55,7 @@
 
 body {  
     font-family: var(--bs-body-font-family);  
+    text-align: right;
 }  
 
 a {
@@ -67,6 +68,7 @@ a {
 .bg-primary-1 { background-color: map-get($theme-colors, 'primary-1') !important }
 .bg-primary-3 { background-color: map-get($theme-colors, 'primary-2') !important }
 .bg-primary-2 { background-color: map-get($theme-colors, 'primary-3') !important }
+.bg-primary-4 { background-color: map-get($theme-colors, 'primary-4') !important }
 
 .bg-gray-1 { background-color: $gray-400 !important }
 .bg-gray-2 { background-color: $gray-600 !important }
@@ -75,7 +77,6 @@ a {
 .bg-yellow-1 { background-color: $yellow-200 !important }
 .bg-yellow-2 { background-color: $yellow-400 !important }
 .bg-red-2 { background-color: $red-600 !important }
-.bg-red-1c { background-color: #de314e !important }
 .bg-purple-1 { background-color: $purple-400 !important }
 
 .gray-2 { color: $gray-600 !important }
