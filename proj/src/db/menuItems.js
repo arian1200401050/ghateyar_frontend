@@ -136,11 +136,7 @@ const menuItems = [
             {
                 title: "زانویی",
                 alias: "",
-            },
-            {
-                title: "",
-                alias: "",
-            },
+            }
         ]
     },  
     {  

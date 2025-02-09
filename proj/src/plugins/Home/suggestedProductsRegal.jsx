@@ -5,7 +5,7 @@ import './styles/suggestedProductsRegal.scss';
 function SuggestedProductsRegal() {
     return (
         <div className="product-regal-wrapper my-4 ">
-            <div className="main-section product-regal mx-auto py-2 border border-1 border-gray-3 bg-red-1c rounded-2">
+            <div className="main-section product-regal mx-auto py-2 border border-1 border-gray-3 bg-primary-4 rounded-2">
                 <div className="product-regal__header"></div>
                 <div className="product-regal__body">
                     <div className="product-regal__inner-wrapper d-flex flex-nowrap ms-2 overflow-hidden">

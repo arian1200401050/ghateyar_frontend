@@ -1,87 +1,92 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { menuItems } from "../../db/menuItems.js";
+import { menuItems } from "#src/db/menuItems.js";
 
-const NavItem = ({ item, level }) => {
-    const [isOpen, setIsOpen] = useState(false);
 
-    const toggleDropdown = () => {
-        setIsOpen(!isOpen);
-    };
+function DropDown ({ items, level, isOpen }) {
+    const [openingDropdown, setOpeningDropdown] = useState(null);
 
     return (
-        <li className={`nav-item ${item.children ? "dropdown" : ""}`}>
-            {item.children ? (
-                <>
-                    <div className="">
-                        <a
-                            className="nav-link dropdown-toggle text-end"
-                            href={item.alias}
-                            onMouseOver={toggleDropdown}
+        <div className={`main-menu__dropdown ${ isOpen ? 'show' : ''}`}>
+            <ul className="main-menu__dropdown-list dropdown-menu">
+                {items.map((item, index) => (
+                    <li key={index} className="main-menu__dropdown-item">
+                        <a 
+                            className="main-menu__dropdown-link dropdown-item" 
+                            href={item.alias} alt={item.title}
+                            onMouseOver={() => setOpeningDropdown(index)}
                             aria-haspopup="true"
-                            aria-expanded={isOpen}
-                        >
+                            aria-expanded={openingDropdown == index}
+                            aria-current={index == 0 ? "page" : ""}
+                        >    
                             {item.title}
                         </a>
-                        <ul
-                            className={`dropdown-menu ${isOpen ? "show" : ""} 
-                                ${level > 1 ? "end-100 top-edge" : ""}`}
-                        >
-                            {item.children.map((child, index) => (
-                                <NavItem
-                                    key={index}
-                                    item={child}
-                                    level={level + 1}
-                                />
-                            ))}
-                        </ul>
-                    </div>
-                </>
-            ) : (
-                <a className="nav-link text-end" href={item.alias}>
-                    {item.title}
-                </a>
-            )}
-        </li>
+                        { item.children ? (
+                            <DropDown key={index} items={item.children} level={ level + 1 } isOpen={index == openingDropdown} />
+                        ): ''}
+                    </li>
+                ))}
+            </ul>
+        </div>
     );
 };
 
-const NavBar = () => {
+
+function NavBar () {
     const [isNavOpen, setIsNavOpen] = useState(false);
+    const [openingDropdown, setOpeningDropdown] = useState(null);
+
+    const toggleNavbar = () => {
+        setIsNavOpen(!isNavOpen);
+    }
 
     return (
-        <nav className="navbar navbar navbar-expand-lg navbar-light border-top border-black py-0 px-5 mt-2">
-            <a className="navbar-heading" href="#!">
+        <nav className="main-menu navbar navbar-expand-lg navbar-light border-top border-black">
+            <a className="main-menu__heading navbar-heading navbar-brand" href="#!">
                 منو
             </a>
             <button
-                className="navbar-toggler"
+                className="main-menu__toggler navbar-toggler"
                 type="button"
-                onMouseOver={() => setIsNavOpen((prev) => !prev)} // State to control navbar visibility
+                onMouseOver={toggleNavbar} // State to control navbar visibility
                 aria-controls="navbarNav"
                 aria-expanded={isNavOpen}
             >
                 <span className="navbar-toggler-icon"></span>
             </button>
-            <div
-                className={`collapse navbar-collapse ${
-                    isNavOpen ? "show" : ""
-                }`}
+            <div 
+                className={`main-menu__navbar collapse navbar-collapse
+                    ${isNavOpen ? "show" : ""}`}
                 id="navbarNav"
             >
                 <ul
-                    className={`navbar-nav justify-content-around ${
-                        isNavOpen ? "d-flex" : ""
-                    }`}
+                    className={`main-menu__navbar-list navbar-nav `}
                 >
                     {menuItems.map((item, index) => (
-                        <NavItem key={index} item={item} level={1} />
+                        <li key={index} className='main-menu__nav-item nav-item'>
+                            <a 
+                                className="main-menu__nav-link nav-link" href={item.alias} alt={item.title}
+                                onMouseOver={() => setOpeningDropdown(index)}
+                                aria-haspopup="true"
+                                aria-expanded={openingDropdown == index}
+                                aria-current={index == 0 ? "page" : ""}
+                                data-bs-1={openingDropdown}
+                                data-bs-2={index}
+                            >
+                                { item.title }
+                            </a>
+
+                            {item.children ? (
+                                <DropDown items={item.children} level={1} isOpen={index == openingDropdown} />
+                            ): ''}
+                        </li>
                     ))}
                 </ul>
             </div>
         </nav>
     );
 };
+
 
 export default NavBar;
