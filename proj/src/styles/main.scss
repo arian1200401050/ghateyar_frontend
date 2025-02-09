@@ -65,8 +65,8 @@ a {
 
 // color
 .bg-primary-1 { background-color: map-get($theme-colors, 'primary-1') !important }
-.bg-primary-2 { background-color: map-get($theme-colors, 'primary-2') !important }
-.bg-primary-3 { background-color: map-get($theme-colors, 'primary-3') !important }
+.bg-primary-3 { background-color: map-get($theme-colors, 'primary-2') !important }
+.bg-primary-2 { background-color: map-get($theme-colors, 'primary-3') !important }
 
 .bg-gray-1 { background-color: $gray-400 !important }
 .bg-gray-2 { background-color: $gray-600 !important }

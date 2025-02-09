@@ -21,6 +21,13 @@ const mainBrands = [
         logo: "brand/4.png"
     },
     {
+        id: 16,
+        title: "روسو",
+        alias: "roso",
+        isOriginal: true,
+        logo: "brand/9.png"
+    },
+    {
         id: 32,
         title: "جی ام سی سی",
         alias: "GMCC",
@@ -40,13 +47,6 @@ const mainBrands = [
         alias: "danper",
         isOriginal: true,
         logo: "brand/7.png"
-    },
-    {
-        id: 16,
-        title: "روسو",
-        alias: "roso",
-        isOriginal: true,
-        logo: "brand/9.png"
     },
     {
         id: 29,
