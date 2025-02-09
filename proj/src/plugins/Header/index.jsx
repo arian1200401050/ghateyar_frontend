@@ -1,5 +1,5 @@
-import ToolBar from "./toolBar.js";
-import NavBar from "./navBar.js";
+import ToolBar from "./toolBar.jsx";
+import NavBar from "./navBar.jsx";
 
 import "./styles/navBar.scss";
 

@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-import config from '../../config.js';
-import { mainBrands } from '../../db/mainBrands.js'
+import config from '#src/config.js';
+import { mainBrands } from '#src/db/mainBrands.js'
 import './styles/brandsSection.scss';
 
-
+ 
 const BrandItem = styled.span.attrs({className: 'd-block py-2 border border-2 rounded m-auto text-center brand-item__button'})`
     background-image: ${({ logo }) => `url(${logo})`};
     background-size: 70%;

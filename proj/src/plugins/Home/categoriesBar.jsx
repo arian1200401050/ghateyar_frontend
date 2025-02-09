@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import config from '../../config.js';
-import { mainCategories } from '../../db/mainCategories.js';
+import config from '#src/config.js';
+import { mainCategories } from '#src/db/mainCategories.js';
 
 import './styles/categoriesBar.scss';
 

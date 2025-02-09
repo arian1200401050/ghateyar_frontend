@@ -14,28 +14,29 @@ const NavItem = ({ item, level }) => {
         <li className={`nav-item ${item.children ? "dropdown" : ""}`}>
             {item.children ? (
                 <>
-                    <a
-                        className="nav-link dropdown-toggle text-end"
-                        href="#!"
-                        onMouseOver={toggleDropdown}
-                        aria-haspopup="true"
-                        aria-expanded={isOpen}
-                    >
-                        {item.title}
-                    </a>
-                    <ul
-                        className={`dropdown-menu ${isOpen ? "show" : ""} ${
-                            level > 1 ? "end-100 top-edge" : ""
-                        }`}
-                    >
-                        {item.children.map((child, index) => (
-                            <NavItem
-                                key={index}
-                                item={child}
-                                level={level + 1}
-                            />
-                        ))}
-                    </ul>
+                    <div className="">
+                        <a
+                            className="nav-link dropdown-toggle text-end"
+                            href={item.alias}
+                            onMouseOver={toggleDropdown}
+                            aria-haspopup="true"
+                            aria-expanded={isOpen}
+                        >
+                            {item.title}
+                        </a>
+                        <ul
+                            className={`dropdown-menu ${isOpen ? "show" : ""} 
+                                ${level > 1 ? "end-100 top-edge" : ""}`}
+                        >
+                            {item.children.map((child, index) => (
+                                <NavItem
+                                    key={index}
+                                    item={child}
+                                    level={level + 1}
+                                />
+                            ))}
+                        </ul>
+                    </div>
                 </>
             ) : (
                 <a className="nav-link text-end" href={item.alias}>
@@ -50,8 +51,8 @@ const NavBar = () => {
     const [isNavOpen, setIsNavOpen] = useState(false);
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light main-container border-top border-black py-0 px-5 mt-2">
-            <a className="navbar-brand" href="#!">
+        <nav className="navbar navbar navbar-expand-lg navbar-light border-top border-black py-0 px-5 mt-2">
+            <a className="navbar-heading" href="#!">
                 منو
             </a>
             <button

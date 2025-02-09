@@ -1,5 +1,5 @@
-import AboutUs from './aboutUs.js';
-import LogoArea from './logoArea.js';
+import AboutUs from './aboutUs.jsx';
+import LogoArea from './logoArea.jsx';
 
 export default function Footer () {
     return (  
