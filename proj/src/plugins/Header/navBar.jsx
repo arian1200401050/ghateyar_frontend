@@ -1,34 +1,106 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect, createContext, useContext } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { menuItems } from "#src/db/menuItems.js";
 
 
-function DropDown ({ items, level, isOpen }) {
-    const [openingDropdown, setOpeningDropdown] = useState(null);
+const DropDownContext = createContext();
+
+const DropDownContextProvider = ({ children }) => {
+    const [overallMaxHeight, setOverallMaxHeight] = useState(0);
 
     return (
-        <div className={`main-menu__dropdown ${ isOpen ? 'show' : ''}`}>
-            <ul className="main-menu__dropdown-list dropdown-menu">
-                {items.map((item, index) => (
+        <DropDownContext.Provider value={{overallMaxHeight, setOverallMaxHeight}} >
+            {children}
+        </DropDownContext.Provider>
+    )
+}
+
+const dropDownEffect = (overallMaxHeight, setOverallMaxHeight, dropdownListRef) => {
+    const updateMaxHeight = () => {  
+        document.documentElement.style.setProperty('--main-menu-dropdown-display', 'block');
+
+        let newMaxHeight = overallMaxHeight;
+        const height = dropdownListRef.current.getBoundingClientRect().height;  
+        newMaxHeight = Math.max(newMaxHeight, height);
+        console.log(dropdownListRef.current.className, ' ', newMaxHeight, ' ', overallMaxHeight);
+        
+        document.documentElement.style.removeProperty('--main-menu-dropdown-display');
+        setOverallMaxHeight(newMaxHeight);
+    };  
+  
+    updateMaxHeight(); // Set the initial max height  
+
+    // Optional: Add a resize listener if your layout can change sizes  
+    window.addEventListener('resize', updateMaxHeight);  
+    return () => {  
+        window.removeEventListener('resize', updateMaxHeight);  
+    };      
+}
+
+const dropDownReturn = (Component, props) => {
+    return (
+        <div className={`main-menu__dropdown ${props.isOpen ? 'show' : '' } 
+            ${props.level == 1 ? 'main-menu__dropdown--top' : 'main-menu__dropdown--mid'}`}
+            style={props.level == 1 ? {height: props.overallMaxHeight + 'px'} : {}} 
+            ref={props.dropdownRef}
+        >
+            <ul className={`main-menu__dropdown-list dropdown-menu ${props.path}`}
+                ref={props.dropdownListRef}>
+                {props.items.map((item, index) => (
                     <li key={index} className="main-menu__dropdown-item">
                         <a 
                             className="main-menu__dropdown-link dropdown-item" 
                             href={item.alias} alt={item.title}
-                            onMouseOver={() => setOpeningDropdown(index)}
+                            onMouseOver={() => props.setOpeningDropdown(index)}
                             aria-haspopup="true"
-                            aria-expanded={openingDropdown == index}
+                            aria-expanded={props.openingDropdown == index}
                             aria-current={index == 0 ? "page" : ""}
                         >    
                             {item.title}
                         </a>
                         { item.children ? (
-                            <DropDown key={index} items={item.children} level={ level + 1 } isOpen={index == openingDropdown} />
+                            <Component key={index} items={item.children} isOpen={index == props.openingDropdown}
+                                level={ props.level + 1 } path={props.path + ':' + index}
+                                index={index} overallMaxHeight={props.overallMaxHeight} setOverallMaxHeight={props.setOverallMaxHeight}
+                            />
                         ): ''}
                     </li>
                 ))}
             </ul>
         </div>
+    )
+}
+
+function DropDownTopLevel ({ items, isOpen, level, path, index }) {
+    const {overallMaxHeight, setOverallMaxHeight} = useContext(DropDownContext);
+    const [openingDropdown, setOpeningDropdown] = useState(null);
+    const dropdownRef = useRef(null);
+    const dropdownListRef = useRef(null);
+   
+    useEffect(dropDownEffect, [index, overallMaxHeight])
+    
+    return (
+        dropDownReturn(DropDown, {
+            items, level, path, isOpen, openingDropdown, setOpeningDropdown,  
+            overallMaxHeight, setOverallMaxHeight, dropdownRef, dropdownListRef
+        })
+    );
+};
+
+function DropDown ({ items, isOpen, level, path, index }) {
+    const {overallMaxHeight, setOverallMaxHeight} = useContext(DropDownContext);
+    const [openingDropdown, setOpeningDropdown] = useState(null);
+    const dropdownRef = useRef(null);
+    const dropdownListRefs = useRef([]);
+   
+    useEffect(dropDownEffect, [index, overallMaxHeight])
+    
+    return (
+        dropDownReturn(DropDown, {
+            items, level, path, isOpen, openingDropdown, setOpeningDropdown,  
+            overallMaxHeight, setOverallMaxHeight, dropdownRef, dropdownListRefs
+        })
     );
 };
 
@@ -78,7 +150,11 @@ function NavBar () {
                             </a>
 
                             {item.children ? (
-                                <DropDown items={item.children} level={1} isOpen={index == openingDropdown} />
+                                <DropDownContextProvider>
+                                    <DropDownTopLevel items={item.children} isOpen={index == openingDropdown} level={1} 
+                                        path={index} index={index}
+                                    />
+                                </DropDownContextProvider>
                             ): ''}
                         </li>
                     ))}

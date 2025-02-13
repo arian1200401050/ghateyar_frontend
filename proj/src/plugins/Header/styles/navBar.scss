@@ -3,6 +3,11 @@
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/mixins";
 
+
+:root {
+    --main-menu-dropdown-display: none;
+}
+
 .main-menu {
     margin-top: 1rem;
     padding: 0 2.5rem;
@@ -26,13 +31,24 @@
     height: fit-content;
     padding-right: .5rem;
     padding-left: .5rem;
-    background-color: map-get($theme-colors, 'primary-4');
+    background-color: map-get($theme-colors, 'primary-3');
     border-radius: 0 0 .5rem .5rem;
-    box-shadow: .1rem .1rem .5rem $gray-500
+    box-shadow: .1rem .1rem .5rem $gray-500;
+}
+
+.main-menu__dropdown .main-menu__dropdown {
+    top: 0;
+    left: calc(-100% - .7rem);
+    right: unset;
+    z-index: 2;
+    width: fit-content;
+    padding-right: 0;
+    box-shadow: none;
 }
 
 .main-menu__dropdown-list {
-    position: static !important;
+    display: var(--main-menu-dropdown-display);
+    position: relative !important;
     z-index: 2;
     width: fit-content;
     border: none;
@@ -47,7 +63,6 @@
 }
 
 .main-menu__dropdown-item {
-    position: relative;
     margin: 0;
     width: 100%;
     border: 0 solid $gray-600;
@@ -69,12 +84,3 @@
     border-right: .3rem solid map-get($theme-colors, 'primary-1');
 }
 
-
-.main-menu__dropdown .main-menu__dropdown {
-    top: -.5rem;
-    right: calc(100% + .05rem);
-    z-index: 2;
-    width: fit-content;
-    padding-right: 0;
-    box-shadow: none;
-}

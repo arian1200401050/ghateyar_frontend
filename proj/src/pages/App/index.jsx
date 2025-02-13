@@ -10,6 +10,7 @@ import Header from "#src/plugins/Header/index.jsx";
 import Footer from "#src/plugins/Footer/index.jsx";
 import HomePage from "#src/pages/HomePage/index.jsx";
 import NotFoundPage from "#src/pages/NotFoundPage/index.jsx";
+import Test from "#src/pages/Test/index.jsx";
 
 
 const AppWrapper = styled.div.attrs({ className: "app-wrapper" })`
@@ -21,7 +22,7 @@ const MainContainer = styled.div.attrs({ className: "main-container" })`
     position: relative;
 `
 
-const Layout = ({ children }) => {  
+function Layout({ children }) {  
     return (  
         <AppWrapper>  
             <Header />  
@@ -44,6 +45,7 @@ export default function App() {
                 <Routes>
                     <Route exact path="/" element={<HomePage />} />
                     <Route path="*" element={<NotFoundPage />} />
+                    <Route path="/test" element={<Test />} />
                 </Routes>
             </BrowserRouter>
         </Layout>
