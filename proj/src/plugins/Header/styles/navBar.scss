@@ -22,9 +22,13 @@
     padding-right: 0;
 }
 
+.main-menu__nav-item {
+    padding-bottom: .25rem;
+}
+
 .main-menu__dropdown {
     position: absolute;
-    top: calc(100% + .25rem);
+    top: calc(100%);
     right: 0;
     z-index: 2;
     visibility: hidden;

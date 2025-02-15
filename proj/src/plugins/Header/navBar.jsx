@@ -16,52 +16,69 @@ const DropDownContextProvider = ({ children }) => {
     )
 }
 
-function DropDown ({ items, isOpen, level, path, index }) {
-    const [openingDropdown, setOpeningDropdown] = useState(null);   
+const updateMaxHeight = () => {
+    const dropdownTopRef = document.querySelector('.main-menu__dropdown--top.show')
+    const dropdownRefs = document.querySelectorAll('.main-menu__dropdown.show');
+    const currentHeight = dropdownTopRef.getBoundingClientRect().height;
+    let maxHeight = 0;
     
-    const updateMaxHeight = () => {
-        const dropdownRef = document.querySelector(`.main-menu__dropdown.path-${path}`);
-        
-        let maxHeight = 0;
-        const dropdownList = dropdownRef.querySelector('.main-menu__dropdown-item > .main-menu__dropdown > .main-menu__dropdown-list');
-        if (dropdownList) {
-            document.documentElement.style.setProperty('--main-menu-dropdown-display', 'block');
-
-            const wrapperHeight = dropdownRef.getBoundingClientRect().height;
+    if (dropdownRefs) {
+        dropdownRefs.forEach((dropdownRef) => {
+            const dropdownList = dropdownRef.querySelector('.main-menu__dropdown-list');
             const height = dropdownList.getBoundingClientRect().height;
-            maxHeight = Math.max(wrapperHeight, height);
+            maxHeight = Math.max(maxHeight, height);     
+        })
+    }
 
-            document.documentElement.style.removeProperty('--main-menu-dropdown-display');
-            if (maxHeight != wrapperHeight) {
-                dropdownRef.style.height = `calc(${maxHeight}px + .5rem)`;
+    if (maxHeight != currentHeight) {
+        dropdownTopRef.style.height = `calc(${maxHeight}px + .5rem)`;
+    }
+}
+
+function DropDown ({ items, isOpen, level, path }) {
+    const [dropdownStates, setDropdownStates] = useState([]);   
+    const [timeoutIds, setTimeoutIds] = useState([]);
+
+    const _setTimeoutId = (index, value) => {
+        const _timeoutIds = [...timeoutIds]
+        _timeoutIds[index] = value;
+        setTimeoutIds(_timeoutIds);
+    }
+
+    const _setDropdownState = (index, path, value) => {
+        const dropdown = document.querySelector('.path-' + path);
+        if (dropdown) {
+            if (value) {
+                dropdown.classList.add('show')
+            } else {
+                dropdown.classList.remove('show')
             }
+        }   
+
+        const _dropdownStates = [...dropdownStates]
+        _dropdownStates[index] = value;
+        setDropdownStates(_dropdownStates);
+    }
+
+    const closeDropdown = (index, path) => {
+        const id = setTimeout(() => {
+            _setDropdownState(index, path, false);
+            updateMaxHeight();
+        }, 149)
+        _setTimeoutId(index, id);
+    }
+
+    const dropdownStateHandler = (index, path) => {
+        if (timeoutIds[index]) {
+            clearTimeout(timeoutIds[index]);
+            _setTimeoutId(index, null);
         }
-    }
-
-    const closeDropdown = () => {
-        // setTimeout(() => {
-        //     setOpeningDropdown(null);
-        // }, 150)
-    }
-
-    const openingDropdownHandler = (index, path) => {
-        setTimeout( () => {
-            setOpeningDropdown(index);
-            updateMaxHeight(path);
+        
+        setTimeout(() => {
+            _setDropdownState(index, path, true);
+            updateMaxHeight();
         }, 150)
     }
-
-
-    useEffect(() => {
-        updateMaxHeight(); // Set the initial max height  
-    
-        // Optional: Add a resize listener if your layout can change sizes  
-        window.addEventListener('resize', updateMaxHeight);  
-        return () => {  
-            window.removeEventListener('resize', updateMaxHeight);  
-        };   
-        
-    }, [document.documentElement])
 
     return (
         <div className={`main-menu__dropdown ${isOpen ? 'show' : '' } path-${path} 
@@ -69,22 +86,23 @@ function DropDown ({ items, isOpen, level, path, index }) {
         >
             <ul className={`main-menu__dropdown-list dropdown-menu`}>
                 {items.map((item, index) => (
-                    <li key={index} className={`main-menu__dropdown-item`}>
+                    <li key={index} className={`main-menu__dropdown-item`}
+                        onMouseLeave={() => closeDropdown(index, `${path}-${index}`)}
+                        onMouseOver={() => dropdownStateHandler(index, `${path}-${index}`)}
+                    >
                         <a 
                             className={`main-menu__dropdown-link dropdown-item
                                     ${item.children ? 'main-menu__dropdown-link--has-child' : ''}`}
                             href={item.alias} alt={item.title}
-                            onMouseOut={() => closeDropdown()}
-                            onMouseOver={() => openingDropdownHandler(index, path)}
                             aria-haspopup="true"
-                            aria-expanded={openingDropdown == index}
+                            aria-expanded={dropdownStates[index]}
                             aria-current={index == 0 ? "page" : ""}
                         >    
                             {item.title}
                         </a>
                         { item.children ? (
-                            <DropDown key={index} items={item.children} isOpen={index == openingDropdown}
-                                level={ level + 1 } path={path + '-' + index}
+                            <DropDown key={index} items={item.children}
+                                level={ level + 1 } path={`${path}-${index}`}
                             />
                         ): ''}
                     </li>
@@ -104,9 +122,9 @@ function NavBar () {
     }
 
     const closeDropdown = () => {
-        // setTimeout(() => {
-        //     setOpeningDropdown(null)
-        // }, 150)
+        setTimeout(() => {
+            setOpeningDropdown(null)
+        }, 150)
     }
 
     const openDropdown= (index) => {
@@ -123,7 +141,7 @@ function NavBar () {
             <button
                 className="main-menu__toggler navbar-toggler"
                 type="button"
-                onMouseOver={toggleNavbar} // State to control navbar visibility
+                onClick={toggleNavbar} // State to control navbar visibility
                 aria-controls="navbarNav"
                 aria-expanded={isNavOpen}
             >
@@ -138,11 +156,12 @@ function NavBar () {
                     className={`main-menu__navbar-list navbar-nav `}
                 >
                     {menuItems.map((item, index) => (
-                        <li key={index} className='main-menu__nav-item nav-item'>
+                        <li key={index} className='main-menu__nav-item nav-item'
+                            onMouseOver={() => openDropdown(index)}
+                            onMouseLeave={closeDropdown}
+                        >
                             <a 
                                 className="main-menu__nav-link nav-link" href={item.alias} alt={item.title}
-                                onMouseOver={() => openDropdown(index)}
-                                onMouseOut={closeDropdown}
                                 aria-haspopup="true"
                                 aria-expanded={openingDropdown == index}
                                 aria-current={index == 0 ? "page" : ""}
