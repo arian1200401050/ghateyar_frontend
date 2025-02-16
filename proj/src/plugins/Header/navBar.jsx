@@ -63,7 +63,7 @@ function DropDown ({ items, isOpen, level, path }) {
     const closeDropdown = (index, path) => {
         const id = setTimeout(() => {
             _setDropdownState(index, path, false);
-            updateMaxHeight();
+            // updateMaxHeight();
         }, 149)
         _setTimeoutId(index, id);
     }

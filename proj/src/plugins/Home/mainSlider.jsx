@@ -64,37 +64,38 @@ const MainSlider = () => {
                     ))}
                 </div>
                 <button
-                    className="carousel-control-prev top-50 bottom-50 rounded bg-gray-2 main-slider__control main-slider__control--prev"
+                    className="carousel-control-next top-50 bottom-50 rounded bg-gray-2 main-slider__control main-slider__control--prev"
+                    type="button"
+                    data-bs-target="#main-slider"
+                    data-bs-slide="next"
+                    onClick={() =>
+                        handleSelect(
+                            (activeIndex - 1 + mainSlides.length) % mainSlides.length
+                        )
+                    }
+                >
+                    <span
+                        className="carousel-control-next-icon main-slider__control-icon main-slider__control-icon--prev"
+                        aria-hidden="true"
+                    ></span>
+                    <span className="visually-hidden">Next</span>
+                </button>
+                <button
+                    className="carousel-control-prev top-50 bottom-50 rounded bg-gray-2 main-slider__control main-slider__control--next"
                     type="button"
                     data-bs-target="#main-slider"
                     data-bs-slide="prev"
                     onClick={() =>
                         handleSelect(
-                            (activeIndex - 1 + mainSlides.length) %
-                                mainSlides.length
+                            (activeIndex + 1) % mainSlides.length
                         )
                     }
                 >
                     <span
-                        className="carousel-control-prev-icon main-slider__control-icon main-slider__control-icon--prev"
+                        className="carousel-control-prev-icon main-slider__control-icon main-slider__control-icon--next"
                         aria-hidden="true"
                     ></span>
                     <span className="visually-hidden">Previous</span>
-                </button>
-                <button
-                    className="carousel-control-next top-50 bottom-50 rounded bg-gray-2 main-slider__control main-slider__control--next"
-                    type="button"
-                    data-bs-target="#main-slider"
-                    data-bs-slide="next"
-                    onClick={() =>
-                        handleSelect((activeIndex + 1) % mainSlides.length)
-                    }
-                >
-                    <span
-                        className="carousel-control-next-icon main-slider__control-icon main-slider__control-icon--next"
-                        aria-hidden="true"
-                    ></span>
-                    <span className="visually-hidden">Next</span>
                 </button>
             </div>
         </div>
