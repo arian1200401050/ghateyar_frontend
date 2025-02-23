@@ -1,7 +1,7 @@
 const mainCategories = [
     {
-        id: 4,
-        title: "برس",
+        id: 16,
+        title: "پارچ",
         logo: "icon/category/purch.png"
     },
     {
@@ -29,8 +29,13 @@ const mainCategories = [
         id: 1,
         title: "پاکت",
         logo: "icon/category/pukat_jaroobarghi.png"
-    }
+    },
     /*
+    {
+        id: 4,
+        title: "برس",
+        logo: "icon/category/purch.png"
+    },
     {
         id: 7,
         title: "کمپرسور",

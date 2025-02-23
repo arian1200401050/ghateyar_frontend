@@ -21,7 +21,7 @@ export default function HomePage() {
             <CategoriesSection />
             <BrandsBar />
             <SuggestedArticlesRegal />
-            <SuggestedProductsRegal />
+            {/* <SuggestedProductsRegal /> */}
         </div>
     );
 }

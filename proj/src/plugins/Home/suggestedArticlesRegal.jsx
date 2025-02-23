@@ -12,11 +12,13 @@ function SuggestedArticlesRegal() {
                             وبلاگ
                         </h4>
                     </div>
-                    <div className="col-8 article-regal__header-botton-splitor">
+                    <div className="col-8 article-regal__header-button-splitor">
                         <span className="article-regal__header-splitor mt-3 d-block w-100 h-0 border border-1 border-gray-3"></span>
                     </div>
-                    <div className="col-2 article-regal__header-botton-wrapper">
-                        <span className="badge py-2 px-4 gray-3 border border-1 border-gray-3 rounded article-regal__header-botton">مشاهده عناوین بیشتر</span>
+                    <div className="col-2 article-regal__header-button-wrapper">
+                        <span className="badge py-2 px-4 gray-3 border border-1 border-gray-3 rounded article-regal__header-button">
+                            مشاهده عناوین بیشتر
+                        </span>
                     </div>
 
                 </div>
