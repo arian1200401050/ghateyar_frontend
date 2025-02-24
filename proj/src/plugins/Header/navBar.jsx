@@ -97,6 +97,13 @@ function DropDown ({ items, isOpen, level, path }) {
         await _setTimeoutId(`${path}-o`, id)
     }
 
+    // for test
+    // useEffect(() => {
+    //     (async () => {
+    //         await openDropdown(0, '0-0');
+    //     })();
+    // }, [document.documentElement])
+
     return (
         <div className={`main-menu__dropdown ${isOpen ? 'show' : '' } path-${path} 
             ${level == 1 ? 'main-menu__dropdown--top' : 'main-menu__dropdown--mid'}`}
@@ -150,6 +157,11 @@ function NavBar () {
             setOpeningDropdown(index)
         }, 150)
     }
+
+    // for test
+    // useEffect(() => {
+    //     openDropdown(0);
+    // }, [document.documentElement])
 
     return (
         <nav className="main-menu navbar navbar-expand-lg navbar-light border-top border-black">
