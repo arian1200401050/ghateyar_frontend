@@ -1,0 +1,26 @@
+@import "bootstrap/scss/functions";
+// @import "#src/styles/_variables.scss";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+
+
+.slider-control__button {
+    height: 2.5rem;
+    width: 2.5rem;
+    top: calc(50% - 1rem);
+    bottom: calc(50% + 1rem);
+    background-color: $gray-700;
+    border-radius: .25rem;
+}
+
+.slider-control__button--next {
+    right: .5rem;
+}
+
+.slider-control__button--prev {
+    left: .5rem;
+}
+
+.slider-control__button-icon {
+    background-size: 75%;
+}
