@@ -1,3 +1,5 @@
+import config from '#src/config.js';
+
 import { mainArticles } from '../../db/mainArticles.js';
 
 import './styles/suggestedArticlesRegal.scss';
@@ -29,10 +31,10 @@ function SuggestedArticlesRegal() {
                                 <div key={index} className="card mx-2 border border-1 border-gray-1 shadow-sm article-card">
                                     <div className="w-100 h-100 m-0 article-card__inner">
                                         <div className="article-card__image-wrapper">
-                                            <img src={`image/${item.banner}`} alt={ item.title } 
+                                            <img src={`${config.MEDIA_ROOT}/${item.banner}`} alt={ item.title } 
                                                 className="card-img-top h-100 object-fit-contain article-card__image" />
                                         </div>
-                                        <div className="card-body pt-3 pe-3 h-100 border-top border-1 border-gray overflow-hidden text-end">
+                                        <div className="card-body pt-3 pe-3 h-100 border-top border-gray overflow-hidden text-end">
                                             <div className="article-card__title-wrapper">
                                                 <a href={`${item.alias}`} alt={`${item.title}`}>
                                                     <h5 className="card-title fs-6 gray-3">{ item.title }</h5>

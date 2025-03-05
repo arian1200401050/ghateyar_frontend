@@ -5,7 +5,7 @@ const mainAuction = {
         second: 23
     },
     logo: {
-        src: 'image/other/auction-logo.jpg',
+        src: '/other/auction-logo.jpg',
         alt: 'حراج هفتگی'
     }
 }

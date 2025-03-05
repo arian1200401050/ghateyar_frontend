@@ -47,7 +47,7 @@ const MainSlider = () => {
                         >
                             <div className="w-100 slide-main__image-wrapper">
                                 <img
-                                    src={`image/${item.filepath}`}
+                                    src={`${config.MEDIA_ROOT}/${item.filepath}`}
                                     className="d-block w-100 h-100 slide-main__image"
                                     alt={item.title}
                                 />

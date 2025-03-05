@@ -8,10 +8,15 @@ import styled from "styled-components";
 import config from "#src/config.js";
 import Header from "#src/plugins/Header/index.jsx";
 import Footer from "#src/plugins/Footer/index.jsx";
-import HomePage from "#src/pages/HomePage/index.jsx";
-import NotFoundPage from "#src/pages/NotFoundPage/index.jsx";
+import HomePage from "#src/pages/Home/index.jsx";
+import NotFoundPage from "#src/pages/NotFound/index.jsx";
+import MenuPage from "#src/pages/Menu/index.jsx";
+import ProductPage from "#src/pages/Product/index.jsx";
 import Test from "#src/pages/Test/index.jsx";
 
+// Import public styles
+import "#src/styles/main.scss";
+import "#src/styles/main.css";
 
 const AppWrapper = styled.div.attrs({ className: "app-wrapper" })`
     position: relative;
@@ -46,6 +51,8 @@ export default function App() {
                     <Route exact path="/" element={<HomePage />} />
                     <Route path="*" element={<NotFoundPage />} />
                     <Route path="/test" element={<Test />} />
+                    <Route path="/menu/*" element={<MenuPage />} />
+                    <Route path="/product/*" element={<ProductPage />} />
                 </Routes>
             </BrowserRouter>
         </Layout>

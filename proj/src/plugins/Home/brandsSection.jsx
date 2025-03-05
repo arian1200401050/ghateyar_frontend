@@ -38,7 +38,7 @@ function BrandsSection() {
 					<div className="brands-section__bar" id="brands-section-bar" ref={barRef}>  
 						{mainBrands.map((item, index) => (  
 							<div key={index} className="brand-item__badge">  
-								<BrandItemIcon logo={`${config.MEDIA_ROOT}/image/${item.logo}`} />  
+								<BrandItemIcon logo={`${config.MEDIA_ROOT}/${item.logo}`} />  
 							</div>  
 						))}  
 					</div>  

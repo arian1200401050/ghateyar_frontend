@@ -1,5 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 
+import config from '#src/config.js';
+
 import { mainProducts } from '#src/db/mainProducts.js';
 import { mainAuction } from '#src/db/mainAuction.js';
 
@@ -47,7 +49,7 @@ function SuggestedProductsRegal() {
                             </h5>
                         </div>
                         <div className="product-regal__box-logo-wrapper">
-                            <img className="product-regal__box-logo-image" src={mainAuction.logo.src} alt={mainAuction.logo.alt}/>
+                            <img className="product-regal__box-logo-image" src={`${config.MEDIA_ROOT}/${mainAuction.logo.src}`} alt={mainAuction.logo.alt}/>
                         </div>
                         <div className="product-regal__box-timer-wrapper">
                             <span className="product-regal__box-timer-col product-regal__box-timer-col--hour">
@@ -71,7 +73,7 @@ function SuggestedProductsRegal() {
                             {mainProducts.map((item, index) => (
                                 <div key={index} className="card mx-1 product-card">
                                     <div className="w-100 product-card__image-wrapper">
-                                        <img src={`image/${item.banner}`} className="card-img-top h-100 object-fit-contain product-card__image" alt="..." />
+                                        <img src={`${config.MEDIA_ROOT}/${item.banner}`} className="card-img-top h-100 object-fit-contain product-card__image" alt="..." />
                                     </div>
                                     <div className="card-body rounded-bottom border-top bg-white text-start">
                                         <div className="product-card__title-wrapper">

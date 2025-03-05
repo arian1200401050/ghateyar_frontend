@@ -4,56 +4,69 @@ const menuItems = [
         alias: '/about',  
         children: [
             {
+                id: 10,
                 title: "پاکت",
                 alias: "",
                 children: [
                     {
+                        id: 100,
                         title: "ال جی",
                         alias: "",
                     },
                     {
+                        id: 101,
                         title: "آاگ",
                         alias: "",
                     },
                     {
+                        id: 102,
                         title: "آزمایش",
                         alias: "",
                     },
                     {
+                        id: 103,
                         title: "بوش",
                         alias: "",
                     },
                     {
+                        id: 104,
                         title: "پاناسونیک",
                         alias: "",
                     },
                     {
+                        id: 105,
                         title: "زیرووات",
                         alias: "",
                     },
                     {
+                        id: 106,
                         title: "زیمنس",
                         alias: "",
                     },
                     {
+                        id: 107,
                         title: "سامسونگ",
                         alias: "",
                     },
                     {
+                        id: 108,
                         title: "صنام",
                         alias: "",
                     },
                     {
+                        id: 109,
                         title: "فیلیپس",
                         alias: "",
                     },
                     {
+                        id: 110,
                         title: "همتا",
                         alias: "",
                     },  
                 ]
             },
             {
+                id: 11,
                 title: "فیلتر",
                 alias: "",
                 children: [
@@ -72,6 +85,7 @@ const menuItems = [
                 ]
             },
             {
+                id: 12,
                 title: "موتور",
                 alias: "",
                 children: [
@@ -98,6 +112,7 @@ const menuItems = [
                 ]
             },
             {
+                id: 13,
                 title: "برس",
                 alias: "",
                 children: [
@@ -116,6 +131,7 @@ const menuItems = [
                 ]
             },
             {
+                id: 14,
                 title: "خرطومی",
                 alias: "",
                 children: [
@@ -134,6 +150,7 @@ const menuItems = [
                 ]
             },
             {
+                id: 15,
                 title: "زانویی",
                 alias: "",
             }

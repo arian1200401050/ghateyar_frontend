@@ -9,8 +9,8 @@ function SliderControl({ barWrapper, bar, sliderClass, scrollUnit }) {
         if (barWrapper && bar) {  
             const wrapperWidth = barWrapper.getBoundingClientRect().width;  
             const barWidth = bar.getBoundingClientRect().width;  
-            console.log('Wrapper -> ', wrapperWidth);
-            console.log('Bar -> ', barWidth);
+            // console.log('Wrapper -> ', wrapperWidth);
+            // console.log('Bar -> ', barWidth);
             setBarWrapperDiff(barWidth - wrapperWidth);  
         }  
     }, [barWrapper, bar]);  
@@ -22,7 +22,7 @@ function SliderControl({ barWrapper, bar, sliderClass, scrollUnit }) {
         // Clamp the new scroll position between 0 and barWrapperDiff  
         const clampedScrollPosition = Math.max(0, Math.min(newScrollPosition, barWrapperDiff));  
 
-        console.log(clampedScrollPosition);
+        // console.log(clampedScrollPosition);
         
         // Only update states and DOM if the position has changed  
         if (clampedScrollPosition !== scrollPosition) {  
