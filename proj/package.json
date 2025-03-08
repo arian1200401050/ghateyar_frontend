@@ -17,6 +17,7 @@
     "dependencies": {
         "@tailwindcss/vite": "^4.0.9",
         "app-module-path": "^2.2.0",
+        "axios": "^1.8.2",
         "bootstrap": "^5.3.3",
         "dotenv": "^16.4.7",
         "localforage": "^1.10.0",

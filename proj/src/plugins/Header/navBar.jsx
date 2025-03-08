@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';  
 import debounce from 'lodash.debounce'; // or use your own debounce function  
+import axios from 'axios';
 
 
 const DropDown = ({ items, level, isOpen, path }) => {  
@@ -86,18 +87,16 @@ const NavBar = () => {
 
     useEffect(() => {  
         async function fetchData() {  
-            try {  
-                const response = await fetch('http://localhost:8001/api/v1/public/menu-tree/'); // Changed URL  
-                if (!response.ok) {  
-                    throw new Error(`HTTP error! status: ${response.status}`);  
-                }  
-                const data = await response.json();  
-                setMenu(data); // Changed state variable  
-                setLoading(false);  
-            } catch (e) {  
-                setError(e);  
-                setLoading(false);  
-            }  
+            await axios
+                .get('http://localhost:8001/api/v1/public/menu-tree/')
+                .then((res) => {
+                    setMenu(res.data); // Changed state variable  
+                    setLoading(false);  
+                })
+                .catch((err) => {
+                    setError(err);  
+                    setLoading(false);  
+                });
         }  
 
         fetchData();  
