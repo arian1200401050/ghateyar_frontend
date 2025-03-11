@@ -1,18 +1,22 @@
 // src/MenuPage.js  
 import React, { useState, useEffect } from 'react';  
+import { Helmet } from 'react-helmet';
 import Breadcrumb from '#src/plugins/Menu/Breadcrumb';  
 import Badges from '#src/plugins/Menu/Badge';  
 import PostCards from '#src/plugins/Menu/postCard';  
 
 const breadcrumbItems = [  
-  { label: 'خانه', link: '/' },  
-  { label: 'اسپیکر', link: '/speakers' },  
+  { label: 'جاروبرقی', link: '/menu/9' },  
+  { label: 'فیلتر', link: '/menu/14' },  
 ];  
 
 const badges = [  
-  { label: 'جدید', onClick: () => alert('جدید Clicked') },  
-  { label: 'پرفروش', onClick: () => alert('پرفروش Clicked') },  
-  { label: 'محبوب', onClick: () => alert('محبوب Clicked') },  
+  { label: 'پارس خزر', link: '/menu/43'},  
+  { label: 'زیمنس', link: '/menu/45'},  
+  { label: 'بوش', link: '/menu/56'},  
+  { label: 'فیلیپس', link: '/menu/57'},  
+  { label: 'دوو - اسنوا', link: '/menu/69'},  
+  { label: 'ناسیونال', link: '/menu/75'},  
 ];  
 
 // Sample data  
@@ -20,10 +24,10 @@ const posts = Array.from({ length: 43 }, (_, index) => ({
   id: index,
   title: `محصول شماره ${100 + index}`,  
   content: 'توضیحات محصول ...',  
-  image: `product/product_${index}.webp`,  
+  image: `product/product_${index + 1}.png`,  
 }));  
 
-const MenuPage = () => {  
+const MenuPage = ({menuId}) => {  
   // Pagination state  
   const [currentPage, setCurrentPage] = useState(1);  
   const itemsPerPage = 12; // Number of items per page  
@@ -45,6 +49,7 @@ const MenuPage = () => {
     setCurrentPage(1);  // Reset to first page when posts change  
   }, [posts]); 
 
+
   // Handlers for pagination  
   const goToNextPage = () => {  
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));  
@@ -56,6 +61,10 @@ const MenuPage = () => {
 
   return (  
     <div className="container !mx-auto mt-2 p-4">  
+        <Helmet>
+            <title>منو </title>    
+        </Helmet>
+
         <Breadcrumb items={breadcrumbItems} 
           paginationInfo={{totalPages, itemsPerPage, currentPage, setCurrentPage, totalItems}} 
         />   

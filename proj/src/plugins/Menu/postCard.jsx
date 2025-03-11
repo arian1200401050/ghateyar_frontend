@@ -12,9 +12,8 @@ const PaginationControl = ({ currentPage, totalPages, itemsPerPage, setCurrentPa
         <ul className="flex m-0">
           {/* Pagination Buttons */}
           {Array.from({ length: totalPages }, (_, index) => (
-            <li className="text-xs">
+            <li key={index} className="text-xs">
               <button
-                key={index}
                 className={` ${
                   currentPage === index + 1 ? 
                       'text-gray-700' : 

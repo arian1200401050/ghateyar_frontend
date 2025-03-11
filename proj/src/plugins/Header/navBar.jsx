@@ -1,6 +1,10 @@
-import { useEffect, useState, useCallback } from 'react';  
+import { useEffect, useState, useCallback } from 'react'; 
 import debounce from 'lodash.debounce'; // or use your own debounce function  
+import { Link } from 'react-router-dom';
 import axios from 'axios';
+
+
+import config from '#src/config.js';
 
 
 const DropDown = ({ items, level, isOpen, path }) => {  
@@ -88,7 +92,7 @@ const NavBar = () => {
     useEffect(() => {  
         async function fetchData() {  
             await axios
-                .get('http://localhost:8001/api/v1/public/menu-tree/')
+                .get(`${config.BACKEND_URL}/api/v1/public/menu-tree/`)
                 .then((res) => {
                     setMenu(res.data); // Changed state variable  
                     setLoading(false);  
@@ -142,7 +146,7 @@ const NavBar = () => {
                                 onMouseOver={() => debouncedOpenDropdown(index)}  
                                 onMouseLeave={() => debouncedCloseDropdown()}  
                             >  
-                                <a  
+                                <a 
                                     className={`main-menu__nav-link nav-link cursor-pointer`}  
                                     href={`/menu/${item.menu_id}`} alt={item.title}  
                                     aria-haspopup="true"  

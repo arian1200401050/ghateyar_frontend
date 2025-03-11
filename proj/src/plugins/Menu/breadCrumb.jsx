@@ -1,5 +1,5 @@
 // src/Breadcrumb.js
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const PaginationText = ({ currentPage, itemsPerPage, totalItems}) => {
@@ -12,6 +12,36 @@ const PaginationText = ({ currentPage, itemsPerPage, totalItems}) => {
 
 
 const _Breadcrumb = ({ items }) => {
+  const [menuPath, setMenuPath] = useState();
+  const [loading, setLoading] = useState(null);  
+  const [error, setError] = useState(null);  
+
+  useEffect(() => {  
+    async function fetchData() {  
+      await axios
+          .get(`${config.BACKEND_URL}/api/v1/public/menu-path/`)
+          .then((res) => {
+              setMenuPath(res.data); // Changed state variable  
+              setLoading(false);  
+          })
+          .catch((err) => {
+              setError(err);  
+              setLoading(false);  
+          });
+    }  
+
+    // fetchData();  
+  }, []); 
+
+
+  if (loading) {  
+    return <p>Loading...</p>;  
+  }  
+
+  if (error) {  
+      return <p>Error: {error.message}</p>;  
+  }  
+  
   return (
     <nav className="text-sm text-gray-600">
       <ul className="flex m-0">

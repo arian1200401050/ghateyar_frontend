@@ -6,8 +6,8 @@ import { mainBrands } from '#src/db/mainBrands.js';
 import { SliderControl } from '#src/plugins/Utils/Slider/slider.jsx';  
 import './styles/brandsSection.scss';  
 
-const BrandItemIcon = styled.span.attrs({ className: 'd-block py-2 border border-2 rounded m-auto text-center brand-item__badge-icon' })`  
-	background-image: ${({ logo }) => `url(${logo})`};  
+const BrandItemIcon = styled.span`  
+	background-image: ${(props) => (`url(${props.logo})`)};  
 	background-size: 70%;  
 	background-position: center;  
 	background-repeat: no-repeat;  
@@ -38,7 +38,9 @@ function BrandsSection() {
 					<div className="brands-section__bar" id="brands-section-bar" ref={barRef}>  
 						{mainBrands.map((item, index) => (  
 							<div key={index} className="brand-item__badge">  
-								<BrandItemIcon logo={`${config.MEDIA_ROOT}/${item.logo}`} />  
+								<BrandItemIcon logo={`${config.MEDIA_ROOT}/${item.logo}`}
+									className="d-block py-2 border border-2 rounded m-auto text-center brand-item__badge-icon" 
+								/>  
 							</div>  
 						))}  
 					</div>  

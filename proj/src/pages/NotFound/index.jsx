@@ -5,7 +5,7 @@ export default function NotFoundPage() {
     return (
         <div className="page-wrapper">
             <Helmet>
-                <title>درباره ما</title>    
+                <title>یافت نشد</title>    
             </Helmet>
 
             <h1>NotFoundPage</h1>    
