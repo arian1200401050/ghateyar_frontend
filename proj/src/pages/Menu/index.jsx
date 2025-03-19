@@ -1,8 +1,8 @@
 // src/MenuPage.js  
 import React, { useState, useEffect } from 'react';  
 import { Helmet } from 'react-helmet';
-import Breadcrumb from '#src/plugins/Menu/Breadcrumb';  
-import Badges from '#src/plugins/Menu/Badge';  
+import Breadcrumb from '#src/plugins/Menu/breadCrumb';  
+import Badges from '#src/plugins/Menu/badge';  
 import PostCards from '#src/plugins/Menu/postCard';  
 
 const breadcrumbItems = [  

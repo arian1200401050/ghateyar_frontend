@@ -28,7 +28,7 @@ const mainCategories = [
     {
         id: 1,
         title: "پاکت",
-        logo: "icon/category/b.png"
+        logo: "icon/category/pukat_jaroobarghi.png"
     },
     /*
     {
