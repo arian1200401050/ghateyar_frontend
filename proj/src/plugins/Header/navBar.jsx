@@ -1,8 +1,7 @@
 import { useEffect, useState, useCallback } from 'react'; 
 import debounce from 'lodash.debounce'; // or use your own debounce function  
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-
+import axios from 'axios'
 
 import config from '#src/config.js';
 
@@ -91,8 +90,7 @@ const NavBar = () => {
 
     useEffect(() => {  
         async function fetchData() {  
-            await axios
-                .get(`${config.BACKEND_URL}/api/v1/public/menu-tree/`)
+            axios.get(`${config.BACKEND_URL}/api/v1/public/menu-tree/`)
                 .then((res) => {
                     setMenu(res.data); // Changed state variable  
                     setLoading(false);  
@@ -135,20 +133,19 @@ const NavBar = () => {
                 id="navbarNav"  
             >  
                 <ul className="main-menu__navbar-list navbar-nav">  
-                    {menu.map((item, index) => {  
-                        const isOpen = index === openDropdownIndex;  
+                    {Array.isArray(menu) ? (
+                        menu.map((item, index) => {  
+                            const isOpen = index === openDropdownIndex;  
 
-                        return (  
-                            <li  
-                                className={`main-menu__nav-item nav-item 
+                            return (  
+                                <li className={`main-menu__nav-item nav-item 
                                         ${item.children?.length > 0 ? 'main-menu__nav-item--has-child' : ''}`}  
-                                key={index}  
-                                onMouseOver={() => debouncedOpenDropdown(index)}  
-                                onMouseLeave={() => debouncedCloseDropdown()}  
-                            >  
-                                <a 
-                                    className={`main-menu__nav-link nav-link cursor-pointer`}  
-                                    href={`/menu/${item.menu_id}`} alt={item.title}  
+                                    key={index}  
+                                    onMouseOver={() => debouncedOpenDropdown(index)}  
+                                    onMouseLeave={() => debouncedCloseDropdown()}  
+                                >  
+                                <a className={`main-menu__nav-link nav-link cursor-pointer`}  
+                                        href={`/menu/${item.menu_id}`} alt={item.title}  
                                     aria-haspopup="true"  
                                     aria-expanded="false" // No longer controlled by shared state  
                                     aria-current={index === 0 ? "page" : ""}  
@@ -161,9 +158,10 @@ const NavBar = () => {
                                         level={1} path={index.toString()} // Pass index as string to create unique path  
                                     />  
                                 ) : null}  
-                            </li>  
-                        );  
-                    })}  
+                                </li>  
+                            );
+                        })
+                    ) : null}  
                 </ul>  
             </div>  
         </nav>  

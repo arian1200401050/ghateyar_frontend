@@ -1,9 +1,13 @@
-const config = {
-    BASE_URL: "http://localhost",
-    SITE_TITLE: "قطعه یار",
-    MEDIA_ROOT: `/image`,
-    LOGO_FILEPATH: 'logo/ghateyar_2.jpg',
-    BACKEND_URL: "http://localhost:8001"
-};
+const BASE_URL = "http://localhost";
+const SITE_TITLE = "قطعه یار";
+const MEDIA_ROOT = `/image`;
+const LOGO_FILEPATH = 'logo/ghateyar_2.jpg';
+const PROTOCOL = window.location.protocol;
+const HOSTNAME = window.location.hostname;
+const BACKEND_URL = `${PROTOCOL}//${HOSTNAME}`;
 
-export default config;
+console.log(BACKEND_URL);
+
+export default {
+  BASE_URL, SITE_TITLE, MEDIA_ROOT, LOGO_FILEPATH, PROTOCOL, HOSTNAME, BACKEND_URL
+}
