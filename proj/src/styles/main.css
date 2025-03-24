@@ -1,1 +1,93 @@
 @import "tailwindcss";
+
+
+@font-face {
+    font-family: 'A EntezareZohoor B4';
+    src: url('/font/EntezarZohoor/AEntezareZohoorB4-Bold.eot');
+    src: url('/font/EntezarZohoor/AEntezareZohoorB4-Bold.eot?#iefix') format('embedded-opentype'),
+        url('/font/EntezarZohoor/AEntezareZohoorB4-Bold.woff2') format('woff2'),
+        url('/font/EntezarZohoor/AEntezareZohoorB4-Bold.woff') format('woff'),
+        url('/font/EntezarZohoor/AEntezareZohoorB4-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+@font-face {
+    font-family: 'A Iranian Sans';
+    src: url('/font/IranianSans/AIranianSans.eot');
+    src: url('/font/IranianSans/AIranianSans.eot?#iefix') format('embedded-opentype'),
+        url('/font/IranianSans/AIranianSans.woff2') format('woff2'),
+        url('/font/IranianSans/AIranianSans.woff') format('woff'),
+        url('/font/IranianSans/AIranianSans.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+body {  
+    font-family: var(--bs-body-font-family);  
+    text-align: right;
+}  
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    background-color: unset;
+}
+
+/* variables */
+
+:root {
+    --bs-body-font-family: 'A Iranian Sans';
+    --bs-header-font-family: 'A EntezareZohoor B4';
+    --bs-body-font-weight: 400;
+}
+
+@theme {
+    --breakpoint-xs: 520px;
+    --color-primary-500: #3c6296;
+    --color-primary-400: #6e9cdb;
+    --color-secondary-500: #d9d9d9;
+    --color-secondary-400: #e9edec;
+    --color-third-500: #de314e;
+}
+
+@media (width >= 320px) {
+    /* full screen wide */
+    :root {
+        --main-section-width: calc(100% - 1rem);
+        --main-section-large-width: calc(100% - 1rem);       
+        --main-section-xlarge-width: calc(100% - 1rem);
+    }
+
+    html {
+        font-size: 10px;
+    }
+}
+
+
+@media (width >= 768px) {
+    /* full screen wide */
+    html {
+        font-size: 12px;
+    }
+}
+
+@media (width >= 1024px) {
+    
+    :root {
+        --main-section-width: 64rem;
+        --main-section-large-width: 80rem;       
+        --main-section-xlarge-width: 96rem;
+    }
+}
+
+@media (width >= 1280px) {
+    html {
+        font-size: 16px;
+    }
+}

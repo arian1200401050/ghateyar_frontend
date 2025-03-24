@@ -83,7 +83,7 @@ const SummaryProduct = ({ product }) => {
 							{/* Points */}
 							<div className="flex items-center gap-x-1">
 								<span className={`h-0 w-0 p-1.75 inline-block bg-contain bg-no-repeat bg-center`}
-									style={{backgroundImage: `url(${config.MEDIA_ROOT}/icon/other/star-yellow.png)`}}
+									style={{backgroundImage: `url(${config.MEDIA_ROOT}/icon//star-yellow.png)`}}
 								></span>
 								<span className="text-sm">{product.score}</span> 
 								<span className="text-xs text-gray-400">(امتیاز {product.buyCount} خرید)</span>

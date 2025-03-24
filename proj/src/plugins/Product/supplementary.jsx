@@ -11,7 +11,7 @@ const BodyWrapper = styled.div`
 
 const GroupName = styled.span`
     &::after { 
-        background-image: url('${config.MEDIA_ROOT}/icon/other/arrow.svg') 
+        background-image: url('${config.MEDIA_ROOT}/icon//arrow.svg') 
     }
 `;
 

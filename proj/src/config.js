@@ -1,10 +1,11 @@
 const BASE_URL = "http://localhost";
 const SITE_TITLE = "قطعه یار";
-const MEDIA_ROOT = `/image`;
+const MEDIA_ROOT = `/media`;
 const LOGO_FILEPATH = 'logo/ghateyar_2.jpg';
 const PROTOCOL = window.location.protocol;
 const HOSTNAME = window.location.hostname;
-const BACKEND_URL = `${PROTOCOL}//${HOSTNAME}`;
+const BACKEND_URL = 'http://localhost:8000'
+
 
 console.log(BACKEND_URL);
 

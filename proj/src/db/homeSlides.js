@@ -1,24 +1,27 @@
-const mainSlides = [  
+const homeSlides = [  
     {  
         id: 1,  
         title: 'قطعه اول',  
         description: '...',  
-        filepath: 'slide/1.png',
+        image: 'slide/1.png',
+        url: '#!'
     },  
     {  
         id: 2,  
         title: 'قطعه دوم',  
         description: '...',  
-        filepath: 'slide/2.jpg',
+        image: 'slide/2.jpg',
+        url: '#!'
     },  
     {  
         id: 3,  
         title: 'قطعه سوم',  
         description: '...',  
-        filepath: 'slide/3.jpg',
+        image: 'slide/3.jpg',
+        url: '#!'
     }, 
 ]; 
 
 export {
-    mainSlides
+    homeSlides
 }

@@ -1,13 +1,13 @@
 import ToolBar from "./toolBar.jsx";
 import NavBar from "./navBar.jsx";
 
-import "./styles/navBar.scss";
-
 export default function Header() {
     return (
-        <header id="header" className="pt-2 px-4 bg-primary-2">
-            <ToolBar />
-            <NavBar />
+        <header id="header" className="pt-2 px-4 bg-secondary-400 text-right">
+            <div className="max-w-(--main-section-xlarge-width) mx-auto">
+                <ToolBar />
+                <NavBar />
+            </div>
         </header>
     );
 }

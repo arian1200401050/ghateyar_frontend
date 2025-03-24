@@ -1,6 +1,4 @@
-import config from "../../config.js";
-
-import './styles/toolBar.scss'
+import config from "#src/config.js";
 
 function ToolBar() {
     return (
@@ -9,7 +7,8 @@ function ToolBar() {
                 <div className="!w-25 rounded-md overflow-hidden shadow-slate-400 shadow-xs
                     hover:shadow-[0 1px 1px 3px slate-600]">
                     <a href="/" alt={config.SITE_TITLE}>
-                        <img className="size-full tool-bar__logo-title" src={`${config.MEDIA_ROOT}/${config.LOGO_FILEPATH}`} />
+                        <img className="size-full tool-bar__logo-title"
+                            src={`${config.MEDIA_ROOT}/${config.LOGO_FILEPATH}`} />
                     </a>
                 </div>
             </div>

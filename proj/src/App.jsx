@@ -12,26 +12,25 @@ import HomePage from "#src/pages/Home/index.jsx";
 import NotFoundPage from "#src/pages/NotFound/index.jsx";
 import MenuPage from "#src/pages/Menu/index.jsx";
 import ProductPage from "#src/pages/Product/index.jsx";
-import Test from "#src/pages/Test/index.jsx";
+import TestPage from "#src/pages/Test/index.jsx";
 
 // Import public styles
-import "#src/styles/main.scss";
 import "#src/styles/main.css";
 
-const AppWrapper = styled.div.attrs({ className: "app-wrapper" })`
+const AppWrapper = styled.div`
     position: relative;
     height: max(100vh);
 `;
 
-const MainContainer = styled.div.attrs({ className: "main-container" })`
+const MainContainer = styled.div`
     position: relative;
 `
 
 function Layout({ children }) {  
     return (  
-        <AppWrapper>  
+        <AppWrapper className="app-wrapper">  
             <Header />  
-            <MainContainer>
+            <MainContainer className="main-container">
                 {children}
             </MainContainer>  
             <Footer />  
@@ -41,20 +40,20 @@ function Layout({ children }) {
 
 export default function App() {
     return (
-        <Layout>
+        <BrowserRouter>
             <Helmet>
                 <link rel="canonical" href={config.BASE_URL} />
-                <title>...</title>    
+                <title>{config.SITE_TITLE}</title>    
             </Helmet>
-            <BrowserRouter>
+            <Layout>
                 <Routes>
                     <Route exact path="/" element={<HomePage />} />
-                    <Route path="*" element={<NotFoundPage />} />
-                    <Route path="/test" element={<Test />} />
                     <Route path="/menu/*" element={<MenuPage />} />
                     <Route path="/product/*" element={<ProductPage />} />
+                    <Route path="/__test" element={<TestPage />} />
+                    <Route path="*" element={<NotFoundPage />} />
                 </Routes>
-            </BrowserRouter>
-        </Layout>
+            </Layout>
+        </BrowserRouter>
     );
 }

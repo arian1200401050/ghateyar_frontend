@@ -35,7 +35,7 @@ const PaginationControl = ({ currentPage, totalPages, itemsPerPage, setCurrentPa
 const PostCard = ({ post }) => {
   return (
     <div className="flex justify-center items-center gap-0 m-2">
-      <a href={`/product/${post.id}`} alt={post.title} 
+      <Link to={`/product/${post.id}`}
         className="block w-full h-[100%] border rounded-xl overflow-hidden shadow-[1px 1px 3px] shadow-xs shadow-slate-400
           hover:shadow-md hover:shadow-slate-500 hover:h-[105%]
           transition-[height] transition-[box-shadow] 
@@ -47,7 +47,7 @@ const PostCard = ({ post }) => {
           <h3 className="!text-[.95rem]/6 text-center font-semibold">{post.title}</h3>
           <p className="!text-sm text-center text-gray-500">{post.content}</p>
         </div>
-      </a>
+      </Link>
     </div>
   );
 };
