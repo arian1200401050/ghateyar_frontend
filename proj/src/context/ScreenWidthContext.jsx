@@ -1,16 +1,18 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';  
 
+import config from '#src/config.js'
+
 // Create the context  
 const ScreenWidthContext = createContext();  
 
 // Create a provider component  
 export const ScreenWidthProvider = ({ children }) => {  
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);  
+    const [isMobile] = useState(screenWidth < config.MOBILE_BREAKPOINT);
 
     useEffect(() => {  
         const handleResize = () => {  
             setScreenWidth(window.innerWidth);  
-            console.log(window.innerWidth);
         };  
 
         window.addEventListener('resize', handleResize);  
@@ -21,7 +23,7 @@ export const ScreenWidthProvider = ({ children }) => {
     }, []);  
 
     return (  
-        <ScreenWidthContext.Provider value={{ screenWidth }}>  
+        <ScreenWidthContext.Provider value={{ screenWidth, isMobile }}>  
             {children}  
         </ScreenWidthContext.Provider>  
     );  

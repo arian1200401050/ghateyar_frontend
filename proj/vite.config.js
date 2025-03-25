@@ -10,14 +10,15 @@ export default defineConfig(({ mode }) => {
 	return {
 		define: {
 			'process.env.PORT': env.VITE_PORT,
+			'process.env.REACT_ENV': env.REACT_ENV ? `'${env.REACT_ENV}'` : "'production'"
 		},
 		preview: {
 			port: env.VITE_PORT || 80,
-			allowedHosts: true
+			allowedHosts: true,
 		},
 		server: {
-			port: env.VITE_PORT || 3001, 
-			allowedHosts: true	
+			port: env.VITE_PORT || 3000, 
+			allowedHosts: true,
 		},
 		plugins: [
 			react(),

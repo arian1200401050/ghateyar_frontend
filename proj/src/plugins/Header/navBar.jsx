@@ -8,59 +8,57 @@ import config from '#src/config.js';
 import { useScreenWidth } from '#src/context/ScreenWidthContext';
 import './resources/navBar.css';
 
-const MenuItemLink = styled(Link)`
-    &::after {
-        content: "";
-        background-image: url('/icon//arrow.svg');
-        background-size: 85%;
-    }
-`;
-
-const DropdownItemLink = styled(Link)`
-    &::after {
-        content: "";
-        background-image: url('/icon//arrow.svg');
-        background-size: 100%;
-    }
-`;
 
 const DropDown = ({ items, level, isOpen, path }) => {  
     const [openDropdownIndex, setOpenDropdownIndex] = useState(null);  
+    const { screenWidth, isMobile } = useScreenWidth()
 
-    // Debounced openDropdown  
-    const debouncedOpenDropdown = useCallback(
-        debounce((index) => {  
-            setOpenDropdownIndex(index); // Use context's setter  
-        }, 150),
-        []
+
+    const handleMouseOver = (index) => {
+        if (!isMobile) {
+            debouncedOpenDropdown(index)
+        }
+    };
+
+    const handleMouseLeave = () => {
+        if (!isMobile) {
+            debouncedCloseDropdown()
+        }
+    };
+
+    const handleMouseClick = (index) => {
+        if (isMobile) {
+            if (openDropdownIndex == index) {
+                debouncedCloseDropdown();
+            } else {
+                debouncedOpenDropdown(index);
+            }
+        }
+    }
+
+    const debouncedOpenDropdown = useCallback(  
+        debounce((index) => setOpenDropdownIndex(index), 150),
+        []  
     );  
 
-    // Debounced closeDropdown  
     const debouncedCloseDropdown = useCallback(  
-        debounce(() => {  
-            setOpenDropdownIndex(null); // Use context's setter  
-        }, 150),  
-        []
+        debounce(() => setOpenDropdownIndex(null), 150),
+        []  
     ); 
 
-    // useEffect(() => {
-    //     if (path == '0') {
-    //         setOpenDropdownIndex(0);
-    //         console.log(path)
-    //     }
-    //     if (path == '0-0') {
-    //         console.log(isOpen)
-    //     }
-    // }, [document.documentElement])
+    useEffect(() => {
+        setOpenDropdownIndex(0);
+    }, [document.documentElement])
 
 
     return (  
-        <div className={`absolute z-30 ${isOpen ? 'visible' : 'invisible'} 
-            ${level > 1 ? 'top-0 left-[unset] w-fit pr-0 shodow-none' : 'top-full'}
-            absolute px-2 transition-display duration-200`}  
-            style={{right: level > 1 ? 'calc(100% - .4rem)' : '0'}}
+        <div className={`absolute z-30 w-full transition-all duration-250
+            ${isOpen ? 'visible' : 'invisible'} 
+            ${level > 1 ? 'top-full px-0 md:top-0 md:w-fit md:-px-2 left-[unset] pr-0 shodow-none' : 'top-full md:w-[unset] px-2'}`}  
+            style={{right: !isMobile && level > 1 ? 'calc(100%)' : '0'}}
         >  
-            <ul className={`bg-white text-right rounded-xl p-0 m-0 w-fit ${isOpen ? 'block' : 'hidden'}`}
+            <ul className={`bg-white text-right rounded-xl p-0 m-0 w-full md:w-fit 
+                ${isOpen ? 'block' : 'hidden'}`}
                 style={{boxShadow: '0 0 .2rem var(--color-gray-400)'}}>  
                 {items.map((item, index) => {  
                     const isOpen = index === openDropdownIndex;  
@@ -68,28 +66,33 @@ const DropDown = ({ items, level, isOpen, path }) => {
         
                     return (  
                         <li  
-                            className={`main-menu__item main-menu__item--dropdown relative m-0 w-full border-0 border-gray-600
-                                ${item.children?.length > 0 ? 'main-menu__item main-menu__item--dropdown--has-child' : ''}
-                                ${index == 0 ? 'rounded-t-xl': ''}
-                                ${index == items.length ? 'rounded-t-xl': ''}`}  
+                            className={`main-menu__item main-menu__item--dropdown relative flex items-stretch
+                                justify-between md:!justify-start m-0 w-full border-0 border-gray-600
+                                ${index == 0 ? 'md:rounded-t-xl': ''}
+                                ${index == items.length ? 'md:rounded-b-xl': ''}`}  
                             key={item.menu_id}  
-                            onMouseOver={() => debouncedOpenDropdown(index)}  
-                            onMouseLeave={debouncedCloseDropdown}  
+                            // onMouseOver={!isMobile ? () => handleMouseOver(index) : null}  
+                            // onMouseLeave={!isMobile ? handleMouseLeave: null}  
                         >  
-                            <DropdownItemLink  
+                            <Link  
                                 to={`/menu/${item.menu_id}`}  
-                                className={`main-menu__link main-menu__link--dropdown relative flex py-[.75rem] pl-[3.5rem] pr-[1.5rem] 
-                                    text-gray-800 text-nowrap !text-sm transition-all duration-300 ease-in
-                                    ${item.children?.length > 0 ? `after:inline-block after:relative after:top-[0.2rem] after:right-3 
-                                        after:w-0 after:h-0 after:p-2 after:taransition-200` : ''}
-                                    ${index == 0 ? 'rounded-t-xl': ''}
-                                    ${index == items.length ? 'rounded-b-xl': ''}`}  
+                                className={`main-menu__link main-menu__link--dropdown relative flex py-[.75rem] pr-8 pl-5
+                                    md:!pr-6 md:!pl-3 text-gray-800 text-nowrap text-xl md:!text-md
+                                    transition-all duration-250 ease-in
+                                    ${index == 0 ? 'md:rounded-t-xl': ''}
+                                    ${index == items.length ? 'md:rounded-b-xl': ''}`}  
                                 aria-haspopup="true"  
                                 aria-expanded={isOpen}  
                                 aria-current={index === 0 ? "page" : ""}  
                             >  
                                 {item.title}  
-                            </DropdownItemLink>  
+                            </Link>  
+                            {item.children?.length > 0 && (
+                                <span className={`main-menu__icon main-menu__icon--dropdown p-4 ml-3 cursor-pointer
+                                    bg-no-repeat bg-[50%_50%] taransition-all duration-250 ease-in`}
+                                    style={{backgroundImage: 'url("/icon/arrow.svg")', backgroundSize: '40%'}}
+                                    onClick={isMobile ? () => handleMouseClick(index) : null}></span>
+                            )}
                             {item.children?.length > 0 && (  
                                 <DropDown  
                                     items={item.children}   
@@ -112,19 +115,43 @@ const NavBar = () => {
     const [error, setError] = useState(null);  
     const [isNavOpen, setIsNavOpen] = useState(false);  
     const [openDropdownIndex, setOpenDropdownIndex] = useState(null);  
-    const screenWidth = useScreenWidth()
+    const { screenWidth, isMobile } = useScreenWidth();
+
+    const handleMouseOver = (index) => {
+        if (!isMobile) {
+            debouncedOpenDropdown(index)
+        }
+    };
+
+    const handleMouseLeave = () => {
+        if (!isMobile) {
+            debouncedCloseDropdown()
+        }
+    };
+
+    const handleMouseClick = (index) => {
+        if (isMobile) {
+            if (openDropdownIndex == index) {
+                debouncedCloseDropdown();
+            } else {
+                debouncedOpenDropdown(index);
+            }
+        }
+    }
 
     const debouncedOpenDropdown = useCallback(  
-        debounce((index) => setOpenDropdownIndex(index), 150),  
+        debounce((index) => setOpenDropdownIndex(index), 150),
         []  
     );  
 
     const debouncedCloseDropdown = useCallback(  
-        debounce(() => setOpenDropdownIndex(null), 150),  
+        debounce(() => setOpenDropdownIndex(null), 150),
         []  
     );   
 
     useEffect(() => {  
+        console.log(config.MOBILE_BREAKPOINT, ':', screenWidth);
+        console.log(isMobile);
         const fetchData = async () => {  
             try {  
                 const { data } = await axios.get(`${config.BACKEND_URL}/api/v1/public/menu-tree/`);  
@@ -139,9 +166,9 @@ const NavBar = () => {
         fetchData();  
     }, []);  
 
-    // useEffect(() => {
-    //     setOpenDropdownIndex(0);
-    // }, [document.documentElement])
+    useEffect(() => {
+        setOpenDropdownIndex(0);
+    }, [document.documentElement])
 
 
     const toggleNavbar = () => {  
@@ -157,48 +184,54 @@ const NavBar = () => {
     }  
 
     return (  
-        <nav className="mt-3 px-10 flex flex-col items-start border-t-1 border-black text-right">  
+        <nav className="mt-3 px-0 md:!px-10 relative flex flex-col items-start border-t-1 border-black text-right">  
             <button  
                 className="block mt-2 mb-3 !mr-2 md:hidden"  
                 type="button"  
                 onClick={toggleNavbar}  
-                aria-controls="navbarNav"  
+                aria-controls="navbar-nav"  
                 aria-expanded={isNavOpen}  
             >  
                 <span className="navbar-toggler-icon raounded-sm !h-0 !w-0 p-3" 
-                    style={{backgroundImage: 'url("icon/menu-toggler.svg")'}}
+                    style={{backgroundImage: 'url("/icon/menu-toggler.svg")'}}
                 >
                 </span>  
             </button>  
 
-            <div className={`navbar-collapse lg:!block ${isNavOpen ? "block" : "hidden"}
-                relative mr-4 visible`} id="navbarNav">  
-                <ul className="flex flex-col md:flex-row pr-0">  
+            <div id="navbar-nav" 
+                className={`navbar-collapse ${!isMobile || isNavOpen ? "block" : "hidden"} 
+                    absolute w-full top-12 right-0 bg-secondary-400 z-30
+                    md:relative md:mr-4 md:p-0 md:w-auto md:top-[unset] md:right-[unset] md:bg-[unset] visible`}>  
+                <ul className="flex flex-col md:flex-row p-0 m-0">  
                     {Array.isArray(menu) &&   
                         menu.map((item, index) => {  
                             const isOpen = index === openDropdownIndex;  
 
                             return (  
-                                <li className={`main-menu__item main-menu__item--navbar relative pb-1`}  
+                                <li className={`main-menu__item main-menu__item--navbar relative flex items-stretch`}  
                                     key={item.menu_id}  
-                                    onMouseOver={() => debouncedOpenDropdown(index)}  
-                                    onMouseLeave={debouncedCloseDropdown}  
+                                    // onMouseOver={!isMobile ? () => handleMouseOver(index) : null}  
+                                    // onMouseLeave={!isMobile ? handleMouseLeave: null}  
                                 >  
-                                    <MenuItemLink   
+                                    <Link   
                                         to={`/menu/${item.menu_id}`}   
                                         className={`main-menu__link main-menu__link--navbar
-                                            block px-3 py-2 !text-gray-600 hover:bg-blue-500 hover:text-white
-                                            text-xl md:text-base after:p-6 after:left-[-2rem] after:top-[2rem]
-                                            ${item.children?.length > 0 ? `after:bp-center after:bp-norepeat after:absolute
-                                                md:after:!left-[-0.2rem] md:after:!p-2 after:transition-transform after:duration-200
-                                                hover:after:rotate-90` : ''}`}  
+                                            px-3 pt-2 pb-3 md:!pl-1 !text-gray-600 text-xl md:text-base 
+                                            transition-all duration-250 ease-in`}
                                         aria-haspopup="true"  
                                         aria-expanded={isOpen}  
                                         aria-current={index === 0 ? "page" : ""}  
                                     >  
                                         {item.title}  
-                                    </MenuItemLink>  
-
+                                    </Link>  
+                                    {item.children?.length > 0 && (
+                                        <span className={`main-menu__icon main-menu__icon--navbar p-3 cursor-pointer
+                                            md:!p-2 bg-no-repeat bg-[50%_40%] taransition-all duration-250 ease-in`}
+                                            style={{backgroundImage: 'url("/icon/arrow.svg")', 
+                                                backgroundSize: isMobile ? '60%' : '85%'}}
+                                            onClick={isMobile ? () => handleMouseClick(index) : null}>
+                                        </span>
+                                    )}
                                     {item.children?.length > 0 && (  
                                         <DropDown items={item.children} isOpen={isOpen}
                                             level={1} path={index.toString()} 
