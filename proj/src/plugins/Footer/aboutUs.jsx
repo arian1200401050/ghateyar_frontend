@@ -3,7 +3,7 @@ function AboutUs() {
         <div className="">
             <div className="grid">
                 <div className="row">
-                    <span className="badge bg-yellow-400 w-fit-content fs-6">
+                    <span className="badge bg-primary-500 text-white px-3 py-1 rounded-md block">
                         ارتباط با ما
                     </span>
                 </div>

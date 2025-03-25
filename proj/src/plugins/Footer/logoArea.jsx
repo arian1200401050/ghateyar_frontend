@@ -3,7 +3,9 @@ function LogoArea() {
         <div className="">
             <div className="grid">
                 <div className="row">
-                    <span className="badge bg-yellow-400 w-fit-content fs-6">لوگو</span>
+                    <span className="bg-primary-500 text-white px-3 py-1 rounded-md block">
+                        لوگو
+                    </span>
                 </div>
             </div>
         </div>

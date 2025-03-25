@@ -76,7 +76,7 @@ const ProductPage = () => {
     mainInfo.commentsCount = 3;
 
     return (
-        <div className="!container w-400 mx-auto p-5">
+        <div className="main-container !w-(--main-section-full-width) mx-auto p-5">
           <Helmet>
               <title>محصول</title>    
           </Helmet>

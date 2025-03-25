@@ -11,7 +11,7 @@ const BodyWrapper = styled.div`
 
 const GroupName = styled.span`
     &::after { 
-        background-image: url('${config.MEDIA_ROOT}/icon//arrow.svg') 
+        background-image: url('/icon/arrow.svg') 
     }
 `;
 
@@ -76,13 +76,13 @@ const SupplementaryProduct = ({infoGroup, comments}) => {
       
 
       {activeTab === 'info' && (
-          <div className="accordion w-9/12">
+          <div className="accordion md:!w-9/12">
             {Object.entries(infoGroup).map(([label, group], index) => (
                 <div key={index} className="accordion-group mb-4 flex">
-                    <div className="accordion-header mb-2 w-1/12">
-                        <GroupName className={`cursor-pointer text-sm flex items-center
+                    <div className="accordion-header mb-2 md:!ml-4">
+                        <GroupName className={`cursor-pointer text-sm text-nowrap flex items-center
                             after:content-[''] after:text-3xl after:p-2 after:rotate-90
-                            after:mr-2 after:transition-rotate after:duration-1000
+                            after:ml-2 after:mr-2 after:transition-rotate after:duration-1000
                             ${accordions[index]?.isOpen ? 'after:!rotate-0' : ''}`}
                             onClick={() => toggleAccordion(index)} 
                         >
@@ -96,8 +96,9 @@ const SupplementaryProduct = ({infoGroup, comments}) => {
                     >
                         {Object.entries(group).map(([label, feature], index) => (
                             <div key={index} className="flex mb-2">
-                                <span className="text-sm text-gray-500 w-3/12
-                                    after:content-[':'] after:mr-1 after:ml-2">{getLabel(label)}</span>
+                                <span className="text-sm text-gray-500 min-w-3/12 text-nowrap
+                                    after:content-[':'] after:mr-1 after:ml-2">{getLabel(label)}
+                                </span>
                                 <span className="text-sm pb-2 border-b-1 border-gray-400 grow">{feature}</span>
                             </div>
                         ))}

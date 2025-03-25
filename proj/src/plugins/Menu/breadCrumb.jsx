@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const PaginationText = ({ currentPage, itemsPerPage, totalItems}) => {
   return (
-    <div className="text-sm text-gray-600">  
+    <div className="text-lg md:!text-sm text-gray-600">  
       نمایش {(currentPage - 1) * itemsPerPage + 1}–{Math.min(currentPage * itemsPerPage, totalItems)} از {totalItems} نتیجه  
     </div> 
   )
@@ -43,7 +43,7 @@ const _Breadcrumb = ({ items }) => {
   }  
   
   return (
-    <nav className="text-sm text-gray-600">
+    <nav className="text-xl md:!text-sm text-gray-600">
       <ul className="flex m-0">
         {items.map((item, index) => (
           <li key={index} className="">

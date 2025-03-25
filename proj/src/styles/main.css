@@ -35,9 +35,6 @@ a {
     text-decoration: none;
 }
 
-a:hover {
-    background-color: unset;
-}
 
 /* variables */
 
@@ -67,7 +64,7 @@ a:hover {
     :root {
         --main-section-width: calc(100% - 1rem);
         --main-section-large-width: calc(100% - 1rem);       
-        --main-section-xlarge-width: calc(100% - 1rem);
+        --main-section-full-width: calc(100% - 1rem);
     }
 
     html {
@@ -88,12 +85,19 @@ a:hover {
     :root {
         --main-section-width: 64rem;
         --main-section-large-width: 80rem;       
-        --main-section-xlarge-width: 96rem;
+        --main-section-full-width: calc(100% - 2rem);
     }
 }
 
 @media (width >= 1280px) {
     html {
-        font-size: 16px;
+        font-size: 14px;
+    }
+}
+
+
+@media (width >= 1396px) {
+    :root {
+        --main-section-full-width: 96rem;
     }
 }

@@ -46,9 +46,9 @@ const DropDown = ({ items, level, isOpen, path }) => {
         []  
     ); 
 
-    useEffect(() => {
-        setOpenDropdownIndex(0);
-    }, [document.documentElement])
+	//useEffect(() => {
+	//	setOpenDropdownIndex(0);
+	//}, [document.documentElement])
 
 
     return (  
@@ -67,17 +67,17 @@ const DropDown = ({ items, level, isOpen, path }) => {
                     return (  
                         <li  
                             className={`main-menu__item main-menu__item--dropdown relative flex items-stretch
-                                justify-between md:!justify-start m-0 w-full border-0 border-gray-600
+                                md:!justify-start m-0 w-full border-0 border-gray-600
                                 ${index == 0 ? 'md:rounded-t-xl': ''}
                                 ${index == items.length ? 'md:rounded-b-xl': ''}`}  
                             key={item.menu_id}  
-                            // onMouseOver={!isMobile ? () => handleMouseOver(index) : null}  
-                            // onMouseLeave={!isMobile ? handleMouseLeave: null}  
+                             onMouseOver={!isMobile ? () => handleMouseOver(index) : null}  
+                             onMouseLeave={!isMobile ? handleMouseLeave: null}  
                         >  
                             <Link  
                                 to={`/menu/${item.menu_id}`}  
-                                className={`main-menu__link main-menu__link--dropdown relative flex py-[.75rem] pr-8 pl-5
-                                    md:!pr-6 md:!pl-3 text-gray-800 text-nowrap text-xl md:!text-md
+                                className={`main-menu__link main-menu__link--dropdown relative flex py-4 pr-8 pl-5
+                                    md:!pr-6 md:!pl-3 md:!py-[.75rem] text-gray-800 text-nowrap text-2xl md:!text-md
                                     transition-all duration-250 ease-in
                                     ${index == 0 ? 'md:rounded-t-xl': ''}
                                     ${index == items.length ? 'md:rounded-b-xl': ''}`}  
@@ -88,9 +88,10 @@ const DropDown = ({ items, level, isOpen, path }) => {
                                 {item.title}  
                             </Link>  
                             {item.children?.length > 0 && (
-                                <span className={`main-menu__icon main-menu__icon--dropdown p-4 ml-3 cursor-pointer
+                                <span className={`main-menu__icon main-menu__icon--dropdown p-4 mr-1 md:!mr-0 md:!ml-3 cursor-pointer
                                     bg-no-repeat bg-[50%_50%] taransition-all duration-250 ease-in`}
-                                    style={{backgroundImage: 'url("/icon/arrow.svg")', backgroundSize: '40%'}}
+                                    style={{backgroundImage: 'url("/icon/arrow.svg")',
+				            backgroundSize: isMobile ? '60%' : '40%'}}
                                     onClick={isMobile ? () => handleMouseClick(index) : null}></span>
                             )}
                             {item.children?.length > 0 && (  
@@ -166,9 +167,9 @@ const NavBar = () => {
         fetchData();  
     }, []);  
 
-    useEffect(() => {
-        setOpenDropdownIndex(0);
-    }, [document.documentElement])
+	//useEffect(() => {
+	//	setOpenDropdownIndex(0);
+	//}, [document.documentElement])
 
 
     const toggleNavbar = () => {  
@@ -192,8 +193,8 @@ const NavBar = () => {
                 aria-controls="navbar-nav"  
                 aria-expanded={isNavOpen}  
             >  
-                <span className="navbar-toggler-icon raounded-sm !h-0 !w-0 p-3" 
-                    style={{backgroundImage: 'url("/icon/menu-toggler.svg")'}}
+                <span className="navbar-toggler-icon raounded-sm bg-center bg-no-repeat !h-0 !w-0 p-4 block" 
+                    style={{backgroundImage: 'url("/icon/menu-toggler.svg")', backgroundSize: '100%'}}
                 >
                 </span>  
             </button>  
@@ -208,15 +209,16 @@ const NavBar = () => {
                             const isOpen = index === openDropdownIndex;  
 
                             return (  
-                                <li className={`main-menu__item main-menu__item--navbar relative flex items-stretch`}  
+                                <li className={`main-menu__item main-menu__item--navbar relative flex items-stretch
+				         md:!justify-start`}  
                                     key={item.menu_id}  
-                                    // onMouseOver={!isMobile ? () => handleMouseOver(index) : null}  
-                                    // onMouseLeave={!isMobile ? handleMouseLeave: null}  
+                                    onMouseOver={!isMobile ? () => handleMouseOver(index) : null}  
+                                    onMouseLeave={!isMobile ? handleMouseLeave: null}  
                                 >  
                                     <Link   
                                         to={`/menu/${item.menu_id}`}   
                                         className={`main-menu__link main-menu__link--navbar
-                                            px-3 pt-2 pb-3 md:!pl-1 !text-gray-600 text-xl md:text-base 
+                                            px-3 pt-3 pb-4 md:!pt-2 md:!pb-3 md:!pl-1 !text-gray-600 text-2xl md:text-base 
                                             transition-all duration-250 ease-in`}
                                         aria-haspopup="true"  
                                         aria-expanded={isOpen}  
@@ -225,10 +227,10 @@ const NavBar = () => {
                                         {item.title}  
                                     </Link>  
                                     {item.children?.length > 0 && (
-                                        <span className={`main-menu__icon main-menu__icon--navbar p-3 cursor-pointer
+                                        <span className={`main-menu__icon main-menu__icon--navbar mr-1 md:!mx-0 p-3 cursor-pointer
                                             md:!p-2 bg-no-repeat bg-[50%_40%] taransition-all duration-250 ease-in`}
                                             style={{backgroundImage: 'url("/icon/arrow.svg")', 
-                                                backgroundSize: isMobile ? '60%' : '85%'}}
+                                                backgroundSize: isMobile ? '90%' : '85%'}}
                                             onClick={isMobile ? () => handleMouseClick(index) : null}>
                                         </span>
                                     )}

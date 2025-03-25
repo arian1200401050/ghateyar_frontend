@@ -15,9 +15,9 @@ export default function HomeCategories() {
             <div className="main-section my-5 mx-auto p-4 rounded-2xl bg-secondary-500
                 w-(--main-section-large-width)"
                 id="home-categories">
-                <div className="main-categories d-flex justify-content-around">
+                <div className="main-categories flex justify-around gap-2">
                     {mainCategories.map((item, index) => (
-                        <div key={index} className="main-categories__item d-flex flex-column mx-2">
+                        <div key={index} className="main-categories__item flex flex-col">
                             <CategoryLogo logo={`${config.MEDIA_ROOT}/${item.logo}`}
                                 className="block w-0 h-0 p-8 m-auto border-1 border-gray-200 
                                     rounded-full bg-white bg-center bg-no-repeat"/>

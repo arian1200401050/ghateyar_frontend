@@ -7,7 +7,7 @@ import { homeSlides } from "../../db/homeSlides.js";
 
 function SlideItem ({ index, activeIndex, title, description, imagePath, url}) {
     return (
-        <div className={`w-fit carousel-item ${activeIndex === index ? "active" : ""}`}>  
+        <div className={`carousel-item w-full ${activeIndex === index ? "block" : "hidden"}`}>  
             <div className="w-full h-101 relative">  
                 <Link to={url}>
                     <div className="h-100">
@@ -37,7 +37,7 @@ function CarouselControls ({ activeIndex, setActiveIndex, totalSlides }) {
         <>  
             <button  
                 className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-500/75 text-white
-                    !rounded-xl !text-2xl flex justify-center items-center p-4 w-0 h-0 
+                    !rounded-xl !text-2xl flex justify-center items-center p-6 w-0 h-0 
                     hover:bg-gray-500/100 transition-background duration-300"  
                 type="button"  
                 onClick={() => setActiveIndex(prevIndex)}  
@@ -47,7 +47,7 @@ function CarouselControls ({ activeIndex, setActiveIndex, totalSlides }) {
             </button>  
             <button  
                 className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-500/75 text-white
-                    !rounded-xl !text-2xl flex justify-center items-center p-4 w-0 h-0 
+                    !rounded-xl !text-2xl flex justify-center items-center p-6 w-0 h-0 
                     hover:bg-gray-500/100 transition-background duration-300"  
                 type="button"  
                 onClick={() => setActiveIndex(nextIndex)}  
@@ -75,24 +75,23 @@ export default function HomeSlider() {
                     relative my-5 mx-auto border-2 border-gray-300 rounded-lg"  
                 data-bs-ride="carousel"  
             >  
-                <div className="carousel-indicators !flex !space-x-2 px-2 !m-0 bg-gray-400 
-                    rounded-md
-                    absolute !left-2 !top-2 md:!left-8 md:!top-8 !right-[unset] !bottom-[unset]">  
+                <div className="carousel-indicators flex space-x-2 px-2 py-2 m-0 bg-gray-400 z-29
+                    rounded-md absolute left-2 top-2 md:!left-6 md:!top-6">  
                     {homeSlides.map((_, index) => (  
                         <button   
-                            key={index}  
-                            type="button"  
-                            data-bs-target="#main-slider"  
+                            key={index} type="button"  
+                            className={`h-0 w-0 py-1 px-5 md:py-[.175rem] md:px-4 rounded-md opacity-100
+                                ${activeIndex === index ? "bg-white" : "bg-gray-500"}`}  
+                            data-key={index}
+                            data-bs-target="#home-slider"  
                             data-bs-slide-to={index}  
                             aria-label={`Slide ${index + 1}`}  
                             aria-current={activeIndex === index ? "true" : "false"}  
-                            className={`!w-8 !h-1 rounded-xs opacity-100
-                                ${activeIndex === index ? "!bg-white" : "!bg-gray-500"}`}  
                             onClick={() => handleSelect(index)}  
                         ></button>  
                     ))}  
                 </div>  
-                <div className="carousel-inner w-fit">  
+                <div className="carousel-inner w-full">  
                     {homeSlides.map((item, index) => (  
                         <SlideItem  
                             key={index}  

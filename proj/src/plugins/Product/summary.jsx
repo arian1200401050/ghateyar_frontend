@@ -2,10 +2,64 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 import config from "#src/config.js";
+import { useScreenWidth } from "#src/context/ScreenWidthContext";
 
-const SummaryProduct = ({ product }) => {
+
+function SummaryHeader ({product}) {
+	return (
+		<div id="summary-header" className="mb-3 md:!mb-0 flex flex-row-reverse justify-end md:!block">
+			<div className="mb-2">
+				{/* Menu Navigation Bar */}
+				<nav>
+					<ul className="flex space-x-4 m-0">
+						{product.menus.map((menu, index) => (
+							<li key={index} className={`${index < product.menus.length - 1 && "after:content-['/']"}
+								after:relative after:right-2 after:text-xs`}>
+								<Link to={`/menu/${menu.menuId}`} className="!text-sky-400 text-xs font-bold">
+									{menu.title}
+								</Link>
+							</li>
+						))}
+					</ul>
+				</nav>
+			</div>
+			<div className="ml-8 md:!m-0">
+				{/* Product Name */}
+				<h1 className="!text-base !font-bold">
+					{product.title}
+				</h1>
+			</div>
+		</div>
+	);
+}
+
+function SummaryMetaTag ({product}) {
+	return (
+		<div id="summary-metatag" className="flex gap-x-4 mb-2 md!:m-0" >
+			{/* Points */}
+			<div className="flex items-center gap-x-1">
+				<span className={`h-0 w-0 p-1.75 inline-block bg-contain bg-no-repeat bg-center`}
+					style={{backgroundImage: `url(${config.MEDIA_ROOT}/icon//star-yellow.png)`}}
+				></span>
+				<span className="text-sm">{product.score}</span> 
+				<span className="text-xs text-gray-400">(امتیاز {product.buyCount} خرید)</span>
+			</div>
+
+			{/* Number of Comments */}
+			<div className="flex items-center">
+				<Link to="#comments" className="rounded-xl bg-gray-200 hover:!bg-gray-200 text-black text-xs pb-0.5 px-2
+					after:content-['\203A'] after:text-base after:mr-2">
+					{product.commentsCount} دیدگاه
+				</Link>
+			</div>
+		</div>
+	);
+}
+
+function SummaryProduct ({ product }) {
 	const [activeImage, setActiveImage] = useState(product.images[0]);
 	const summarySection = useRef();
+	const { screenWidth, isMobile } = useScreenWidth();
 
 	useEffect(() => {
 		console.log(product);
@@ -27,16 +81,22 @@ const SummaryProduct = ({ product }) => {
 	}
 
 	return (
-		<div className="mx-auto flex justify-center items-stretch gap-x-4"
-			ref={summarySection}
+		<div className="mx-auto flex flex-col md:!flex-row justify-center items-stretch gap-x-4 "
+			id="product-summary" ref={summarySection}
 		>
-			<div className="w-4/12">
+			{ isMobile && ( 
+				<div className="border-b-1 border-gray-400 pb-3">
+					<SummaryHeader product={product} />
+					<SummaryMetaTag product={product} />
+				</div>
+			 ) }
+			<div className="w-full md:!w-4/12">
 				<div>
-					<div className="flex justify-center items-center p-10">
+					<div className="flex justify-center items-center mb-4 md:!mb-0 md:!p-10">
 						<img
 							src={`${config.MEDIA_ROOT}/product/${activeImage}`}
 							alt={product.title}
-							className="w-full h-auto rounded-lg"
+							className="w-[80%] md:!w-full h-auto rounded-lg object-contain"
 						/>
 					</div>
 
@@ -53,50 +113,11 @@ const SummaryProduct = ({ product }) => {
 					</div>
 				</div>
 			</div>
-			<div className="w-8/12 flex flex-col">
-				<div className="">
-					<div className="mb-2">
-						{/* Menu Navigation Bar */}
-						<nav>
-							<ul className="flex space-x-4 m-0">
-								{product.menus.map((menu, index) => (
-									<li key={index} className={`${index < product.menus.length - 1 && "after:content-['/']"}
-										after:relative after:right-2 after:text-xs`}>
-										<Link to={`/menu/${menu.menuId}`} className="!text-sky-400 text-xs font-bold">
-											{menu.title}
-										</Link>
-									</li>
-								))}
-							</ul>
-						</nav>
-					</div>
-					<div>
-						{/* Product Name */}
-						<h1 className="!text-base !font-bold">
-							{product.title}
-						</h1>
-					</div>
-				</div>
-				<div className="flex gap-x-4 grow">
-					<div className="w-8/12 border-t-1 border-gray-400 pt-3 mt-1 flex flex-col">
-						<div className="flex gap-x-4">
-							{/* Points */}
-							<div className="flex items-center gap-x-1">
-								<span className={`h-0 w-0 p-1.75 inline-block bg-contain bg-no-repeat bg-center`}
-									style={{backgroundImage: `url(${config.MEDIA_ROOT}/icon//star-yellow.png)`}}
-								></span>
-								<span className="text-sm">{product.score}</span> 
-								<span className="text-xs text-gray-400">(امتیاز {product.buyCount} خرید)</span>
-							</div>
-
-							{/* Number of Comments */}
-							<div className="flex items-center">
-								<Link to="#comments" className="rounded-xl bg-gray-200 text-black text-xs pb-0.5 px-2
-									after:content-['\203A'] after:text-base after:mr-2">
-									{product.commentsCount} دیدگاه
-								</Link>
-							</div>
-						</div>
+			<div className="md:!w-8/12 flex flex-col">
+				{ !isMobile && ( <SummaryHeader product={product} /> ) }
+				<div className="flex flex-col md:!flex-row gap-x-4 grow">
+					<div className="md:!w-8/12 md:border-t-1 md:border-gray-400 mt-4 md:!pt-3 md:!mt-1 flex flex-col">
+						{ !isMobile && ( <SummaryMetaTag product={product} />)}
 						<div>
 							{/* General Features (Vertical List) */}
 							<div className="mt-3">
@@ -134,7 +155,7 @@ const SummaryProduct = ({ product }) => {
 							</div>
 						</div>
 					</div>
-					<div className="w-4/12">
+					<div className="mt-8 mb-4 pb-6 md:!p-0 md:!m-0 md:!w-4/12 border-b-1 border-gray-400 md:border-0">
 						{/* Price Rectangle */}
 						<div className="bg-gray-100 p-3 rounded-md border-1 border-gray-300">
 							<div>
@@ -153,11 +174,12 @@ const SummaryProduct = ({ product }) => {
 							{/* Video Card */}
 							<div className="mt-3">
 								<div>
-									<span>ویدیو ها</span>
+									<span className="mr-4">ویدیو ها</span>
 								</div>
 								<div className="mt-3 mr-2">
 									<Link to={`/video/${product.video.id}`} className="text-blue-500">
-										<div className="border-1 border-gray-300 shadow-xs shadow-gray-300 rounded-md flex h-23">
+										<div className="border-1 border-gray-300 shadow-xs shadow-gray-300 rounded-md flex 
+											h-30 md:!h-23">
 											<div className="w-4/12 rounded-md overflow-hidden">
 												<img src={`${config.MEDIA_ROOT}/video/${product.video.id}/thumbnail.jpg`} 
 													alt={product.video.title}
@@ -176,15 +198,16 @@ const SummaryProduct = ({ product }) => {
 							{/* Article Card */}
 							<div className="mt-4">
 								<div>
-									<span>مقالات</span>
+									<span className="mr-4">مقالات</span>
 								</div>
 								<div className="mt-3 mr-2">
 									<Link to={`/mag/${product.article.id}`} className="text-blue-500">
-										<div className="border-1 border-gray-300 shadow-xs shadow-gray-300 rounded-md flex h-23">
+										<div className="border-1 border-gray-300 shadow-xs shadow-gray-300 rounded-md flex 
+											h-30 md:!h-23">
 											<div className="w-4/12 rounded-md overflow-hidden br-">
 												<img src={`${config.MEDIA_ROOT}/article/${product.article.id}/thumbnail.jpg`} 
 													alt={product.video.title}
-													className="w-full h-auto p-2 object-contain" />
+													className="w-full h-full p-2 object-contain" />
 											</div>
 											<div className="w-8/12 flex items-center">
 												<h4 className="!text-base !text-gray-800 mr-1">
@@ -201,6 +224,6 @@ const SummaryProduct = ({ product }) => {
 			</div>
 		</div>
 	);
-};
+}
 
 export default SummaryProduct;
