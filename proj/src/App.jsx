@@ -43,6 +43,7 @@ export default function App() {
         <BrowserRouter>
             <Helmet>
                 <link rel="canonical" href={config.BASE_URL} />
+                <link rel="icon" href={`${config.MEDIA_ROOT}/${config.FAVICON}`} />
                 <title>{config.SITE_TITLE}</title>    
             </Helmet>
             <Layout>

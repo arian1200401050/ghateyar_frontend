@@ -56,10 +56,10 @@ export default function HomeArticles() {
                                             />  
                                         </div>  
                                         <div className="p-3 border-t border-gray-300 text-right">  
-                                            <h5 className="!text-zinc-600 !text-base">  
+                                            <h5 className="!text-zinc-600 text-xl md:!text-base my-2 md:!m-0">  
                                                 {item.title}  
                                             </h5>  
-                                            <p className="text-gray-600 text-sm">{item.description}</p>  
+                                            <p className="text-gray-600 text-lg md:!text-sm">{item.description}</p>  
                                         </div>  
                                     </Link>  
                                 </div>  

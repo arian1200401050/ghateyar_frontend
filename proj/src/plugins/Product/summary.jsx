@@ -15,7 +15,7 @@ function SummaryHeader ({product}) {
 						{product.menus.map((menu, index) => (
 							<li key={index} className={`${index < product.menus.length - 1 && "after:content-['/']"}
 								after:relative after:right-2 after:text-xs`}>
-								<Link to={`/menu/${menu.menuId}`} className="!text-sky-400 text-xs font-bold">
+								<Link to={`/menu/${menu.menuId}`} className="!text-sky-400 text-lg md:!text-xs font-bold">
 									{menu.title}
 								</Link>
 							</li>
@@ -25,7 +25,7 @@ function SummaryHeader ({product}) {
 			</div>
 			<div className="ml-8 md:!m-0">
 				{/* Product Name */}
-				<h1 className="!text-base !font-bold">
+				<h1 className="text-xl md:!text-base !font-bold">
 					{product.title}
 				</h1>
 			</div>
@@ -41,13 +41,13 @@ function SummaryMetaTag ({product}) {
 				<span className={`h-0 w-0 p-1.75 inline-block bg-contain bg-no-repeat bg-center`}
 					style={{backgroundImage: `url(${config.MEDIA_ROOT}/icon//star-yellow.png)`}}
 				></span>
-				<span className="text-sm">{product.score}</span> 
-				<span className="text-xs text-gray-400">(امتیاز {product.buyCount} خرید)</span>
+				<span className="text-base md:!text-sm">{product.score}</span> 
+				<span className="text-md md:!text-xs text-gray-400">(امتیاز {product.buyCount} خرید)</span>
 			</div>
 
 			{/* Number of Comments */}
 			<div className="flex items-center">
-				<Link to="#comments" className="rounded-xl bg-gray-200 hover:!bg-gray-200 text-black text-xs pb-0.5 px-2
+				<Link to="#comments" className="rounded-xl bg-gray-200 hover:!bg-gray-200 text-black text-md md:!text-xs pb-0.5 px-2
 					after:content-['\203A'] after:text-base after:mr-2">
 					{product.commentsCount} دیدگاه
 				</Link>
@@ -60,10 +60,6 @@ function SummaryProduct ({ product }) {
 	const [activeImage, setActiveImage] = useState(product.images[0]);
 	const summarySection = useRef();
 	const { screenWidth, isMobile } = useScreenWidth();
-
-	useEffect(() => {
-		console.log(product);
-	}, []);
 
 	// should be substituted with translation solution
 	const getLabel = (label) => {
@@ -122,25 +118,25 @@ function SummaryProduct ({ product }) {
 							{/* General Features (Vertical List) */}
 							<div className="mt-3">
 								<div>
-									<h2 className="!text-base !font-bold mb-4">ویژگی ها</h2>
+									<h2 className="text-xl md:!text-base !font-bold mb-4">ویژگی ها</h2>
 								</div>
 								<div className="grid grid-cols-3 gap-x-2 gap-y-2">
 									{Object.entries(product.mainAttributes).map(([label, value], index) => (
 										<div key={index} className="flex  py-3 px-3 !pl-[20%]
 											rounded-lg bg-gray-100 !shadow-xs shadow-gray-300">
-											<span className="inline-block text-gray-500 text-sm 
+											<span className="inline-block text-gray-500 text-lg md:!text-sm 
 												after:content-[':'] after:mr-1 after:ml-2"
 											>
 												{getLabel(label)}
 											</span>
-											<span className="text-sm mr-1"> {value}</span>
+											<span className="text-lg md:!text-sm mr-1"> {value}</span>
 										</div>
 									))}
 								</div>
 							</div>
-							<div className="mt-4 text-justify text-sm leading-8">
+							<div className="mt-4 text-justify leading-8">
 								{/* <h3 className="!text-base !font-bold mb-3">معرفی</h3> */}
-								<p>{product.description}</p>
+								<p className="text-lg/12 md:!text-md/8">{product.description}</p>
 							</div>
 						</div>
 						<div className="mt-auto">
@@ -148,7 +144,7 @@ function SummaryProduct ({ product }) {
 							<div className="flex space-x-2 border-t-1 border-gray-400 mt-4 pt-3">
 								{product.categories.map((item, index) => (
 									<Link key={index} to={`/category/${item.categoryId}`} 
-										className="bg-blue-600 text-white px-3 py-2 rounded-md !shadow-xs !shadow-gray-800">
+										className="bg-blue-600 text-xl md:!text-base text-white px-3 py-2 rounded-md !shadow-xs !shadow-gray-800">
 										{item.title}
 									</Link>
 								))}
@@ -157,14 +153,14 @@ function SummaryProduct ({ product }) {
 					</div>
 					<div className="mt-8 mb-4 pb-6 md:!p-0 md:!m-0 md:!w-4/12 border-b-1 border-gray-400 md:border-0">
 						{/* Price Rectangle */}
-						<div className="bg-gray-100 p-3 rounded-md border-1 border-gray-300">
+						<div className="bg-gray-100 py-5 px-3 md:!p-3 rounded-md border-1 border-gray-300">
 							<div>
 								<div className="text-left">
-									<span className="text-xl font-bold"> {product.price} </span>
-									<span className="text-sm">تومان</span>
+									<span className="text-2xl md:!text-xl font-bold"> {product.price} </span>
+									<span className="text-lg md:!text-sm">تومان</span>
 								</div>
 								<div>
-									<span className="block text-center rounded-md text-sm py-2 px-3 mt-3
+									<span className="block text-center rounded-md text-xl md:!text-sm py-4 md:!py-2 px-3 mt-6 md:!mt-3
 										bg-rose-600 text-white cursor-pointer">تماس با ما</span>
 								</div>
 							</div>
@@ -174,7 +170,7 @@ function SummaryProduct ({ product }) {
 							{/* Video Card */}
 							<div className="mt-3">
 								<div>
-									<span className="mr-4">ویدیو ها</span>
+									<span className="mr-4 text-xl md:!text-base">ویدیو ها</span>
 								</div>
 								<div className="mt-3 mr-2">
 									<Link to={`/video/${product.video.id}`} className="text-blue-500">
@@ -186,7 +182,7 @@ function SummaryProduct ({ product }) {
 													className="w-full h-full p-2 object-contain" />
 											</div>
 											<div className="w-8/12 flex items-center">
-												<h4 className="!text-base !text-gray-800 mr-1">
+												<h4 className="text-xl md:!text-base !text-gray-800 mr-1">
 													{product.video.title}
 												</h4>
 											</div>
@@ -198,7 +194,7 @@ function SummaryProduct ({ product }) {
 							{/* Article Card */}
 							<div className="mt-4">
 								<div>
-									<span className="mr-4">مقالات</span>
+									<span className="mr-4 text-xl md:!text-baser-4">مقالات</span>
 								</div>
 								<div className="mt-3 mr-2">
 									<Link to={`/mag/${product.article.id}`} className="text-blue-500">
@@ -210,7 +206,7 @@ function SummaryProduct ({ product }) {
 													className="w-full h-full p-2 object-contain" />
 											</div>
 											<div className="w-8/12 flex items-center">
-												<h4 className="!text-base !text-gray-800 mr-1">
+												<h4 className="text-xl md:!text-base !text-gray-800 mr-1">
 													{product.article.title}
 												</h4>
 											</div>
