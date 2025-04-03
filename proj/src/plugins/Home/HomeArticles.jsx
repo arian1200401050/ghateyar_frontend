@@ -43,20 +43,21 @@ export default function HomeArticles() {
                             {mainArticles.map((item, index) => (  
                                 <div  
                                     key={index}  
-                                    className="card border border-gray-300 shrink-0 mx-2 xs:!mx-2 md:!mx-2 lg:!mx-4"  
-                                    style={{ width: cardWidth, boxShadow: '0 .2rem .2rem var(--color-gray-500)' }}
+                                    className="card border border-gray-300 rounded-md shrink-0 mx-2 md:!mx-2"  
+                                    style={{ width: cardWidth, boxShadow: '0 .1rem .1rem var(--color-gray-400)' }}
                                         // Use inline style for  tailwind impossiblities
                                 >  
-                                    <Link to={`article/${item.id}`} className="w-full h-full">  
-                                        <div className="h-84 md:h-48 overflow-hidden">  
+                                    <Link to={`article/${item.id}`} className="w-full h-full flex md:!block">  
+                                        <div className="h-48 md:!h-48 p-3 md:!p-0 overflow-hidden">  
                                             <img  
                                                 src={`${config.MEDIA_ROOT}/${item.banner}`}  
                                                 alt={item.title}  
-                                                className="w-full h-full object-contain"  
+                                                className="w-full h-full object-contain bg-primary-400 rounded-md md:!rounded-none md:!p-4"  
                                             />  
                                         </div>  
-                                        <div className="p-3 border-t border-gray-300 text-right">  
-                                            <h5 className="!text-zinc-600 text-xl md:!text-base my-2 md:!m-0">  
+                                        <div className="px-3 pb-5 md:!pt-4 flex flex-col justify-evenly md:!block
+                                            border-t border-gray-300 text-right">  
+                                            <h5 className="!text-zinc-600 text-xl md:!text-base mt-2 md:!mt-0 md:!mb-2">  
                                                 {item.title}  
                                             </h5>  
                                             <p className="text-gray-600 text-lg md:!text-sm">{item.description}</p>  

@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';   
+import { useEffect, useState, useCallback, useRef } from 'react';   
 import debounce from 'lodash.debounce';   
 import { Link } from 'react-router-dom';  
 import axios from 'axios';  
@@ -9,7 +9,7 @@ import { useScreenWidth } from '#src/context/ScreenWidthContext';
 import './resources/navBar.css';
 
 
-const DropDown = ({ items, level, isOpen, path }) => {  
+const DropDown = ({ navBar, items, level, isOpen, path }) => {  
     const [openDropdownIndex, setOpenDropdownIndex] = useState(null);  
     const { screenWidth, isMobile } = useScreenWidth()
 
@@ -46,9 +46,20 @@ const DropDown = ({ items, level, isOpen, path }) => {
         []  
     ); 
 
-	//useEffect(() => {
-	//	setOpenDropdownIndex(0);
-	//}, [document.documentElement])
+	useEffect(() => {
+		// setOpenDropdownIndex(0);
+
+        function handleClickOutside(event) {  
+            // Check if the click was outside the target element  
+            if (!navBar.current.contains(event.target)) {  
+                setOpenDropdownIndex(null);
+            }  
+        }  
+
+        if (isMobile) {
+            document.addEventListener('click', handleClickOutside);
+        }
+	}, [])
 
 
     return (  
@@ -77,7 +88,7 @@ const DropDown = ({ items, level, isOpen, path }) => {
                             <Link  
                                 to={`/menu/${item.menu_id}`}  
                                 className={`main-menu__link main-menu__link--dropdown relative flex py-4 pr-8 pl-5
-                                    md:!pr-6 md:!pl-3 md:!py-[.75rem] text-gray-800 text-nowrap text-2xl md:!text-md
+                                    md:!pr-6 md:!pl-3 md:!py-[.75rem] text-gray-800 text-nowrap text-2xl md:!text-base
                                     transition-all duration-250 ease-in
                                     ${index == 0 ? 'md:rounded-t-xl': ''}
                                     ${index == items.length ? 'md:rounded-b-xl': ''}`}  
@@ -96,6 +107,7 @@ const DropDown = ({ items, level, isOpen, path }) => {
                             )}
                             {item.children?.length > 0 && (  
                                 <DropDown  
+                                    navBar={navBar}
                                     items={item.children}   
                                     isOpen={isOpen}   
                                     level={level + 1}   
@@ -117,6 +129,7 @@ const NavBar = () => {
     const [isNavOpen, setIsNavOpen] = useState(false);  
     const [openDropdownIndex, setOpenDropdownIndex] = useState(null);  
     const { screenWidth, isMobile } = useScreenWidth();
+    const navBar = useRef(null);
 
     const handleMouseOver = (index) => {
         if (!isMobile) {
@@ -162,7 +175,18 @@ const NavBar = () => {
             }  
         };  
 
+        function handleClickOutside(event) {  
+            // Check if the click was outside the target element  
+            if (!navBar.current.contains(event.target)) {  
+                setIsNavOpen(false);
+                setOpenDropdownIndex(null);
+            }  
+        }  
+
         fetchData();  
+        if (isMobile) {
+            document.addEventListener('click', handleClickOutside);
+        }
     }, []);  
 
 	//useEffect(() => {
@@ -183,7 +207,8 @@ const NavBar = () => {
     }  
 
     return (  
-        <nav className="mt-3 px-0 md:!px-10 relative flex flex-col items-start border-t-1 border-black text-right">  
+        <nav className="mt-3 px-0 md:!px-10 relative flex flex-col items-start border-t-1 border-gray-600 text-right"
+            ref={navBar}>  
             <button  
                 className="block mt-2 mb-3 !mr-2 md:hidden"  
                 type="button"  
@@ -216,7 +241,7 @@ const NavBar = () => {
                                     <Link   
                                         to={`/menu/${item.menu_id}`}   
                                         className={`main-menu__link main-menu__link--navbar
-                                            px-3 pt-3 pb-4 md:!pt-2 md:!pb-3 md:!pl-1 !text-gray-600 text-2xl md:text-base 
+                                            px-3 pt-3 pb-4 md:!pt-3 md:!pb-3 md:!pl-1 !text-gray-600 text-2xl md:!text-[1.125rem]
                                             transition-all duration-250 ease-in`}
                                         aria-haspopup="true"  
                                         aria-expanded={isOpen}  
@@ -225,15 +250,15 @@ const NavBar = () => {
                                         {item.title}  
                                     </Link>  
                                     {item.children?.length > 0 && (
-                                        <span className={`main-menu__icon main-menu__icon--navbar mr-1 md:!mx-0 p-3 cursor-pointer
-                                            md:!p-2 bg-no-repeat bg-[50%_40%] taransition-all duration-250 ease-in`}
+                                        <span className={`main-menu__icon main-menu__icon--navbar mr-1 md:!mr-0 md:ml-2 p-3 
+                                            cursor-pointer md:!p-2 bg-no-repeat bg-[50%_50%] taransition-all duration-250 ease-in`}
                                             style={{backgroundImage: 'url("/icon/arrow.svg")', 
                                                 backgroundSize: isMobile ? '90%' : '85%'}}
                                             onClick={isMobile ? () => handleMouseClick(index) : null}>
                                         </span>
                                     )}
                                     {item.children?.length > 0 && (  
-                                        <DropDown items={item.children} isOpen={isOpen}
+                                        <DropDown navBar={navBar} items={item.children} isOpen={isOpen}
                                             level={1} path={index.toString()} 
                                         />  
                                     )}  

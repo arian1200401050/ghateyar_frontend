@@ -1,30 +1,6 @@
 @import "tailwindcss";
+@import "./font.css";
 
-
-@font-face {
-    font-family: 'A EntezareZohoor B4';
-    src: url('/font/EntezarZohoor/AEntezareZohoorB4-Bold.eot');
-    src: url('/font/EntezarZohoor/AEntezareZohoorB4-Bold.eot?#iefix') format('embedded-opentype'),
-        url('/font/EntezarZohoor/AEntezareZohoorB4-Bold.woff2') format('woff2'),
-        url('/font/EntezarZohoor/AEntezareZohoorB4-Bold.woff') format('woff'),
-        url('/font/EntezarZohoor/AEntezareZohoorB4-Bold.ttf') format('truetype');
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
-}
-
-
-@font-face {
-    font-family: 'A Iranian Sans';
-    src: url('/font/IranianSans/AIranianSans.eot');
-    src: url('/font/IranianSans/AIranianSans.eot?#iefix') format('embedded-opentype'),
-        url('/font/IranianSans/AIranianSans.woff2') format('woff2'),
-        url('/font/IranianSans/AIranianSans.woff') format('woff'),
-        url('/font/IranianSans/AIranianSans.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
 
 body {  
     font-family: var(--bs-body-font-family);  
@@ -39,7 +15,7 @@ a {
 /* variables */
 
 :root {
-    --bs-body-font-family: 'A Iranian Sans';
+    --bs-body-font-family: IRANSansX;
     --bs-header-font-family: 'A EntezareZohoor B4';
     --bs-body-font-weight: 400;
     --color-primary-500: #3c6296;

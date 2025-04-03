@@ -4,21 +4,21 @@ const homeSlides = [
         title: 'قطعه اول',  
         description: '...',  
         image: 'slide/1.png',
-        url: '#!'
+        url: '/product/1/'
     },  
     {  
         id: 2,  
         title: 'قطعه دوم',  
         description: '...',  
         image: 'slide/2.jpg',
-        url: '#!'
+        url: '/product/1/'
     },  
     {  
         id: 3,  
         title: 'قطعه سوم',  
         description: '...',  
         image: 'slide/3.jpg',
-        url: '#!'
+        url: '/product/1/'
     }, 
 ]; 
 

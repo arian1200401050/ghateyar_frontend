@@ -37,7 +37,7 @@ function CarouselControls ({ activeIndex, setActiveIndex, totalSlides }) {
         <>  
             <button  
                 className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-500/75 text-white
-                    !rounded-xl !text-2xl flex justify-center items-center p-6 w-0 h-0 
+                    !rounded-xl !text-2xl flex justify-center items-center p-6 md:!pt-6.5 md:!pb-5.5 w-0 h-0 cursor-pointer
                     hover:bg-gray-500/100 transition-background duration-300"  
                 type="button"  
                 onClick={() => setActiveIndex(prevIndex)}  
@@ -47,7 +47,7 @@ function CarouselControls ({ activeIndex, setActiveIndex, totalSlides }) {
             </button>  
             <button  
                 className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-500/75 text-white
-                    !rounded-xl !text-2xl flex justify-center items-center p-6 w-0 h-0 
+                    !rounded-xl !text-2xl flex justify-center items-center p-6 md:!pt-6.5 md:!pb-5.5 w-0 h-0 cursor-pointer
                     hover:bg-gray-500/100 transition-background duration-300"  
                 type="button"  
                 onClick={() => setActiveIndex(nextIndex)}  

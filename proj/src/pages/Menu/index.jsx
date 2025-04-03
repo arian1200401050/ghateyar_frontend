@@ -78,14 +78,16 @@ const MenuPage = ({menuId}) => {
         {/* Pagination Buttons */}  
         <div className="flex justify-between items-center mt-4">  
           <button  
-            className={`px-4 py-2 bg-blue-500 text-white rounded-lg ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}`}  
+            className={`px-4 py-2 bg-blue-500 text-white rounded-lg cursor-pointer 
+              ${currentPage === 1 ? 'opacity-50 !cursor-not-allowed' : ''}`}  
             onClick={goToPreviousPage}  
             disabled={currentPage === 1}  
           >  
             قبلی  
           </button>  
           <button  
-            className={`px-4 py-2 bg-blue-500 text-white rounded-lg ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}`}  
+            className={`px-4 py-2 bg-blue-500 text-white rounded-lg cursor-pointer
+              ${currentPage === totalPages ? 'opacity-50 !cursor-not-allowed' : ''}`}  
             onClick={goToNextPage}  
             disabled={currentPage === totalPages}  
           >  

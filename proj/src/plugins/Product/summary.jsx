@@ -76,6 +76,26 @@ function SummaryProduct ({ product }) {
 		}
 	}
 
+	useEffect(() => {
+		const setBlowUp = () => {
+			if (typeof $ !== 'undefined') {  
+				$("#product-image").blowup({
+					width : 400, // طول لنز
+					height : 400, // ارتفاع لنز
+					scale : 1,  //مقیاس بزرگنمایی
+					background : '#6e9cdb', // رنگ پس زمینه در صورتی که از تصویر بیرون رفت
+					border : '2px solid #777', // حاشیه لنز
+					round : true, // اینکه لنز گرد باشد یا خیر
+					shadow : 'none' // ویژگی های سایه
+				});
+			}
+		}
+
+		if (!isMobile) {
+			setBlowUp();
+		}
+	}, [activeImage])
+
 	return (
 		<div className="mx-auto flex flex-col md:!flex-row justify-center items-stretch gap-x-4 "
 			id="product-summary" ref={summarySection}
@@ -90,9 +110,9 @@ function SummaryProduct ({ product }) {
 				<div>
 					<div className="flex justify-center items-center mb-4 md:!mb-0 md:!p-10">
 						<img
-							src={`${config.MEDIA_ROOT}/product/${activeImage}`}
-							alt={product.title}
+							src={`${config.MEDIA_ROOT}/product/${activeImage}`} alt={product.title}
 							className="w-[80%] md:!w-full h-auto rounded-lg object-contain"
+							id="product-image"
 						/>
 					</div>
 
@@ -156,7 +176,7 @@ function SummaryProduct ({ product }) {
 						<div className="bg-gray-100 py-5 px-3 md:!p-3 rounded-md border-1 border-gray-300">
 							<div>
 								<div className="text-left">
-									<span className="text-2xl md:!text-xl font-bold"> {product.price} </span>
+									<span className="text-2xl md:!text-xl font-bold"> {Number(product.price).toLocaleString()} </span>
 									<span className="text-lg md:!text-sm">تومان</span>
 								</div>
 								<div>
@@ -168,21 +188,20 @@ function SummaryProduct ({ product }) {
 
 						<div className="">
 							{/* Video Card */}
-							<div className="mt-3">
+							<div className="mt-3 bg-gray-100 py-4 px-2 rounded-md border-1 border-gray-300">
 								<div>
-									<span className="mr-4 text-xl md:!text-base">ویدیو ها</span>
+									<span className="mr-4 text-xl md:!text-lg font-semibold">ویدیوها</span>
 								</div>
-								<div className="mt-3 mr-2">
-									<Link to={`/video/${product.video.id}`} className="text-blue-500">
-										<div className="border-1 border-gray-300 shadow-xs shadow-gray-300 rounded-md flex 
-											h-30 md:!h-23">
-											<div className="w-4/12 rounded-md overflow-hidden">
+								<div className="pt-5 pr-5 md:!pt-3 md:!pr-2">
+									<Link to={`/video/${product.video.id}`} className="block w-fit text-blue-500">
+										<div className="flex w-fit">
+											<div className="w-50 h-30 md:!w-35 md:!h-20 rounded-md overflow-hidden">
 												<img src={`${config.MEDIA_ROOT}/video/${product.video.id}/thumbnail.jpg`} 
 													alt={product.video.title}
-													className="w-full h-full p-2 object-contain" />
+													className="w-full h-full object-cover" />
 											</div>
-											<div className="w-8/12 flex items-center">
-												<h4 className="text-xl md:!text-base !text-gray-800 mr-1">
+											<div className="flex items-center">
+												<h4 className="text-xl md:!text-base !text-gray-900 mr-8 md:!mr-3 font-medium">
 													{product.video.title}
 												</h4>
 											</div>
@@ -192,21 +211,20 @@ function SummaryProduct ({ product }) {
 							</div>
 
 							{/* Article Card */}
-							<div className="mt-4">
+							<div className="mt-4 bg-gray-100 py-4 px-2 rounded-md border-1 border-gray-300">
 								<div>
-									<span className="mr-4 text-xl md:!text-baser-4">مقالات</span>
+									<span className="mr-4 text-xl md:!text-lg font-semibold">مقالات</span>
 								</div>
-								<div className="mt-3 mr-2">
-									<Link to={`/mag/${product.article.id}`} className="text-blue-500">
-										<div className="border-1 border-gray-300 shadow-xs shadow-gray-300 rounded-md flex 
-											h-30 md:!h-23">
-											<div className="w-4/12 rounded-md overflow-hidden br-">
+								<div className="pt-5 pr-5 md:!pt-3 md:!pr-2">
+									<Link to={`/mag/${product.article.id}`} className="block w-fit text-blue-500">
+										<div className="flex w-fit">
+											<div className="w-50 h-30 md:!w-35 md:!h-20 rounded-md overflow-hidden">
 												<img src={`${config.MEDIA_ROOT}/article/${product.article.id}/thumbnail.jpg`} 
 													alt={product.video.title}
-													className="w-full h-full p-2 object-contain" />
+													className="w-full h-full object-cover" />
 											</div>
-											<div className="w-8/12 flex items-center">
-												<h4 className="text-xl md:!text-base !text-gray-800 mr-1">
+											<div className="flex items-center">
+												<h4 className="text-xl md:!text-base !text-gray-900 mr-8 md:!mr-3 font-medium">
 													{product.article.title}
 												</h4>
 											</div>

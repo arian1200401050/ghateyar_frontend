@@ -37,7 +37,7 @@ export default function HomeBrands() {
             جذاب‌ترین برندها!  
           </h4>  
         </div>  
-        <div className="flex gap-4 overflow-hidden" ref={barWrapperRef}>  
+        <div className="flex gap-4 overflow-scroll md:!overflow-hidden" ref={barWrapperRef}>  
           <div className="flex flex-nowrap transition-transform duration-500" ref={barRef}>  
             {mainBrands.map((item, index) => (  
               <div key={index} className="w-36 h-16 flex-shrink-0 mx-3 sm:!mx-6 ">  

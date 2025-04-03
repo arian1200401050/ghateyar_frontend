@@ -5,18 +5,18 @@ import { Link } from 'react-router-dom';
 import config from '#src/config';
 
 
-const PaginationControl = ({ currentPage, totalPages, itemsPerPage, setCurrentPage }) => {
+function PaginationControl ({ currentPage, totalPages, itemsPerPage, setCurrentPage }) {
   return (
     <div className="flex justify-center items-center space-x-2">
-      <span className="text-lg md:!text-sm">نمایش : </span>
+      <span className="text-xl md:!text-md">نمایش : </span>
       <nav>
         <ul className="flex m-0">
           {/* Pagination Buttons */}
           {Array.from({ length: totalPages }, (_, index) => (
-            <li key={index} className="text-lg md:!text-xs">
+            <li key={index} className="text-lg md:!text-md">
               <button
                 className={` ${currentPage === index + 1 ? 'text-gray-700' : 'text-gray-400 hover:text-gray-700'}
-                  transition duration-200`}
+                  cursor-pointer transition duration-200`}
                 onClick={() => setCurrentPage(index + 1)}
               >
                 {(index * itemsPerPage) + 1}
@@ -30,7 +30,7 @@ const PaginationControl = ({ currentPage, totalPages, itemsPerPage, setCurrentPa
   )
 }
 
-const PostCard = ({ post }) => {
+function PostCard ({ post }) {
   return (
     <div className="flex justify-center items-center gap-0 m-2">
       <Link to={`/product/${post.id}`}
@@ -48,9 +48,9 @@ const PostCard = ({ post }) => {
       </Link>
     </div>
   );
-};
+}
 
-const PostCards = ( { posts, paginationInfo }) => {
+export default function PostCards( { posts, paginationInfo }) {
   return (
     <div className="menu-page__post-card-section">
       <div className="menu-page__post-card-header md:pl-90 pt-1 pb-4 flex justify-between items-center">
@@ -71,5 +71,3 @@ const PostCards = ( { posts, paginationInfo }) => {
     </div>
   )
 }
-
-export default PostCards;

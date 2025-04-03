@@ -19,6 +19,7 @@
         "app-module-path": "^2.2.0",
         "axios": "^1.8.2",
         "dotenv": "^16.4.7",
+        "jquery": "^3.7.1",
         "localforage": "^1.10.0",
         "lodash.debounce": "^4.0.8",
         "match-sorter": "^8.0.0",

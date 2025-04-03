@@ -15,7 +15,7 @@ import ProductPage from "#src/pages/Product/index.jsx";
 import TestPage from "#src/pages/Test/index.jsx";
 
 // Import public styles
-import "#src/styles/main.css";
+import "#src/resources/css/main.css";
 
 const AppWrapper = styled.div`
     position: relative;

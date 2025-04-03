@@ -1,0 +1,135 @@
+/**
+*
+*	Name:			IRANSansX Fonts
+*	Version:			3
+*	Author:			Moslem Ebrahimi (moslemebrahimi.com)
+*	Created on:		Apr 22, 2021
+*	Updated on:		Jul 12, 2023
+*	Website:			http://fontiran.com
+*	Copyright:		Commercial/Proprietary Software
+--------------------------------------------------------------------------------------
+فونتایران سنس Xا یک نرم افزار مالکیتی محسوب می شود. جهت آگاهی از قوانین استفاده از این فونت ها لطفا به وب سایت (فونت ایران دات کام) مراجعه نمایید
+--------------------------------------------------------------------------------------
+IRANSansX fonts are considered a proprietary software. To gain information about the laws regarding the use of these fonts, please visit www.fontiran.com 
+--------------------------------------------------------------------------------------
+This set of fonts are used in this project under the license: (.....)
+------------------------------------------------------------------------------------- /font/iran-sans-x/-
+*	
+**/
+
+
+@font-face {
+	font-family: IRANSansX;
+	font-style: normal;
+	font-weight: 100;
+	src: url('/font/iran-sans-x-fa-num/Woff/IRANSansXFaNum-Thin.woff') format('woff'),   
+	url('/font/iran-sans-x-fa-num/Woff2/IRANSansXFaNum-Thin.woff2') format('woff2');		
+}
+
+@font-face {
+	font-family: IRANSansX;
+	font-style: normal;
+	font-weight: 200;
+	src: url('/font/iran-sans-x-fa-num/Woff/IRANSansXFaNum-UltraLight.woff') format('woff'),   
+	url('/font/iran-sans-x-fa-num/Woff2/IRANSansXFaNum-UltraLight.woff2') format('woff2');	
+}
+
+@font-face {
+	font-family: IRANSansX;
+	font-style: normal;
+	font-weight: 300;
+	src: url('/font/iran-sans-x-fa-num/Woff/IRANSansXFaNum-Light.woff') format('woff'),   
+	url('/font/iran-sans-x-fa-num/Woff2/IRANSansXFaNum-Light.woff2') format('woff2');		 
+}
+
+@font-face {
+	font-family: IRANSansX;
+	font-style: normal;
+	font-weight: 500;
+	src: url('/font/iran-sans-x-fa-num/Woff/IRANSansXFaNum-Medium.woff') format('woff'),   
+	url('/font/iran-sans-x-fa-num/Woff2/IRANSansXFaNum-Medium.woff2') format('woff2');		 
+}
+
+@font-face {
+	font-family: IRANSansX;
+	font-style: normal;
+	font-weight: 600;
+	src: url('/font/iran-sans-x-fa-num/Woff/IRANSansXFaNum-DemiBold.woff') format('woff'),   
+	url('/font/iran-sans-x-fa-num/Woff2/IRANSansXFaNum-DemiBold.woff2') format('woff2');	 
+}
+
+@font-face {
+	font-family: IRANSansX;
+	font-style: normal;
+	font-weight: 800;
+	src: url('/font/iran-sans-x-fa-num/Woff/IRANSansXFaNum-ExtraBold.woff') format('woff'),   
+	url('/font/iran-sans-x-fa-num/Woff2/IRANSansXFaNum-ExtraBold.woff2') format('woff2');		 
+}
+
+@font-face {
+	font-family: IRANSansX;
+	font-style: normal;
+	font-weight: 900;
+	src: url('/font/iran-sans-x-fa-num/Woff/IRANSansXFaNum-Black.woff') format('woff'),   
+	url('/font/iran-sans-x-fa-num/Woff2/IRANSansXFaNum-Black.woff2') format('woff2');		 
+}
+
+@font-face {
+	font-family: IRANSansX;
+	font-style: normal;
+	font-weight: 950;
+	src: url('/font/iran-sans-x-fa-num/Woff/IRANSansXFaNum-ExtraBlack.woff') format('woff'),   
+	url('/font/iran-sans-x-fa-num/Woff2/IRANSansXFaNum-ExtraBlack.woff2') format('woff2');		 
+}
+
+@font-face {
+	font-family: IRANSansX;
+	font-style: normal;
+	font-weight: 1000;
+	src: url('/font/iran-sans-x-fa-num/Woff/IRANSansXFaNum-Heavy.woff') format('woff'),   
+	url('/font/iran-sans-x-fa-num/Woff2/IRANSansXFaNum-Heavy.woff2') format('woff2');		 
+}
+
+@font-face {
+	font-family: IRANSansX;
+	font-style: normal;
+	font-weight: bold;
+	src: url('/font/iran-sans-x-fa-num/Woff/IRANSansXFaNum-Bold.woff') format('woff'),   
+	url('/font/iran-sans-x-fa-num/Woff2/IRANSansXFaNum-Bold.woff2') format('woff2');	 
+}
+
+@font-face {
+	font-family: IRANSansX;
+	font-style: normal;
+	font-weight: normal;
+	src: url('/font/iran-sans-x-fa-num/Woff/IRANSansXFaNum-Regular.woff') format('woff'),   
+	url('/font/iran-sans-x-fa-num/Woff2/IRANSansXFaNum-Regular.woff2') format('woff2');	
+}
+
+
+/* Other fonts */
+
+@font-face {
+    font-family: 'A EntezareZohoor B4';
+    src: url('/font/EntezarZohoor/AEntezareZohoorB4-Bold.eot');
+    src: url('/font/EntezarZohoor/AEntezareZohoorB4-Bold.eot?#iefix') format('embedded-opentype'),
+        url('/font/EntezarZohoor/AEntezareZohoorB4-Bold.woff2') format('woff2'),
+        url('/font/EntezarZohoor/AEntezareZohoorB4-Bold.woff') format('woff'),
+        url('/font/EntezarZohoor/AEntezareZohoorB4-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+@font-face {
+    font-family: 'A Iranian Sans';
+    src: url('/font/IranianSans/AIranianSans.eot');
+    src: url('/font/IranianSans/AIranianSans.eot?#iefix') format('embedded-opentype'),
+        url('/font/IranianSans/AIranianSans.woff2') format('woff2'),
+        url('/font/IranianSans/AIranianSans.woff') format('woff'),
+        url('/font/IranianSans/AIranianSans.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
