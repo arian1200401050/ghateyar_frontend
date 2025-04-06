@@ -9,7 +9,7 @@ import { useScreenWidth } from '#src/context/ScreenWidthContext';
 import './resources/navBar.css';
 
 
-const DropDown = ({ navBar, items, level, isOpen, path }) => {  
+function DropDown ({ navBar, items, level, isOpen, path }) {  
     const [openDropdownIndex, setOpenDropdownIndex] = useState(null);  
     const { screenWidth, isMobile } = useScreenWidth()
 
@@ -120,16 +120,19 @@ const DropDown = ({ navBar, items, level, isOpen, path }) => {
             </ul>  
         </div>  
     );  
-};  
+}
 
-const NavBar = () => {  
+
+export default function NavBar() {  
+    const [isNavOpen, setIsNavOpen] = useState(false);  
     const [menu, setMenu] = useState([]);  
     const [loading, setLoading] = useState(true);  
     const [error, setError] = useState(null);  
-    const [isNavOpen, setIsNavOpen] = useState(false);  
     const [openDropdownIndex, setOpenDropdownIndex] = useState(null);  
     const { screenWidth, isMobile } = useScreenWidth();
     const navBar = useRef(null);
+    const navBarInner = useRef(null);
+    const toggleButton = useRef(null);
 
     const handleMouseOver = (index) => {
         if (!isMobile) {
@@ -177,7 +180,7 @@ const NavBar = () => {
 
         function handleClickOutside(event) {  
             // Check if the click was outside the target element  
-            if (!navBar.current.contains(event.target)) {  
+            if (!navBarInner.current.contains(event.target) && !toggleButton.current.contains(event.target)) {  
                 setIsNavOpen(false);
                 setOpenDropdownIndex(null);
             }  
@@ -188,23 +191,14 @@ const NavBar = () => {
             document.addEventListener('click', handleClickOutside);
         }
     }, []);  
-
-	//useEffect(() => {
-	//	setOpenDropdownIndex(0);
-	//}, [document.documentElement])
-
-
+  
     const toggleNavbar = () => {  
         setIsNavOpen((prev) => !prev);  
     };  
 
-    if (loading) {  
-        return <p className="text-right pt-2 pb-2">Loading...</p>;  
-    }  
-
-    if (error) {  
-        return <p className="text-right pt-2 pb-2">Error: {error.message}</p>;  
-    }  
+    //useEffect(() => {
+	//	setOpenDropdownIndex(0);
+	//}, [document.documentElement])
 
     return (  
         <nav className="mt-3 px-0 md:!px-10 relative flex flex-col items-start border-t-1 border-gray-600 text-right"
@@ -215,17 +209,20 @@ const NavBar = () => {
                 onClick={toggleNavbar}  
                 aria-controls="navbar-nav"  
                 aria-expanded={isNavOpen}  
+                ref={toggleButton}
             >  
                 <span className="navbar-toggler-icon raounded-sm bg-center bg-no-repeat !h-0 !w-0 p-4 block" 
                     style={{backgroundImage: 'url("/icon/menu-toggler.svg")', backgroundSize: '100%'}}
                 >
                 </span>  
             </button>  
-
+            <div className={`absolute w-screen h-screen z-29 bg-transparent ${isMobile && isNavOpen ? "block" : "hidden"}`}></div>
             <div id="navbar-nav" 
                 className={`navbar-collapse ${!isMobile || isNavOpen ? "block" : "hidden"} 
                     absolute w-full top-12 right-0 bg-secondary-400 z-30
-                    md:relative md:mr-4 md:p-0 md:w-auto md:top-[unset] md:right-[unset] md:bg-[unset] visible`}>  
+                    md:relative md:mr-4 md:p-0 md:w-auto md:top-[unset] md:right-[unset] md:bg-[unset] visible`}
+                ref={navBarInner}
+            >  
                 <ul className="flex flex-col md:flex-row p-0 m-0">  
                     {Array.isArray(menu) &&   
                         menu.map((item, index) => {  
@@ -233,7 +230,7 @@ const NavBar = () => {
 
                             return (  
                                 <li className={`main-menu__item main-menu__item--navbar relative flex items-stretch
-				         md:!justify-start`}  
+                        md:!justify-start`}  
                                     key={item.menu_id}  
                                     onMouseOver={!isMobile ? () => handleMouseOver(index) : null}  
                                     onMouseLeave={!isMobile ? handleMouseLeave: null}  
@@ -270,6 +267,4 @@ const NavBar = () => {
             </div>  
         </nav>  
     );  
-};  
-
-export default NavBar;  
+}  
