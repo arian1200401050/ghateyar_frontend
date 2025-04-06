@@ -52,7 +52,7 @@ export default function HomeArticles() {
                                             <img  
                                                 src={`${config.MEDIA_ROOT}/${item.banner}`}  
                                                 alt={item.title}  
-                                                className="w-full h-full object-contain bg-primary-400 rounded-md md:!rounded-none md:!p-4"  
+                                                className="w-full h-full object-contain rounded-md md:!rounded-none md:!p-4"  
                                             />  
                                         </div>  
                                         <div className="px-3 pb-5 md:!pt-4 flex flex-col justify-evenly md:!block

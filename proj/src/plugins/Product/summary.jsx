@@ -96,7 +96,7 @@ function SummaryProduct ({ product }) {
 		}
 	}, [activeImage])
 
-	return (
+	return (   
 		<div className="mx-auto flex flex-col md:!flex-row justify-center items-stretch gap-x-4 "
 			id="product-summary" ref={summarySection}
 		>
