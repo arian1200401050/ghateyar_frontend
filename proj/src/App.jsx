@@ -1,18 +1,32 @@
 // Import all the third party stuff
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { Helmet } from 'react-helmet';
 import styled from "styled-components";
 
 // Import necessary pages and components
 import config from "#src/config.js";
+import { AuthProvider, useAuth } from '#src/context/AuthContext';
+
 import Header from "#src/plugins/Header/index.jsx";
 import Footer from "#src/plugins/Footer/index.jsx";
-import HomePage from "#src/pages/Home/index.jsx";
 import NotFoundPage from "#src/pages/NotFound/index.jsx";
+import TestPage from "#src/pages/Test/index.jsx";
+
+import HomePage from "#src/pages/Home/index.jsx";
 import MenuPage from "#src/pages/Menu/index.jsx";
 import ProductPage from "#src/pages/Product/index.jsx";
-import TestPage from "#src/pages/Test/index.jsx";
+
+import LoginPage from '#src/pages/Authenticated/Login.jsx';
+import AdminLayout from '#src/pages/Authenticated/Admin/Layout';
+import AdminBrandPage from '#src/pages/Authenticated/Admin/Brand';
+import AdminCategoryPage from '#src/pages/Authenticated/Admin/Category';
+import AdminMenuPage from '#src/pages/Authenticated/Admin/Menu';
+import AdminHomeSliderPage from '#src/pages/Authenticated/Admin/HomeCategory';
+import AdminHomeCategoryPage from '#src/pages/Authenticated/Admin/HomeCategory';
+import AdminHomeBrandPage from '#src/pages/Authenticated/Admin/HomeBrand';
+import AdminProductPage from '#src/pages/Authenticated/Admin/Product';
+import AdminUserPage from '#src/pages/Authenticated/Admin/User';
 
 // Import public styles
 import "#src/resources/css/main.css";
@@ -26,14 +40,55 @@ const MainContainer = styled.div`
     position: relative;
 `
 
-function Layout({ children }) {  
+function FullPageLoader() {
+    return (
+        <div style={{
+            height: '100vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+        }}>
+            <p>Checking authentication...</p>
+        </div>
+    );
+}
+
+function PrivateRoute({ children }) {
+    const { user, loading } = useAuth();
+    
+    if (loading) {
+        return <FullPageLoader />;
+    }
+
+    if (!user) {
+        return <Navigate to="/login" />;
+    }
+
+    if (!user?.is_superuser) {
+        return <Navigate to="/" />;
+    }
+
+    return children;
+}
+
+function HeaderFooterLayout() {  
     return (  
         <AppWrapper className="app-wrapper">  
             <Header />  
             <MainContainer className="main-container">
-                {children}
+                <Outlet />
             </MainContainer>  
             <Footer />  
+        </AppWrapper>  
+    );  
+};  
+
+function PureLayout() {  
+    return (  
+        <AppWrapper className="app-wrapper">  
+            <MainContainer className="main-container">
+                <Outlet />
+            </MainContainer>  
         </AppWrapper>  
     );  
 };  
@@ -41,20 +96,45 @@ function Layout({ children }) {
 export default function App() {
     return (
         <BrowserRouter>
-            <Helmet>
-                <link rel="canonical" href={config.BASE_URL} />
-                <link rel="icon" href={`${config.MEDIA_ROOT}/${config.FAVICON}`} />
-                <title>{config.SITE_TITLE}</title>    
-            </Helmet>
-            <Layout>
+            <AuthProvider>
+                <Helmet>
+                    <link rel="canonical" href={config.BASE_URL} />
+                    <link rel="icon" href={`${config.MEDIA_ROOT}/${config.FAVICON}`} />
+                    <title>{config.SITE_TITLE}</title>    
+                </Helmet>
                 <Routes>
-                    <Route exact path="/" element={<HomePage />} />
-                    <Route path="/menu/*" element={<MenuPage />} />
-                    <Route path="/product/*" element={<ProductPage />} />
-                    <Route path="/__test" element={<TestPage />} />
-                    <Route path="*" element={<NotFoundPage />} />
+                    {/* Routes with Header + Footer */}
+                    <Route element={<HeaderFooterLayout />}>
+                        <Route path="/" element={<HomePage />} />
+                        <Route path="/menu/*" element={<MenuPage />} />
+                        <Route path="/product/*" element={<ProductPage />} />
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/__test" element={<TestPage />} />
+                        
+                        {/* 404 */}
+                        <Route path="*" element={<NotFoundPage />} />
+                    </Route>
+
+                    {/* Pure layout routes (e.g., admin) */}
+                    <Route element={<PureLayout />}>
+                        <Route path="/admin" element={
+                        <PrivateRoute>
+                            <AdminLayout />
+                        </PrivateRoute>
+                        }>
+                        <Route path="brand" element={<AdminBrandPage />} />
+                        <Route path="category" element={<AdminCategoryPage />} />
+                        <Route path="menu" element={<AdminMenuPage />} />
+                        <Route path="home-slider" element={<AdminHomeSliderPage />} />
+                        <Route path="home-brand" element={<AdminHomeBrandPage />} />
+                        <Route path="home-category" element={<AdminHomeCategoryPage />} />
+                        <Route path="product" element={<AdminProductPage />} />
+                        <Route path="user" element={<AdminUserPage />} />
+                        <Route index element={<Navigate to="menu" />} />
+                        </Route>
+                    </Route>
                 </Routes>
-            </Layout>
+            </AuthProvider>
         </BrowserRouter>
     );
 }

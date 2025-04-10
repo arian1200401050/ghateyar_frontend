@@ -18,21 +18,31 @@ a {
     --bs-body-font-family: IRANSansX;
     --bs-header-font-family: 'A EntezareZohoor B4';
     --bs-body-font-weight: 400;
-    --color-primary-500: #3c6296;
+    /* colors */
+    --color-primary-300: #3c6296;
     --color-primary-400: #6e9cdb;
-    --color-secondary-500: #d9d9d9;
+    --color-primary-500: #3c6296;
     --color-secondary-400: #e9edec;
+    --color-secondary-500: #d9d9d9;
     --color-third-500: #de314e;
+    --color-fourth-400: var(--color-blue-500);
+    --color-fourth-500: var(--color-blue-600);
+    --color-fourth-600: var(--color-blue-700);
 }
 
 @theme {
     --breakpoint-xs: 520px;
     --text-md: 0.925rem;
-    --color-primary-500: #3c6296;
+    /* colors */
     --color-primary-400: #6e9cdb;
-    --color-secondary-500: #d9d9d9;
+    --color-primary-500: #3c6296;
+    --color-primary-600: #34495e;
     --color-secondary-400: #e9edec;
+    --color-secondary-500: #d9d9d9;
     --color-third-500: #de314e;
+    --color-fourth-400: var(--color-blue-500);
+    --color-fourth-500: var(--color-blue-600);
+    --color-fourth-600: var(--color-blue-700);
 }
 
 @media (width >= 320px) {

@@ -169,7 +169,7 @@ export default function NavBar() {
     useEffect(() => {  
         const fetchData = async () => {  
             try {  
-                const { data } = await axios.get(`${config.BACKEND_URL}/api/v1/public/menu-tree/`);  
+                const { data } = await axios.get(`${config.BACKEND_URL}/api/v1/public/menu/tree/`);  
                 setMenu(data);  
                 setLoading(false);  
             } catch (err) {  
