@@ -169,7 +169,7 @@ export default function NavBar() {
     useEffect(() => {  
         const fetchData = async () => {  
             try {  
-                const { data } = await axios.get(`${config.BACKEND_URL}/api/v1/public/menu/tree/`);  
+                const { data } = await axios.get(`${config.BACKEND_URL}/api/v1/public/menu-common/tree/`);  
                 setMenu(data);  
                 setLoading(false);  
             } catch (err) {  
@@ -200,6 +200,13 @@ export default function NavBar() {
 	//	setOpenDropdownIndex(0);
 	//}, [document.documentElement])
 
+    if (loading) {
+        // return <div>Loading...</div>;
+    }
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
+    
     return (  
         <nav className="mt-3 px-0 md:!px-10 relative flex flex-col items-start border-t-1 border-gray-600 text-right"
             ref={navBar}>  

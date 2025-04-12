@@ -1,66 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
 import CRUDTable from '#src/plugins/Admin/CRUDTable';
 import config from '#src/config';
 
-const BrandPage = () => {
-    const [brands, setBrands] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    const fetchBrands = async () => {
-        try {
-            const accessToken = localStorage.getItem('accessToken');
-            const response = await axios.get(`${config.BACKEND_URL}/api/v1/brand/admin/`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
-            });
-            setBrands(response.data);
-            setLoading(false);
-        } catch (error) {
-            console.error('Error fetching brands:', error);
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchBrands();
-    }, []);
-
-    const columns = [
-        { key: 'name', label: 'نام', elementType: 'string', showInList },
-        { key: 'description', label: 'توضیحات', elementType: 'textarea', showInList },
-        { key: 'logo', label: 'لوگو',},
+const HomeSliderPage = () => {
+    const listColumns = [
+        { key: 'title', label: 'عنوان' },
+        { key: 'description', label: 'توضیحات' },
         { 
-            key: 'is_original', label: 'اصلی', 
-            render: (item) => item.is_original ? 'بله' : 'خیر',
-            showInList
+            key: 'image', 
+            label: 'تصویر',
+            render: (item) => (
+                item.image ? <img src={item.image} alt={item.title} style={{ width: '10rem' }} /> : '-'
+            )
         },
         { 
-            key: 'is_deactive', label: 'غیر فعال', 
-            render: (item) => item.is_deactive ? 'بله' : 'خیر',
-            showInList
-        }
+            key: 'url', 
+            label: 'لینک',
+            render: (item) => item.url || '-'
+        },
+        { 
+            key: 'is_active', 
+            label: 'فعال',
+            render: (item) => item.is_active ? 'بله' : 'خیر'
+        },
     ];
 
-    if (loading) {
-        return <div>در حال بارگذاری...</div>;
-    }
+    const formColumns = [
+        { key: 'title', label: 'عنوان', elementType: 'text' },
+        { key: 'description', label: 'توضیحات', elementType: 'textarea' },
+        { key: 'image', label: 'تصویر', elementType: 'image', multiple: false },
+        { key: 'url', label: 'لینک', elementType: 'text' },
+        { key: 'is_active', label: 'فعال', elementType: 'checkbox' },
+    ];
 
     return (
         <div>
-            <h1>مدیریت برندها</h1>
+            <h1>مدیریت اسلایدر صفحه اصلی</h1>
             <CRUDTable
-                title="برند"
-                columns={columns}
-                data={brands}
-                pkColumn="brand_uuid"
-                endpoint="/brand"
-                onDataChange={fetchBrands}
+                title="اسلاید"
+                listColumns={listColumns}
+                formColumns={formColumns}
+                pkColumn="home_slider_uuid"
+                endpoint="api/v1/public/admin/home-slider"
             />
         </div>
     );
 };
 
-export default BrandPage; 
+export default HomeSliderPage; 

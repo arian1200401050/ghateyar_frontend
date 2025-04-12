@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
 import CRUDTable from '#src/plugins/Admin/CRUDTable';
 import config from '#src/config';
 
@@ -8,12 +7,11 @@ export default function HomeBrandPage() {
     const [brands, setBrands] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const fetchHomeBrands = async () => {
+    const fetchRefData = async () => {
         try {
-            const accessToken = localStorage.getItem('accessToken');
-            const response = await axios.get(`${config.BACKEND_URL}/api/v1/home-brand/admin/`, {
+            const response = await axios.get(`${config.BACKEND_URL}/api/v1/public/brand/`, {
                 headers: {
-                    Authorization: `Bearer ${accessToken}`
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`
                 }
             });
             setBrands(response.data);
@@ -25,16 +23,39 @@ export default function HomeBrandPage() {
     };
 
     useEffect(() => {
-        fetchHomeBrands();
+        fetchRefData();
     }, []);
 
-    const columns = [
-        { key: 'brand', label: 'برند', elementType: 'ref', showInList },
+    const listColumns = [
         { 
-            key: 'is_active', label: 'فعال', 
-            render: (item) => item.is_active ? 'بله' : 'خیر',
-            showInList
+            key: 'brand', 
+            label: 'برند',
+            render: (item) => {
+                const brand = brands.find(b => b.brand_uuid === item.brand);
+                return brand ? brand.brand.title : '-';
+            }
+        },
+        { 
+            key: 'is_active', 
+            label: 'فعال',
+            render: (item) => item.is_active ? 'بله' : 'خیر'
+        },
+        { 
+            key: 'order', 
+            label: 'ترتیب',
+            render: (item) => item.order || '-'
         }
+    ];
+
+    const formColumns = [
+        { 
+            key: 'brand', 
+            label: 'برند',
+            elementType: 'select',
+            ref: 'brands'
+        },
+        { key: 'is_active', label: 'فعال', elementType: 'checkbox' },
+        { key: 'order', label: 'ترتیب', elementType: 'text' }
     ];
 
     if (loading) {
@@ -43,15 +64,15 @@ export default function HomeBrandPage() {
 
     return (
         <div>
-            <h1>مدیریت برندها</h1>
+            <h1>مدیریت برندهای صفحه اصلی</h1>
             <CRUDTable
-                title="برند"
-                columns={columns}
-                data={brands}
+                title="برند صفحه اصلی"
+                listColumns={listColumns}
+                formColumns={formColumns}
                 pkColumn="home_brand_uuid"
-                endpoint="/home-brand"
-                onDataChange={fetchHomeBrands}
+                endpoint="api/v1/public/admin/home-brand"
+                refData={{ brands }}
             />
         </div>
     );
-};
+}

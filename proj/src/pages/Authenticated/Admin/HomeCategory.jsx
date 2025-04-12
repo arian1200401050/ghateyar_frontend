@@ -1,47 +1,57 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
 import CRUDTable from '#src/plugins/Admin/CRUDTable';
 import config from '#src/config';
 
-const BrandPage = () => {
-    const [brands, setBrands] = useState([]);
+const HomeCategoryPage = () => {
+    const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const fetchBrands = async () => {
+    const fetchRefData = async () => {
         try {
-            const accessToken = localStorage.getItem('accessToken');
-            const response = await axios.get(`${config.BACKEND_URL}/api/v1/brand/admin/`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
-            });
-            setBrands(response.data);
+            const response = await axios.get(`${config.BACKEND_URL}/api/v1/public/category/`);
+            setCategories(response.data);
             setLoading(false);
         } catch (error) {
-            console.error('Error fetching brands:', error);
+            console.error('Error fetching categories:', error);
             setLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchBrands();
+        fetchRefData();
     }, []);
 
-    const columns = [
-        { key: 'name', label: 'نام', elementType: 'string', showInList },
-        { key: 'description', label: 'توضیحات', elementType: 'textarea', showInList },
-        { key: 'logo', label: 'لوگو',},
+    const listColumns = [
         { 
-            key: 'is_original', label: 'اصلی', 
-            render: (item) => item.is_original ? 'بله' : 'خیر',
-            showInList
+            key: 'category', 
+            label: 'دسته‌بندی',
+            render: (item) => {
+                const category = categories.find(c => c.id === item.category);
+                return category ? category.title : '-';
+            }
         },
         { 
-            key: 'is_deactive', label: 'غیر فعال', 
-            render: (item) => item.is_deactive ? 'بله' : 'خیر',
-            showInList
+            key: 'is_active', 
+            label: 'فعال',
+            render: (item) => item.is_active ? 'بله' : 'خیر'
+        },
+        { 
+            key: 'order', 
+            label: 'ترتیب',
+            render: (item) => item.order || '-'
         }
+    ];
+
+    const formColumns = [
+        { 
+            key: 'category', 
+            label: 'دسته‌بندی',
+            elementType: 'select',
+            ref: 'categories'
+        },
+        { key: 'is_active', label: 'فعال', elementType: 'checkbox' },
+        { key: 'order', label: 'ترتیب', elementType: 'text' }
     ];
 
     if (loading) {
@@ -50,17 +60,17 @@ const BrandPage = () => {
 
     return (
         <div>
-            <h1>مدیریت برندها</h1>
+            <h1>مدیریت دسته‌بندی‌های صفحه اصلی</h1>
             <CRUDTable
-                title="برند"
-                columns={columns}
-                data={brands}
-                pkColumn="brand_uuid"
-                endpoint="/brand"
-                onDataChange={fetchBrands}
+                title="دسته‌بندی صفحه اصلی"
+                listColumns={listColumns}
+                formColumns={formColumns}
+                pkColumn="home_category_uuid"
+                endpoint="api/v1/public/admin/home-category"
+                refData={{ categories }}
             />
         </div>
     );
 };
 
-export default BrandPage; 
+export default HomeCategoryPage; 

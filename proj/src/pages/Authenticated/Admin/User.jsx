@@ -4,47 +4,41 @@ import CRUDTable from '../../../plugins/Admin/CRUDTable';
 import config from '../../../config';
 
 const UserPage = () => {
-    const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    const fetchUsers = async () => {
-        try {
-            const response = await axios.get(`${config.BACKEND_URL}/api/v1/user/`);
-            setUsers(response.data);
-            setLoading(false);
-        } catch (error) {
-            console.error('Error fetching users:', error);
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchUsers();
-    }, []);
-
-    const columns = [
-        { key: 'id', label: 'شناسه' },
+    const listColumns = [
         { key: 'username', label: 'نام کاربری' },
         { key: 'email', label: 'ایمیل' },
         { key: 'first_name', label: 'نام' },
         { key: 'last_name', label: 'نام خانوادگی' },
-        { key: 'is_staff', label: 'مدیر', render: (item) => item.is_staff ? 'بله' : 'خیر' },
-        { key: 'is_active', label: 'فعال', render: (item) => item.is_active ? 'بله' : 'خیر' }
+        { 
+            key: 'is_staff', 
+            label: 'کارمند', 
+            render: (item) => item.is_staff ? 'بله' : 'خیر' 
+        },
+        { 
+            key: 'is_active', 
+            label: 'فعال', 
+            render: (item) => item.is_active ? 'بله' : 'خیر' 
+        }
     ];
 
-    if (loading) {
-        return <div>در حال بارگذاری...</div>;
-    }
+    const formColumns = [
+        { key: 'username', label: 'نام کاربری', elementType: 'text' },
+        { key: 'email', label: 'ایمیل', elementType: 'text' },
+        { key: 'first_name', label: 'نام', elementType: 'text' },
+        { key: 'last_name', label: 'نام خانوادگی', elementType: 'text' },
+        { key: 'is_staff', label: 'کارمند', elementType: 'checkbox' },
+        { key: 'is_active', label: 'فعال', elementType: 'checkbox' }
+    ];
 
     return (
         <div>
             <h1>مدیریت کاربران</h1>
             <CRUDTable
                 title="کاربر"
-                columns={columns}
-                data={users}
-                endpoint="/user"
-                onDataChange={fetchUsers}
+                listColumns={listColumns}
+                formColumns={formColumns}
+                pkColumn="user_uuid"
+                endpoint="api/v1/user/admin/user"
             />
         </div>
     );

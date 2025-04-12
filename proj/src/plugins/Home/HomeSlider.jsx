@@ -1,8 +1,8 @@
-import React, { useState } from "react";  
+import React, { useState, useEffect } from "react";  
+import axios from "axios";
 import { Link } from "react-router-dom";
 
 import config from "../../config.js";  
-import { homeSlides } from "../../db/homeSlides.js";  
 
 
 function SlideItem ({ index, activeIndex, title, description, imagePath, url}) {
@@ -13,7 +13,7 @@ function SlideItem ({ index, activeIndex, title, description, imagePath, url}) {
                     <div className="h-100">
                         <img  
                             src={imagePath}  
-                            className="w-full h-full object-contain"  
+                            className="w-full h-full object-cover"  
                             alt={title}  
                         />
                     </div>  
@@ -62,10 +62,35 @@ function CarouselControls ({ activeIndex, setActiveIndex, totalSlides }) {
 
 export default function HomeSlider() {  
     const [activeIndex, setActiveIndex] = useState(0);  
+    const [homeSlides, setHomeSlides] = useState([]);  
+    const [loading, setLoading] = useState(true);  
+    const [error, setError] = useState(null);  
+
+    const fetchData = async () => {  
+        try {  
+            const { data } = await axios.get(`${config.BACKEND_URL}/api/v1/public/home-slider/`);  
+            setHomeSlides(data);  
+            setLoading(false);  
+        } catch (err) {  
+            setError(err);  
+            setLoading(false);  
+        }  
+    };  
+
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     const handleSelect = (index) => {  
         setActiveIndex(index);  
-    };  
+    }; 
+    
+    if (loading) {
+        // return <div>Loading...</div>;
+    }
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
 
     return (  
         <div className="home-slider-wrapper">  
@@ -99,7 +124,7 @@ export default function HomeSlider() {
                             activeIndex={activeIndex}  
                             title={item.title}  
                             description={item.description}  
-                            imagePath={`${config.MEDIA_ROOT}/${item.image}`}  
+                            imagePath={`${item.image}`}  
                             url={item.url}
                         />  
                     ))}  

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-
 import config from '#src/config';
+import { useAdmin } from '#src/context/AdminContext';
 
 const TableContainer = styled.div`
     margin-top: 20px;
@@ -15,16 +15,26 @@ const Table = styled.table`
 `;
 
 const Th = styled.th`
-    padding: 12px;
+    padding: 12px 3rem;
     text-align: right;
     background-color: #f8f9fa;
     border-bottom: 2px solid #dee2e6;
+
+    &.counter {
+        padding: 0;
+        text-align: center;
+    }
 `;
 
 const Td = styled.td`
-    padding: 12px;
+    padding: 12px 3rem;
     border-bottom: 1px solid #dee2e6;
     text-align: right;
+
+    &.counter {
+        padding: 0;
+        text-align: center;
+    }
 `;
 
 const Button = styled.button`
@@ -52,11 +62,28 @@ const Button = styled.button`
     }
 
     &.add {
+        font-size: 1.1rem;
         background-color: #28a745;
         color: #fff;
         margin-bottom: 20px;
         &:hover {
             background-color: #218838;
+        }
+    }
+
+    &.save {
+        background-color: #28a745;
+        color: #fff;
+        &:hover {
+            background-color: #218838;
+        }
+    }
+
+    &.cancel {
+        background-color: #dc3545;
+        color: #fff;
+        &:hover {
+            background-color: #c82333;
         }
     }
 `;
@@ -80,6 +107,8 @@ const ModalContent = styled.div`
     border-radius: 8px;
     width: 500px;
     max-width: 90%;
+    max-height: 100%;
+    overflow-y: auto;
 `;
 
 const FormGroup = styled.div`
@@ -88,7 +117,8 @@ const FormGroup = styled.div`
 
 const Label = styled.label`
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: .5rem;
+    font-weight: 600;
 `;
 
 const Input = styled.input`
@@ -126,27 +156,185 @@ const Select = styled.select`
     border-radius: 4px;
 `;
 
+const PaginationContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    padding: 0 1.5rem;
+    position: relative;
+`;
+
+const ScrollButton = styled.button`
+    padding: 5px 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    background-color: #2e5b98;
+    color: var(--color-white);
+    cursor: pointer;
+    z-index: 1;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: 800;
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+`;
+
+const LeftScrollButton = styled(ScrollButton)`
+    left: 0;
+`;
+
+const RightScrollButton = styled(ScrollButton)`
+    right: 0;
+`;
+
+const PageNumberWrapper = styled.div`
+    width: ${props => props.$isSidebarOpen ? 'calc(100vw - 33rem)' : 'calc(100vw - 12rem)'};
+    overflow: hidden;
+`;
+
+const PageNumbersContainer = styled.div`
+    position: relative;
+    left: ${props => `${props.$scrollPosition}px`};
+    width: fit-content;
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    transition: left .800s ease-in-out;
+    scroll-behavior: smooth;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+`;
+
+const PageButton = styled.button`
+    padding: 5px 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    background-color: ${props => props.$active ? '#2e5b98' : 'white'};
+    color: ${props => props.$active ? 'white' : 'black'};
+    cursor: pointer;
+    min-width: 36px;
+    text-align: center;
+    white-space: nowrap;
+
+    &:hover {
+        background-color: ${props => props.$active ? '#0056b3' : '#f8f9fa'};
+    }
+`;
+
+const ImageListContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+`;
+
+const ImageItem = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 10px;
+`;
+
+const ImagePreview = styled.img`
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 4px;
+`;
+
+const MoveButton = styled.button`
+    padding: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+`;
+
 const CRUDTable = ({ 
     title, 
-    columns, 
-    data, 
+    listColumns = [], 
+    formColumns = [],
     pkColumn,
     endpoint, 
     refData = {}, 
-    onDataChange 
+    refCallbacks = {},
 }) => {
+    const { isSidebarOpen } = useAdmin();
     const [showModal, setShowModal] = useState(false);
+    const [originalFormData, setOriginalFormData] = useState({});
     const [formData, setFormData] = useState({});
     const [editingPK, setEditingPK] = useState(null);
+    const [listData, setListData] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [pageSize] = useState(10);
+    const [scrollPosition, setScrollPosition] = useState(0);
+    const [pageNumbersScrollDivision, setPageNumbersScrollDivision] = useState(0);
+    const pageNumbersContainerRef = React.useRef(null);
+    const pageNumberWrapperRef = React.useRef(null);
+
+    const fetchList = async (page = 1) => {
+        try {
+            setLoading(true);
+            const response = await axios.get(`${config.BACKEND_URL}/${endpoint}/`, {
+                params: { page, page_size: pageSize },
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+                }
+            });
+            setListData(response.data);
+            setTotalPages(Math.ceil(response.data.length / pageSize));
+            setCurrentPage(page);
+        } catch (error) {
+            console.error('Error fetching items:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchDetail = async (pk) => {
+        try {
+            setLoading(true);
+            const response = await axios.get(`${config.BACKEND_URL}/${endpoint}/${pk}/`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+                }
+            });
+            setFormData(response.data);
+            setOriginalFormData(response.data);
+        } catch (error) {
+            console.error('Error fetching item:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const getChangedFields = () => {
+        const changed = {};
+        for (const key in formData) {
+            if (formData[key] !== originalFormData[key]) {
+                changed[key] = formData[key];
+            }
+        }
+        return changed;
+    };
 
     const handleAdd = () => {
+        setFormData({});
         setFormData({});
         setEditingPK(null);
         setShowModal(true);
     };
 
-    const handleEdit = (item) => {
-        setFormData(item);
+    const handleEdit = async (item) => {
+        setFormData({});
+        await fetchDetail(item[pkColumn]);
         setEditingPK(item[pkColumn]);
         setShowModal(true);
     };
@@ -154,8 +342,12 @@ const CRUDTable = ({
     const handleDelete = async (pk) => {
         if (window.confirm('آیا از حذف این آیتم اطمینان دارید؟')) {
             try {
-                await axios.delete(`${config.BACKEND_URL}/api/v1${endpoint}/${pk}/`);
-                onDataChange();
+                await axios.delete(`${config.BACKEND_URL}/${endpoint}/${pk}/`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+                    }
+                });
+                fetchList(currentPage);
             } catch (error) {
                 console.error('Error deleting item:', error);
             }
@@ -165,24 +357,206 @@ const CRUDTable = ({
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            const formDataToSend = new FormData();
+            const changedFields = getChangedFields();
+            // console.log(changedFields);
+            // return null;
+            Object.entries(changedFields).forEach(([key, value]) => {
+                if (Array.isArray(value) && value[0] instanceof File) {
+                    value.forEach(file => formDataToSend.append(key, file));
+                } else {
+                    formDataToSend.append(key, value);
+                }
+            });
+
             if (editingPK) {
-                await axios.put(`${config.BACKEND_URL}/api/v1${endpoint}/${editingPK}/`, formData);
+                await axios.patch(`${config.BACKEND_URL}/${endpoint}/${editingPK}/`, formDataToSend, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
             } else {
-                await axios.post(`${config.BACKEND_URL}/api/v1${endpoint}/`, formData);
+                await axios.post(`${config.BACKEND_URL}/${endpoint}/`, formDataToSend, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
             }
             setShowModal(false);
-            onDataChange();
+            fetchList(currentPage);
         } catch (error) {
             console.error('Error saving item:', error);
         }
     };
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
+        const { name, value, type, files } = e.target;
+        
+        if (type === 'file') {
+            setFormData(prev => ({
+                ...prev,
+                [name]: Array.from(files)
+            }));
+        } else if (type === 'checkbox') {
+            setFormData(prev => ({
+                ...prev,
+                [name]: e.target.checked
+            }));
+        } else {
+            setFormData(prev => ({
+                ...prev,
+                [name]: value
+            }));
+        }
+    };
+
+    const moveImage = (index, direction) => {
+        const newImages = [...formData.images];
+        const newIndex = index + direction;
+        if (newIndex >= 0 && newIndex < newImages.length) {
+            [newImages[index], newImages[newIndex]] = [newImages[newIndex], newImages[index]];
+            setFormData(prev => ({
+                ...prev,
+                images: newImages
+            }));
+        }
+    };
+
+    const scrollLeft = () => {
+        if (pageNumbersContainerRef.current) {
+            const newScrollPosition = scrollPosition + 800;
+            const clampedScrollPosition = Math.max(0, Math.min(newScrollPosition, pageNumbersScrollDivision)); 
+            setScrollPosition(clampedScrollPosition);
+        }
+    };
+
+    const scrollRight = () => {
+        if (pageNumbersContainerRef.current) {
+            const newScrollPosition = scrollPosition - 800;
+            const clampedScrollPosition = Math.max(0, Math.min(newScrollPosition, pageNumbersScrollDivision)); 
+            setScrollPosition(clampedScrollPosition);
+        }
+    };
+
+    useEffect(() => {
+        fetchList();
+    }, []);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setPageNumbersScrollDivision(
+                pageNumbersContainerRef.current.getBoundingClientRect().width - 
+                pageNumberWrapperRef.current.getBoundingClientRect().width
+            );
+        }, 100);
+    }, [pageNumberWrapperRef.current]);
+
+    const renderFormField = (column) => {
+        switch (column.elementType) {
+            case 'textarea':
+                return (
+                    <TextArea
+                        name={column.key}
+                        value={formData[column.key] || ''}
+                        onChange={handleChange}
+                    />
+                );
+            case 'image':
+                const isMultiple = column.multiple || false;
+                if (isMultiple) {
+                    return (
+                        <ImageListContainer>
+                            {(formData[column.key] || []).map((image, index) => (
+                                <ImageItem key={index}>
+                                    <MoveButton onClick={() => moveImage(index, -1)}>↑</MoveButton>
+                                    <MoveButton onClick={() => moveImage(index, 1)}>↓</MoveButton>
+                                    <ImagePreview src={image instanceof File ? URL.createObjectURL(image) : image} />
+                                    <FileUpload
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={(e) => {
+                                            const newImages = [...formData[column.key]];
+                                            newImages[index] = e.target.files[0];
+                                            setFormData(prev => ({
+                                                ...prev,
+                                                [column.key]: newImages
+                                            }));
+                                        }}
+                                    />
+                                </ImageItem>
+                            ))}
+                            <Button onClick={() => {
+                                setFormData(prev => ({
+                                    ...prev,
+                                    [column.key]: [...(prev[column.key] || []), null]
+                                }));
+                            }}>
+                                Add Image
+                            </Button>
+                        </ImageListContainer>
+                    );
+                } else {
+                    const imageSrc = formData[column.key] instanceof File ? 
+                        URL.createObjectURL(formData[column.key]) : 
+                        formData[column.key] || '';
+                    return (
+                        <ImageListContainer>
+                            <ImageItem>
+                                <ImagePreview 
+                                    src={imageSrc !== '' ? imageSrc : null} 
+                                />
+                                <FileUpload
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => {
+                                        setFormData(prev => ({
+                                            ...prev,
+                                            [column.key]: e.target.files[0]
+                                        }));
+                                    }}
+                                />
+                            </ImageItem>
+                        </ImageListContainer>
+                    );
+                }
+            case 'checkbox':
+                return (
+                    <Input
+                        type="checkbox"
+                        name={column.key}
+                        checked={formData[column.key] || false}
+                        onChange={handleChange}
+                    />
+                );
+            case 'select':
+                const {pkColumn, options} = refData[column.ref] || (refCallbacks[column.ref]?.() || []);
+                
+                return (
+                    <Select
+                        name={column.key}
+                        value={formData[column.key] || ''}
+                        onChange={handleChange}
+                    >
+                        <option value="">انتخاب کنید</option>
+                        {options.map(option => (
+                            <option key={option[pkColumn]} value={option[pkColumn]}>
+                                {option.title}
+                            </option>
+                        ))}
+                    </Select>
+                );
+            default:
+                return (
+                    <Input
+                        type="text"
+                        name={column.key}
+                        value={formData[column.key] || ''}
+                        onChange={handleChange}
+                    />
+                );
+        }
     };
 
     return (
@@ -194,25 +568,23 @@ const CRUDTable = ({
             <Table>
                 <thead>
                     <tr>
-                        {columns.map(column => (
-                            column.showInList && (
-                                <Th key={column.key}>{column.label}</Th>
-                            )
+                        <Th className="counter">ردیف</Th>
+                        {listColumns.map(column => (
+                            <Th key={column.key}>{column.label}</Th>
                         ))}
-                        <Th className="">عملیات</Th>
+                        <Th>عملیات</Th>
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((item, index) => (
+                    {listData.map((item, index) => (
                         <tr key={index}>
-                            {columns.map(column => (
-                                column.showInList && (
-                                    <Td key={column.key}>
-                                        {column.render ? column.render(item) : item[column.key]}
-                                    </Td>
-                                )
+                            <Td className="counter">{index + 1}</Td>
+                            {listColumns.map(column => (
+                                <Td key={column.key}>
+                                    {column.render ? column.render(item) : item[column.key]}
+                                </Td>
                             ))}
-                            <Td className="">
+                            <Td>
                                 <Button className="edit" onClick={() => handleEdit(item)}>
                                     ویرایش
                                 </Button>
@@ -225,80 +597,54 @@ const CRUDTable = ({
                 </tbody>
             </Table>
 
+            <PaginationContainer >
+                <RightScrollButton 
+                    onClick={scrollRight}
+                    disabled={scrollPosition <= 0}
+                >
+                    →
+                </RightScrollButton>
+                <PageNumberWrapper 
+                    ref={pageNumberWrapperRef}
+                    $isSidebarOpen={isSidebarOpen}
+                >
+                    <PageNumbersContainer 
+                        ref={pageNumbersContainerRef}
+                        $scrollPosition={scrollPosition}
+                    >
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                            <PageButton
+                                key={page}
+                                $active={page === currentPage}
+                                onClick={() => fetchList(page)}
+                            >
+                                {page}
+                            </PageButton>
+                        ))}
+                    </PageNumbersContainer>
+                </PageNumberWrapper>
+                
+                <LeftScrollButton 
+                    onClick={scrollLeft}
+                    disabled={scrollPosition >= pageNumbersScrollDivision}
+                >
+                    ←
+                </LeftScrollButton>
+            </PaginationContainer>
+
             {showModal && (
                 <Modal>
                     <ModalContent>
-                        <h2>{editingPK ? 'ویرایش' : 'افزودن'} {title}</h2>
+                        <h2 className='text-lg font-semibold mb-6'>{editingPK ? 'ویرایش' : 'افزودن'} {title}</h2>
                         <form onSubmit={handleSubmit}>
-                            {columns.map(column => {
-                                if (column.key === pkColumn) return null;
-
-                                switch (column.elementType) {
-                                    case ('ref'): {
-                                        return (
-                                            <FormGroup key={column.key}>
-                                                <Label>{column.label}</Label>
-                                                <Select
-                                                    name={column.key}
-                                                    value={formData[column.key] || ''}
-                                                    onChange={handleChange}
-                                                >
-                                                    <option value="">انتخاب کنید</option>
-                                                    {refData[column.ref]?.map(item => (
-                                                        <option key={item.pk} value={item.pk}>
-                                                            {item.name}
-                                                        </option>
-                                                    ))}
-                                                </Select>
-                                            </FormGroup>
-                                        );
-                                    }
-                                    case ('textarea'): {
-                                        return (
-                                            <FormGroup key={column.key}>
-                                                <Label>{column.label}</Label>
-                                                <TextArea
-                                                    name={column.key}
-                                                    value={formData[column.key] || ''}
-                                                    onChange={handleChange}
-                                                />
-                                            </FormGroup>
-                                        );
-                                    }
-                                    case ('image'): {
-                                        return (
-                                            formData[column.key].map((index, path) => {
-                                                <FormGroup key={column.key}>
-                                                    <Label>{column.label}</Label>
-                                                    <FileUpload
-                                                        type="file"
-                                                        name={`${column.key}-${index}`}
-                                                        value={path || ''}
-                                                        onChange={handleChange}
-                                                    />
-                                                </FormGroup>
-                                            })
-                                        );
-                                    }
-                                    default: {
-                                        return (
-                                            <FormGroup key={column.key}>
-                                                <Label>{column.label}</Label>
-                                                <Input
-                                                    type="text"
-                                                    name={column.key}
-                                                    value={formData[column.key] || ''}
-                                                    onChange={handleChange}
-                                                />
-                                            </FormGroup>
-                                        );
-                                    }
-                                }
-
-                                
-                            })}
-                            <Button type="submit">ذخیره</Button>
-                            <Button type="button" onClick={() => setShowModal(false)}>
+                            {formColumns.map(column => (
+                                <FormGroup key={column.key}>
+                                    <Label>{column.label}</Label>
+                                    {renderFormField(column)}
+                                </FormGroup>
+                            ))}
+                            <Button className="save" type="submit">ذخیره</Button>
+                            <Button className="cancel" type="button" onClick={() => setShowModal(false)}>
                                 انصراف
                             </Button>
                         </form>

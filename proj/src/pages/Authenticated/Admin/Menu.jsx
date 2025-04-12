@@ -9,13 +9,22 @@ const MenuPage = () => {
 
     const fetchMenuItems = async () => {
         try {
-            const accessToken = localStorage.getItem('accessToken');
-            const response = await axios.get(`${config.BACKEND_URL}/api/v1/public/admin/menu/`, {
+            const response = await axios.get(`${config.BACKEND_URL}/api/v1/public/admin/menu/select_combobox/`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                 }
             });
-            setMenuItems(response.data);
+            // reformat the response data to be used in the select element
+            const menuItems = {
+                "pkColumn": "menu_uuid",
+                "options": response.data.map(item => (
+                    {
+                        "menu_uuid":item.menu_uuid, 
+                        "title": `${item.parent ? item.parent.title : '#'} -> ${item.title}`
+                    }   
+                ))
+            };
+            setMenuItems(menuItems);
             setLoading(false);
         } catch (error) {
             console.error('Error fetching menu items:', error);
@@ -31,8 +40,27 @@ const MenuPage = () => {
         { key: 'title', label: 'عنوان', showInList: true },
         { key: 'level', label: 'سطح منو', showInList: true },
         { key: 'order', label: 'ترتیب', showInList: true },
-        { key: 'parent', label: 'منوی والد', ref: 'menuItems' },
         { key: 'is_active', label: 'فعال', render: (item) => item.is_active ? 'بله' : 'خیر' }
+    ];
+
+    const listColumns = [
+        { key: 'title', label: 'عنوان' },
+        { key: 'description', label: 'توضیحات' },
+        { key: 'order', label: 'ترتیب', },
+        { key: 'level', label: 'سطح منو' },
+        { 
+            key: 'is_active', 
+            label: 'فعال', 
+            render: (item) => item.is_active ? 'بله' : 'خیر' 
+        }
+    ];
+
+    const formColumns = [
+        { key: 'title', label: 'عنوان', elementType: "text" },
+        { key: 'description', label: 'توضیحات', elementType: "textarea" },
+        { key: 'order', label: 'ترتیب', elementType: "text" },
+        { key: 'parent', label: 'منوی والد', elementType: 'select', ref: 'menuItems' },
+        { key: 'is_active', label: 'فعال', elementType: 'checkbox' }
     ];
 
     if (loading) {
@@ -41,13 +69,14 @@ const MenuPage = () => {
 
     return (
         <div>
-            <h1>مدیریت منو</h1>
+            <h1 className='text-xl font-bold'>مدیریت منو</h1>
             <CRUDTable
                 title="منو"
-                columns={columns}
-                data={menuItems}
-                endpoint="/menu"
-                refData={{ menuItems }}
+                listColumns={listColumns}
+                formColumns={formColumns}
+                pkColumn="menu_uuid"
+                endpoint="api/v1/public/admin/menu"
+                refData={{menuItems}}
                 onDataChange={fetchMenuItems}
             />
         </div>

@@ -3,7 +3,7 @@ const homeSlides = [
         id: 1,  
         title: 'قطعه اول',  
         description: '...',  
-        image: 'slide/banner_1.png',
+        image: 'slide/banner_1.jpg',
         url: '/product/1/'
     },  
     {  
