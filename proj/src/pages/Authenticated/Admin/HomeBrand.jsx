@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+
 import CRUDTable from '#src/plugins/Admin/CRUDTable';
 import config from '#src/config';
 
@@ -14,7 +15,16 @@ export default function HomeBrandPage() {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`
                 }
             });
-            setBrands(response.data);
+            const brands = {
+                "pkColumn": "brand_uuid",
+                "options": response.data.map(item => (
+                    {
+                        "brand_uuid":item.brand_uuid, 
+                        "title": `${item.brand_id}: ${item.title}`
+                    }   
+                ))
+            };
+            setBrands(brands);
             setLoading(false);
         } catch (error) {
             console.error('Error fetching brands:', error);
@@ -30,10 +40,7 @@ export default function HomeBrandPage() {
         { 
             key: 'brand', 
             label: 'برند',
-            render: (item) => {
-                const brand = brands.find(b => b.brand_uuid === item.brand);
-                return brand ? brand.brand.title : '-';
-            }
+            render: (item) => item.brand ? `${item.brand.brand_id}: ${item.brand.title}` : '-'
         },
         { 
             key: 'is_active', 

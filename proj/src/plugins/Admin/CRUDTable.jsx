@@ -15,7 +15,7 @@ const Table = styled.table`
 `;
 
 const Th = styled.th`
-    padding: 12px 3rem;
+    padding: 1rem 2rem;
     text-align: right;
     background-color: #f8f9fa;
     border-bottom: 2px solid #dee2e6;
@@ -27,7 +27,7 @@ const Th = styled.th`
 `;
 
 const Td = styled.td`
-    padding: 12px 3rem;
+    padding: 1rem 2rem;
     border-bottom: 1px solid #dee2e6;
     text-align: right;
 
@@ -113,6 +113,10 @@ const ModalContent = styled.div`
 
 const FormGroup = styled.div`
     margin-bottom: 15px;
+
+    &.checkbox {
+        display: flex
+    }
 `;
 
 const Label = styled.label`
@@ -126,6 +130,11 @@ const Input = styled.input`
     padding: 8px;
     border: 1px solid #ced4da;
     border-radius: 4px;
+
+    &.checkbox {
+        width: 2rem;
+        margin-right: 2rem;
+    }
 `;
 
 const TextArea = styled.textarea`
@@ -241,9 +250,9 @@ const ImageItem = styled.div`
 `;
 
 const ImagePreview = styled.img`
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
+    width: 20rem;
+    height 3rem;
+    object-fit: contain;
     border-radius: 4px;
 `;
 
@@ -288,6 +297,7 @@ const CRUDTable = ({
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                 }
             });
+            
             setListData(response.data);
             setTotalPages(Math.ceil(response.data.length / pageSize));
             setCurrentPage(page);
@@ -393,7 +403,8 @@ const CRUDTable = ({
 
     const handleChange = (e) => {
         const { name, value, type, files } = e.target;
-        
+        console.log(formData);
+        console.log(name, value, type, files);
         if (type === 'file') {
             setFormData(prev => ({
                 ...prev,
@@ -450,111 +461,129 @@ const CRUDTable = ({
                 pageNumbersContainerRef.current.getBoundingClientRect().width - 
                 pageNumberWrapperRef.current.getBoundingClientRect().width
             );
-        }, 100);
+        }, 1000);
     }, [pageNumberWrapperRef.current]);
 
     const renderFormField = (column) => {
         switch (column.elementType) {
             case 'textarea':
                 return (
-                    <TextArea
-                        name={column.key}
-                        value={formData[column.key] || ''}
-                        onChange={handleChange}
-                    />
+                    <FormGroup key={column.key}>
+                        <Label>{column.label}</Label>
+                        <TextArea
+                            name={column.key}
+                            value={formData[column.key] || ''}
+                            onChange={handleChange}
+                        />
+                    </FormGroup>
                 );
             case 'image':
                 const isMultiple = column.multiple || false;
                 if (isMultiple) {
                     return (
-                        <ImageListContainer>
-                            {(formData[column.key] || []).map((image, index) => (
-                                <ImageItem key={index}>
-                                    <MoveButton onClick={() => moveImage(index, -1)}>↑</MoveButton>
-                                    <MoveButton onClick={() => moveImage(index, 1)}>↓</MoveButton>
-                                    <ImagePreview src={image instanceof File ? URL.createObjectURL(image) : image} />
-                                    <FileUpload
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={(e) => {
-                                            const newImages = [...formData[column.key]];
-                                            newImages[index] = e.target.files[0];
-                                            setFormData(prev => ({
-                                                ...prev,
-                                                [column.key]: newImages
-                                            }));
-                                        }}
-                                    />
-                                </ImageItem>
-                            ))}
-                            <Button onClick={() => {
-                                setFormData(prev => ({
-                                    ...prev,
-                                    [column.key]: [...(prev[column.key] || []), null]
-                                }));
-                            }}>
-                                Add Image
-                            </Button>
-                        </ImageListContainer>
+                        <FormGroup key={column.key}>
+                            <Label>{column.label}</Label>
+                            <ImageListContainer>
+                                {(formData[column.key] || []).map((image, index) => (
+                                    <ImageItem key={index}>
+                                        <MoveButton onClick={() => moveImage(index, -1)}>↑</MoveButton>
+                                        <MoveButton onClick={() => moveImage(index, 1)}>↓</MoveButton>
+                                        <ImagePreview src={image instanceof File ? URL.createObjectURL(image) : image} />
+                                        <FileUpload
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={(e) => {
+                                                const newImages = [...formData[column.key]];
+                                                newImages[index] = e.target.files[0];
+                                                setFormData(prev => ({
+                                                    ...prev,
+                                                    [column.key]: newImages
+                                                }));
+                                            }}
+                                        />
+                                    </ImageItem>
+                                ))}
+                                <Button onClick={() => {
+                                    setFormData(prev => ({
+                                        ...prev,
+                                        [column.key]: [...(prev[column.key] || []), null]
+                                    }));
+                                }}>
+                                    Add Image
+                                </Button>
+                            </ImageListContainer>
+                        </FormGroup>
                     );
                 } else {
                     const imageSrc = formData[column.key] instanceof File ? 
                         URL.createObjectURL(formData[column.key]) : 
                         formData[column.key] || '';
                     return (
-                        <ImageListContainer>
-                            <ImageItem>
-                                <ImagePreview 
-                                    src={imageSrc !== '' ? imageSrc : null} 
-                                />
-                                <FileUpload
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={(e) => {
-                                        setFormData(prev => ({
-                                            ...prev,
-                                            [column.key]: e.target.files[0]
-                                        }));
-                                    }}
-                                />
-                            </ImageItem>
-                        </ImageListContainer>
+                        <FormGroup key={column.key}>
+                            <Label>{column.label}</Label>
+                            <ImageListContainer>
+                                <ImageItem>
+                                    <ImagePreview 
+                                        src={imageSrc !== '' ? imageSrc : null} 
+                                    />
+                                    <FileUpload
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={(e) => {
+                                            setFormData(prev => ({
+                                                ...prev,
+                                                [column.key]: e.target.files[0]
+                                            }));
+                                        }}
+                                    />
+                                </ImageItem>
+                            </ImageListContainer>
+                        </FormGroup>
                     );
                 }
             case 'checkbox':
                 return (
-                    <Input
-                        type="checkbox"
-                        name={column.key}
-                        checked={formData[column.key] || false}
-                        onChange={handleChange}
-                    />
+                    <FormGroup className="checkbox" key={column.key}>
+                        <Label>{column.label}</Label>
+                        <Input className="checkbox"
+                            type="checkbox"
+                            name={column.key}
+                            checked={formData[column.key] || false}
+                            onChange={handleChange}
+                        />
+                    </FormGroup>
                 );
             case 'select':
                 const {pkColumn, options} = refData[column.ref] || (refCallbacks[column.ref]?.() || []);
                 
                 return (
-                    <Select
-                        name={column.key}
-                        value={formData[column.key] || ''}
-                        onChange={handleChange}
-                    >
-                        <option value="">انتخاب کنید</option>
-                        {options.map(option => (
-                            <option key={option[pkColumn]} value={option[pkColumn]}>
-                                {option.title}
-                            </option>
-                        ))}
-                    </Select>
+                    <FormGroup key={column.key}>
+                        <Label>{column.label}</Label>
+                        <Select
+                            name={column.key}
+                            value={formData[column.key]?.[pkColumn] || formData[column.key] || ''}
+                            onChange={handleChange}
+                        >
+                            <option value="">انتخاب کنید</option>
+                            {options?.map(option => (
+                                <option key={option[pkColumn]} value={option[pkColumn]}>
+                                    {option.title}
+                                </option>
+                            ))}
+                        </Select>
+                    </FormGroup>
                 );
             default:
                 return (
-                    <Input
-                        type="text"
-                        name={column.key}
-                        value={formData[column.key] || ''}
-                        onChange={handleChange}
-                    />
+                    <FormGroup key={column.key}>
+                        <Label>{column.label}</Label>
+                        <Input
+                            type="text"
+                            name={column.key}
+                            value={formData[column.key] || ''}
+                            onChange={handleChange}
+                        />
+                    </FormGroup>
                 );
         }
     };
@@ -638,10 +667,7 @@ const CRUDTable = ({
                         <h2 className='text-lg font-semibold mb-6'>{editingPK ? 'ویرایش' : 'افزودن'} {title}</h2>
                         <form onSubmit={handleSubmit}>
                             {formColumns.map(column => (
-                                <FormGroup key={column.key}>
-                                    <Label>{column.label}</Label>
-                                    {renderFormField(column)}
-                                </FormGroup>
+                                renderFormField(column)
                             ))}
                             <Button className="save" type="submit">ذخیره</Button>
                             <Button className="cancel" type="button" onClick={() => setShowModal(false)}>

@@ -11,17 +11,11 @@ export default function BrandPage() {
             render: (item) => <span>{item.title}</span>
         },
         { 
-            key: 'description', 
-            label: 'توضیحات',
-            render: (item) => item.description || '-'
-        },
-        { 
             key: 'logo', 
             label: 'لوگو',
             render: (item) => (
                 item.logo ? <img src={item.logo} alt={item.title} style={{ width: '10rem' }} /> : '-'
             )
-            
         },
         { 
             key: 'is_original', 

@@ -94,47 +94,49 @@ export default function HomeSlider() {
 
     return (  
         <div className="home-slider-wrapper">  
-            <div  
-                id="home-slider"  
-                className="main-section carousel slide w-(--main-section-width) 
-                    relative my-5 mx-auto border-2 border-gray-300 rounded-lg"  
-                data-bs-ride="carousel"  
-            >  
-                <div className="carousel-indicators flex space-x-2 px-2 py-2 m-0 bg-gray-400 z-29
-                    rounded-md absolute left-2 top-2 md:!left-6 md:!top-6">  
-                    {homeSlides.map((_, index) => (  
-                        <button   
-                            key={index} type="button"  
-                            className={`h-0 w-0 py-1 px-5 md:py-[.175rem] md:px-4 rounded-md opacity-100
-                                ${activeIndex === index ? "bg-white" : "bg-gray-500"}`}  
-                            data-key={index}
-                            data-bs-target="#home-slider"  
-                            data-bs-slide-to={index}  
-                            aria-label={`Slide ${index + 1}`}  
-                            aria-current={activeIndex === index ? "true" : "false"}  
-                            onClick={() => handleSelect(index)}  
-                        ></button>  
-                    ))}  
+            {homeSlides.length > 0 ? (
+                <div  
+                    id="home-slider"  
+                    className="main-section carousel slide w-(--main-section-width) 
+                        relative my-5 mx-auto border-2 border-gray-300 rounded-lg"  
+                    data-bs-ride="carousel"  
+                >  
+                    <div className="carousel-indicators flex space-x-2 px-2 py-2 m-0 bg-gray-400 z-29
+                        rounded-md absolute left-2 top-2 md:!left-6 md:!top-6">  
+                        {homeSlides.map((_, index) => (  
+                            <button   
+                                key={index} type="button"  
+                                className={`h-0 w-0 py-1 px-5 md:py-[.175rem] md:px-4 rounded-md opacity-100
+                                    ${activeIndex === index ? "bg-white" : "bg-gray-500"}`}  
+                                data-key={index}
+                                data-bs-target="#home-slider"  
+                                data-bs-slide-to={index}  
+                                aria-label={`Slide ${index + 1}`}  
+                                aria-current={activeIndex === index ? "true" : "false"}  
+                                onClick={() => handleSelect(index)}  
+                            ></button>  
+                        ))}  
+                    </div>  
+                    <div className="carousel-inner w-full">  
+                        {homeSlides.map((item, index) => (  
+                            <SlideItem  
+                                key={index}  
+                                index={index}  
+                                activeIndex={activeIndex}  
+                                title={item.title}  
+                                description={item.description}  
+                                imagePath={`${item.image}`}  
+                                url={item.url}
+                            />  
+                        ))}  
+                    </div>  
+                    <CarouselControls   
+                        activeIndex={activeIndex}   
+                        setActiveIndex={handleSelect}   
+                        totalSlides={homeSlides.length}  
+                    />  
                 </div>  
-                <div className="carousel-inner w-full">  
-                    {homeSlides.map((item, index) => (  
-                        <SlideItem  
-                            key={index}  
-                            index={index}  
-                            activeIndex={activeIndex}  
-                            title={item.title}  
-                            description={item.description}  
-                            imagePath={`${item.image}`}  
-                            url={item.url}
-                        />  
-                    ))}  
-                </div>  
-                <CarouselControls   
-                    activeIndex={activeIndex}   
-                    setActiveIndex={handleSelect}   
-                    totalSlides={homeSlides.length}  
-                />  
-            </div>  
+            ) : null}
         </div>  
     );  
 }  

@@ -93,7 +93,7 @@ export default function Footer () {
             className="absolute end-0 start-0 pt-10 pb-12 px-2 lg:!px-10 md:!pt-24 md:!pb-20 md:!px-32 mt-5 bg-primary-400 text-white"
             style={{boxShadow: "0 -1px 8px var(--color-gray-300)"}}>
             <div className="mx-auto max-w-(--main-section-full-width) flex flex-col md:!flex-row justify-start">
-                <div className="md:!w-160">
+                <div className="md:!w-160 md:!ml-4">
                     <AboutUs />
                 </div>
                 <div className="mx-2 md:!mx-auto">

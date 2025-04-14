@@ -30,7 +30,6 @@ const ProductPage = () => {
 
     const listColumns = [
         { key: 'name', label: 'نام' },
-        { key: 'description', label: 'توضیحات' },
         { 
             key: 'price', 
             label: 'قیمت', 

@@ -6,7 +6,6 @@ import config from '#src/config';
 const HomeSliderPage = () => {
     const listColumns = [
         { key: 'title', label: 'عنوان' },
-        { key: 'description', label: 'توضیحات' },
         { 
             key: 'image', 
             label: 'تصویر',

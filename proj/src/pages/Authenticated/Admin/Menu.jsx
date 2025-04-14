@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import CRUDTable from '../../../plugins/Admin/CRUDTable';
-import config from '../../../config';
+import CRUDTable from '#src/plugins/Admin/CRUDTable';
+import config from '#src/config';
 
 const MenuPage = () => {
     const [menuItems, setMenuItems] = useState([]);
@@ -45,9 +45,12 @@ const MenuPage = () => {
 
     const listColumns = [
         { key: 'title', label: 'عنوان' },
-        { key: 'description', label: 'توضیحات' },
         { key: 'order', label: 'ترتیب', },
         { key: 'level', label: 'سطح منو' },
+        { 
+            key: 'parent', label: 'منوی والد', 
+            render: (item) => item.parent ? `${item.parent.menu_id}: ${item.parent.title}` : '-' 
+        },
         { 
             key: 'is_active', 
             label: 'فعال', 

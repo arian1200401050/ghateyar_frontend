@@ -10,7 +10,17 @@ const HomeCategoryPage = () => {
     const fetchRefData = async () => {
         try {
             const response = await axios.get(`${config.BACKEND_URL}/api/v1/public/category/`);
-            setCategories(response.data);
+            // reformat the response data to be used in the select element
+            const categories = {
+                "pkColumn": "category_uuid",
+                "options": response.data.map(item => (
+                    {
+                        "category_uuid":item.category_uuid, 
+                        "title": `${item.category_id}: ${item.title}`
+                    }   
+                ))
+            };
+            setCategories(categories);
             setLoading(false);
         } catch (error) {
             console.error('Error fetching categories:', error);
@@ -26,10 +36,8 @@ const HomeCategoryPage = () => {
         { 
             key: 'category', 
             label: 'دسته‌بندی',
-            render: (item) => {
-                const category = categories.find(c => c.id === item.category);
-                return category ? category.title : '-';
-            }
+            render: (item) =>  item.category ? `${item.category.category_id}: ${item.category.title}` : '-'
+            
         },
         { 
             key: 'is_active', 

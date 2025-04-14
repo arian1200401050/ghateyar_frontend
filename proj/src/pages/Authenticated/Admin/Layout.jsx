@@ -17,7 +17,7 @@ const AdminLayout = () => {
         { path: '/admin/home-category', label: 'دسته بندی‌های صفحه خانه' },
         { path: '/admin/home-brand', label: 'برندهای صفحه خانه' },
         { path: '/admin/product', label: 'محصولات' },
-        { path: '/admin/user', label: 'کاربرها' },
+        { path: '/admin/user', label: 'کاربرها', deactive: true },
     ];
 
     const handleItemClick = (path) => {
@@ -46,8 +46,10 @@ const AdminLayout = () => {
                                 className={`p-4 cursor-pointer rounded transition duration-300 text-lg
                                     ${activeItem === item.path 
                                         ? 'bg-white text-gray-900' 
-                                        : 'hover:bg-white hover:text-gray-900'}`}
-                                onClick={() => handleItemClick(item.path)}
+                                        : 'hover:bg-white hover:text-gray-900'}
+                                    ${item.deactive ? '!cursor-not-allowed opacity-50' : ''}`}
+                                onClick={() => item.deactive ? null : handleItemClick(item.path)}
+                                disabled={item.deactive}
                             >
                                 {item.label}
                             </div>

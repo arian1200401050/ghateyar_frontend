@@ -6,12 +6,11 @@ import config from '#src/config';
 const CategoryPage = () => {
     const listColumns = [
         { key: 'title', label: 'عنوان' },
-        { key: 'description', label: 'توضیحات' },
         { 
             key: 'logo', 
             label: 'لوگو', 
             render: (item) => (
-                item.logo ? <img src={item.logo} alt={item.name} style={{ width: '10rem' }} /> : '-'
+                item.logo ? <img src={item.logo} alt={item.name} className='w-40 max-h-16 object-contain' /> : '-'
             )
         },
     ];
