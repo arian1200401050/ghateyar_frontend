@@ -43,7 +43,7 @@ function PostCard ({ post }) {
         </div>
         <div className="!p-5 !pt-4 border-stone-300">
           <h3 className="text-2xl md:!text-[.95rem]/6 text-center font-semibold pb-3 md:!pb-0">{post.title}</h3>
-          <p className="text-lg md:!text-sm text-center text-gray-500">{post.description}</p>
+          <p className="text-lg md:!text-sm max-h-32 md:!max-h-24 text-center text-gray-500 mt-2 overflow-hidden text-justify">{post.description}</p>
         </div>
       </Link>
     </div>
