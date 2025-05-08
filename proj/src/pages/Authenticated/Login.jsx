@@ -22,7 +22,6 @@ export default function Login() {
         }
     };
 
-    console.log(user)
     if (user) {
         if (user.is_superuser) {
             return <Navigate to="/admin" />;

@@ -1,9 +1,9 @@
 const IS_DEV = process.env.REACT_ENV == 'development';
 const BASE_URL = "http://localhost";
 const SITE_TITLE = "قطعه یار";
-const MEDIA_ROOT = `/media`;
+const MEDIA_ROOT = `/static_media`;
 const STATIC_ROOT = `/`;
-const FAVICON = 'logo/ghateyar_2.jpg'
+const FAVICON = 'logo/favicon_1.png'
 const LOGO_PRIMARY = 'logo/ghateyar_transparent_1.png';
 const LOGO_SECONDARY = 'logo/ghateyar_transparent_2.png';
 const PROTOCOL = window.location.protocol;

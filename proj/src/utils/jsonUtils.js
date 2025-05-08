@@ -10,7 +10,7 @@ async function readJsonFile(filePath) {
         console.error('Error reading or parsing the file:', error);  
         return null; // Handle the error  
     }  
-}  
+}   
 
 export {
     readJsonFile

@@ -19,6 +19,11 @@ const HomeSliderPage = () => {
             render: (item) => item.url || '-'
         },
         { 
+            key: 'order', 
+            label: 'ترتیب',
+            render: (item) => item.order || '-'
+        },
+        { 
             key: 'is_active', 
             label: 'فعال',
             render: (item) => item.is_active ? 'بله' : 'خیر'
@@ -30,6 +35,7 @@ const HomeSliderPage = () => {
         { key: 'description', label: 'توضیحات', elementType: 'textarea' },
         { key: 'image', label: 'تصویر', elementType: 'image', multiple: false },
         { key: 'url', label: 'لینک', elementType: 'text' },
+        { key: 'order', label: 'ترتیب', elementType: 'text' },
         { key: 'is_active', label: 'فعال', elementType: 'checkbox' },
     ];
 

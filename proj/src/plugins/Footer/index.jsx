@@ -5,7 +5,7 @@ import { useScreenWidth } from '#src/context/ScreenWidthContext';
 
 const footer = {
     "aboutUs": `شرکت قطعه یار از سال 1403 با هدف بخش مویرگی قطعات لوازم خانگی و کولر فعالیت خود را آغاز کرده است و سعی در ارائه سبد متنوع در هر دو حوزه قطعات محصولات خانگی و کولر دارد.`,
-    "address": "خیابان جمهوری، ساختمان آلومینوم، طبقه 4، واحد 410",
+    "address": "خیابان جمهوری، ساختمان آلومینیوم، طبقه 4، واحد 410",
     "phone": "0912 388 70 38",
     "email": "ghateyar@gmail.com",
     "instagram": {"title": "ghate_yar", "url": "https://instagram.com/ghate_yar"},

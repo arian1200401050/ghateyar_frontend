@@ -44,8 +44,8 @@ export default function HomeCategories() {
                 w-(--main-section-large-width)"
                 id="home-categories">
                 <div className="main-categories flex justify-around gap-2">
-                    {categories.map((item) => (
-                        <div key={item.id} className="main-categories__item flex flex-col">
+                    {categories.map((item, index) => (
+                        <div key={index} className="main-categories__item flex flex-col">
                             <CategoryLogo $logo={`${item.category.logo}`}
                                 className="block w-0 h-0 p-8 m-auto border-1 border-gray-200 
                                     rounded-full bg-white bg-center bg-no-repeat"/>

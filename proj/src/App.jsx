@@ -107,12 +107,13 @@ export default function App() {
                     {/* Routes with Header + Footer */}
                     <Route element={<HeaderFooterLayout />}>
                         <Route path="/" element={<HomePage />} />
-                        <Route path="/menu/*" element={<MenuPage />} />
-                        <Route path="/product/*" element={<ProductPage />} />
+                        <Route path="/menu/:menuId" element={<MenuPage />} />
+                        <Route path="/product/:productId" element={<ProductPage />} />
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/__test" element={<TestPage />} />
                         
                         {/* 404 */}
+                        <Route path="/404" element={<NotFoundPage />} />
                         <Route path="*" element={<NotFoundPage />} />
                     </Route>
 

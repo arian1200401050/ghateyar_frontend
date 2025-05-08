@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import lodash from 'lodash';
+
 import config from '#src/config';
 import { useAdmin } from '#src/context/AdminContext';
+import { getValueByPath, setValueByPath } from '#src/utils/objectUtils';
+import { formDataToJson } from '#src/utils/formUtils';
+
 
 const TableContainer = styled.div`
     margin-top: 20px;
@@ -86,6 +91,14 @@ const Button = styled.button`
             background-color: #c82333;
         }
     }
+
+    &.add-image {
+        background-color: #28a745;
+        color: #fff;
+        &:hover {
+            background-color: #218838;
+        }
+    }
 `;
 
 const Modal = styled.div`
@@ -105,10 +118,43 @@ const ModalContent = styled.div`
     background-color: white;
     padding: 20px;
     border-radius: 8px;
-    width: 500px;
+    width: 40rem;
     max-width: 90%;
     max-height: 100%;
     overflow-y: auto;
+    position: relative;
+
+    &.grid {
+        width: 70rem;
+    }
+`;
+
+const CloseButton = styled.button`
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: white;
+    background-color:rgb(170, 170, 170);
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 4px;
+
+    &:hover {
+        background-color:rgb(145, 145, 145);
+    }
+`;
+
+const FormGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
 `;
 
 const FormGroup = styled.div`
@@ -117,6 +163,38 @@ const FormGroup = styled.div`
     &.checkbox {
         display: flex
     }
+
+    &.group {
+        grid-column: 1 / -1;
+    }
+`;
+
+const GroupContainer = styled.div`
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+`;
+
+const GroupGroup = styled.div`
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+`;
+
+const GroupTitle = styled.h3`
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #495057;
+`;
+
+const GroupContent = styled.div`
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
 `;
 
 const Label = styled.label`
@@ -128,11 +206,13 @@ const Label = styled.label`
 const Input = styled.input`
     width: 100%;
     padding: 8px;
+    background-color: white;
     border: 1px solid #ced4da;
     border-radius: 4px;
 
     &.checkbox {
         width: 2rem;
+        height: 2rem;
         margin-right: 2rem;
     }
 `;
@@ -140,6 +220,7 @@ const Input = styled.input`
 const TextArea = styled.textarea`
     width: 100%;
     padding: 8px;
+    background-color: white;
     border: 1px solid #ced4da;
     border-radius: 4px;
 `;
@@ -151,18 +232,146 @@ const Image = styled.img`
     border-radius: 4px;
 `;
 
-const FileUpload = styled.input`
-    width: 100%;
-    padding: 8px;
+const ImageListContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+`;
+
+const ImageItem = styled.div`
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    flex-wrap: wrap;
+    padding: .5rem;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+`;
+
+const ImagePreview = styled.img`
+    width: 23rem;
+    height: 7rem;
+    object-fit: contain;
+    border-radius: 4px;
+
+    &.image-list {
+        width: 100%;
+        height: 6rem;
+    }
+`;
+
+const MoveButton = styled.button`
+    padding: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+`;
+
+const DeleteButton = styled.button`
+    padding: .8rem;
+    background-image: url('/icon/trash.svg');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    cursor: pointer;
+`;
+
+const FileUploadLabel = styled.label`
+    width: unset;
+    margin: auto auto auto 3rem;
+    padding: .5rem 2rem;
     border: 1px solid #ced4da;
     border-radius: 4px;
+    background-color:rgb(0, 104, 208);
+    color: white;
+    cursor: pointer;
+
+    &:hover {
+        background-color:rgb(0, 89, 179);
+    }
+`;
+
+const FileUpload = styled.input`
+    display: none;
 `;
 
 const Select = styled.select`
     width: 100%;
     padding: 8px;
+    background-color: white;
     border: 1px solid #ced4da;
     border-radius: 4px;
+`;
+
+const SelectContainer = styled.div`
+    position: relative;
+    width: 100%;
+`;
+
+const SelectList = styled.div`
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    z-index: 1000;
+    margin-bottom: 5px;
+`;
+
+const SelectOption = styled.div`
+    padding: 8px;
+    cursor: pointer;
+    &:hover {
+        background-color: #f8f9fa;
+    }
+`;
+
+const SelectedItemsContainer = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: .5rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+`;
+
+const SelectedItem = styled.div`
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: #e9ecef;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: default;
+`;
+
+const RemoveButton = styled.button`
+    position: absolute;
+    top: -.25rem;
+    left: -.25rem;
+    background: #dc3545;
+    border: 1px solid #dc3545;
+    border-radius: 100%;
+    color: white;
+    cursor: pointer;
+    padding: 6px 5px 4px;
+    line-height: 1;
+    width: 0;
+    height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+        background: #c82333;
+        border: 1px solid #c82333;
+    }
+`;
+
+const RemoveIcon = styled.span`
+    font-size: .9rem;
 `;
 
 const PaginationContainer = styled.div`
@@ -237,32 +446,6 @@ const PageButton = styled.button`
     }
 `;
 
-const ImageListContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-`;
-
-const ImageItem = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 10px;
-`;
-
-const ImagePreview = styled.img`
-    width: 20rem;
-    height 3rem;
-    object-fit: contain;
-    border-radius: 4px;
-`;
-
-const MoveButton = styled.button`
-    padding: 5px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-`;
 
 const CRUDTable = ({ 
     title, 
@@ -272,6 +455,7 @@ const CRUDTable = ({
     endpoint, 
     refData = {}, 
     refCallbacks = {},
+    isGrid = false,
 }) => {
     const { isSidebarOpen } = useAdmin();
     const [showModal, setShowModal] = useState(false);
@@ -287,6 +471,7 @@ const CRUDTable = ({
     const [pageNumbersScrollDivision, setPageNumbersScrollDivision] = useState(0);
     const pageNumbersContainerRef = React.useRef(null);
     const pageNumberWrapperRef = React.useRef(null);
+    const imageItemsRef = React.useRef([]);
 
     const fetchList = async (page = 1) => {
         try {
@@ -316,8 +501,9 @@ const CRUDTable = ({
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                 }
             });
+            // console.log(response.data);
             setFormData(response.data);
-            setOriginalFormData(response.data);
+            setOriginalFormData(lodash.cloneDeep(response.data));
         } catch (error) {
             console.error('Error fetching item:', error);
         } finally {
@@ -328,7 +514,7 @@ const CRUDTable = ({
     const getChangedFields = () => {
         const changed = {};
         for (const key in formData) {
-            if (formData[key] !== originalFormData[key]) {
+            if (!lodash.isEqual(formData[key], originalFormData[key])) {
                 changed[key] = formData[key];
             }
         }
@@ -369,11 +555,39 @@ const CRUDTable = ({
         try {
             const formDataToSend = new FormData();
             const changedFields = getChangedFields();
-            // console.log(changedFields);
-            // return null;
+
+            console.log(changedFields)
+            
             Object.entries(changedFields).forEach(([key, value]) => {
-                if (Array.isArray(value) && value[0] instanceof File) {
-                    value.forEach(file => formDataToSend.append(key, file));
+                if (value instanceof File) {
+                    formDataToSend.append(key, value)
+                } else if (key === 'images') {
+                    // Handle image operations
+                    console.log(value)
+                    value.forEach((img, index) => {
+                        if (img.image instanceof File) {
+                            // For new/updated images, send the file with the correct key format
+                            formDataToSend.append(`images.${index}.image`, img.image);
+                            if (img.product_image_uuid) {
+                                formDataToSend.append(`images.${index}.product_image_uuid`, img.product_image_uuid);
+                            }
+                            if (img.order !== undefined) {
+                                formDataToSend.append(`images.${index}.order`, img.order);
+                            }
+                        } else if (img.image === null) {
+                            // For image removal, send the UUID and empty image
+                            formDataToSend.append(`images.${index}.product_image_uuid`, img.product_image_uuid);
+                            formDataToSend.append(`images.${index}.image`, '');
+                        } else if (img.order !== undefined) {
+                            // For order changes only
+                            formDataToSend.append(`images.${index}.product_image_uuid`, img.product_image_uuid);
+                            formDataToSend.append(`images.${index}.order`, img.order);
+                        }
+                    });
+                } else if (typeof value === 'object' && !Array.isArray(value)) {
+                    formDataToSend.append(key, JSON.stringify(value));
+                } else if (Array.isArray(value)) {
+                    formDataToSend.append(key, JSON.stringify(value));
                 } else {
                     formDataToSend.append(key, value);
                 }
@@ -402,36 +616,76 @@ const CRUDTable = ({
     };
 
     const handleChange = (e) => {
-        const { name, value, type, files } = e.target;
-        console.log(formData);
-        console.log(name, value, type, files);
+        const { name, type, files } = e.target;
+        const value = type === 'checkbox' ? e.target.checked : e.target.value;
+        
         if (type === 'file') {
             setFormData(prev => ({
                 ...prev,
                 [name]: Array.from(files)
             }));
-        } else if (type === 'checkbox') {
-            setFormData(prev => ({
-                ...prev,
-                [name]: e.target.checked
-            }));
         } else {
-            setFormData(prev => ({
-                ...prev,
-                [name]: value
-            }));
+            setFormData(prev => setValueByPath(prev, name, value));
         }
     };
 
-    const moveImage = (index, direction) => {
-        const newImages = [...formData.images];
-        const newIndex = index + direction;
-        if (newIndex >= 0 && newIndex < newImages.length) {
-            [newImages[index], newImages[newIndex]] = [newImages[newIndex], newImages[index]];
-            setFormData(prev => ({
+    const moveImage = (e, columnKey, index, direction) => {
+        e.preventDefault();
+        setFormData(prev => {
+            const newImages = [...prev[columnKey]];
+            console.log(newImages);
+            debugger;
+            const newIndex = parseInt(index, 10) + parseInt(direction, 10);
+            if (newIndex >= 0 && newIndex < newImages.length) {
+                [newImages[index], newImages[newIndex]] = [newImages[newIndex], newImages[index]];
+                // Update orders
+                newImages.forEach((img, i) => {
+                    img.order = i;
+                });
+                return {
+                    ...prev,
+                    [columnKey]: newImages
+                };
+            }
+            return prev;
+        });
+    };
+
+    const deleteImage = (e, columnKey, index) => {
+        e.preventDefault();
+        setFormData(prev => {
+            const newImages = [...prev[columnKey]];
+            if (!newImages[index].product_image_uuid) {
+                // New image - just remove it
+                newImages.splice(index, 1);
+            } else {
+                // Existing image - mark for deletion
+                newImages[index] = {
+                    ...newImages[index],
+                    image: null
+                };
+            }
+            return {
                 ...prev,
-                images: newImages
-            }));
+                [columnKey]: newImages
+            };
+        });
+    };
+
+    const updateImage = (e, columnKey, index) => {
+        const file = e.target.files[0];
+        console.log(formData[columnKey])
+        
+        if (file) {
+            setFormData(prev => {
+                const newImages = [...prev[columnKey]];
+                newImages[index]['image'] = file;
+                debugger;
+                return {
+                    ...prev,
+                    [columnKey]: newImages
+                };
+            });
         }
     };
 
@@ -456,65 +710,102 @@ const CRUDTable = ({
     }, []);
 
     useEffect(() => {
-        setTimeout(() => {
-            setPageNumbersScrollDivision(
-                pageNumbersContainerRef.current.getBoundingClientRect().width - 
-                pageNumberWrapperRef.current.getBoundingClientRect().width
-            );
-        }, 1000);
+        try {
+            setTimeout(() => {
+                setPageNumbersScrollDivision(
+                    pageNumbersContainerRef.current.getBoundingClientRect().width - 
+                    pageNumberWrapperRef.current.getBoundingClientRect().width
+                );
+            }, 1000);
+        } catch (err) {
+            console.log(err)
+        }
+        
     }, [pageNumberWrapperRef.current]);
 
     const renderFormField = (column) => {
+        const isMultiple = column.isMultiple || false;
+        const value = getValueByPath(formData, column.key) || '';
+
         switch (column.elementType) {
+            case 'group':
+                return (
+                    <FormGroup className='group' key={column.key}>
+                        <Label>{column.label}</Label>
+                        <GroupContainer>
+                            {Object.entries(column.groups).map(([groupKey, group]) => (
+                                <GroupGroup key={groupKey}>
+                                    <GroupTitle>{group.label}</GroupTitle>
+                                    <GroupContent>
+                                        {group.columns.map(subColumn => {
+                                            const fullKey = `${column.key}.${groupKey}.${subColumn.key}`;
+                                            return renderFormField({
+                                                ...subColumn,
+                                                key: fullKey,
+                                                value: value
+                                            });
+                                        })}
+                                    </GroupContent>
+                                </GroupGroup>
+                            ))}
+                        </GroupContainer>
+                    </FormGroup>
+                );
             case 'textarea':
                 return (
                     <FormGroup key={column.key}>
                         <Label>{column.label}</Label>
                         <TextArea
                             name={column.key}
-                            value={formData[column.key] || ''}
+                            value={value}
                             onChange={handleChange}
                         />
                     </FormGroup>
                 );
             case 'image':
-                const isMultiple = column.multiple || false;
                 if (isMultiple) {
                     return (
                         <FormGroup key={column.key}>
                             <Label>{column.label}</Label>
                             <ImageListContainer>
-                                {(formData[column.key] || []).map((image, index) => (
-                                    <ImageItem key={index}>
-                                        <MoveButton onClick={() => moveImage(index, -1)}>↑</MoveButton>
-                                        <MoveButton onClick={() => moveImage(index, 1)}>↓</MoveButton>
-                                        <ImagePreview src={image instanceof File ? URL.createObjectURL(image) : image} />
-                                        <FileUpload
-                                            type="file"
-                                            accept="image/*"
-                                            onChange={(e) => {
-                                                const newImages = [...formData[column.key]];
-                                                newImages[index] = e.target.files[0];
-                                                setFormData(prev => ({
-                                                    ...prev,
-                                                    [column.key]: newImages
-                                                }));
-                                            }}
-                                        />
-                                    </ImageItem>
+                                {(value !== '' ? Object.entries(value) : []).map(([index, {product_image_uuid, image}]) => (
+                                    (!(product_image_uuid && !image)) && (
+                                        <ImageItem key={index} ref={(element) => imageItemsRef.current.push(element)}>
+                                            <MoveButton onClick={(e) => moveImage(e, column.key, index, -1)}>↑</MoveButton>
+                                            <MoveButton onClick={(e) => moveImage(e, column.key, index, 1)}>↓</MoveButton>
+                                            <DeleteButton onClick={(e) => deleteImage(e, column.key, index)}></DeleteButton>
+                                            <FileUploadLabel>
+                                                <FileUpload
+                                                    type="file"
+                                                    accept="image/*"
+                                                    onChange={(e) => updateImage(e, column.key, index)}
+                                                />
+                                                <span>انتخاب</span>
+                                            </FileUploadLabel>
+                                            <ImagePreview 
+                                                src={image instanceof File ? 
+                                                    URL.createObjectURL(image) : 
+                                                    image ? `${image}` : null
+                                                } 
+                                                className="image-list"
+                                            />
+                                        </ImageItem>
+                                    )
                                 ))}
-                                <Button onClick={() => {
+                                <Button className="add-image" onClick={(e) => {
+                                    e.preventDefault();
                                     setFormData(prev => ({
                                         ...prev,
-                                        [column.key]: [...(prev[column.key] || []), null]
+                                        [column.key]: [...prev[column.key], {}]
                                     }));
                                 }}>
-                                    Add Image
+                                    افزودن تصویر
                                 </Button>
                             </ImageListContainer>
                         </FormGroup>
                     );
                 } else {
+                    // Handle single image case if needed
                     const imageSrc = formData[column.key] instanceof File ? 
                         URL.createObjectURL(formData[column.key]) : 
                         formData[column.key] || '';
@@ -526,16 +817,19 @@ const CRUDTable = ({
                                     <ImagePreview 
                                         src={imageSrc !== '' ? imageSrc : null} 
                                     />
-                                    <FileUpload
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={(e) => {
-                                            setFormData(prev => ({
-                                                ...prev,
-                                                [column.key]: e.target.files[0]
-                                            }));
-                                        }}
-                                    />
+                                    <FileUploadLabel>
+                                        <FileUpload
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={(e) => {
+                                                setFormData(prev => ({
+                                                    ...prev,
+                                                    [column.key]: e.target.files[0]
+                                                }));
+                                            }}
+                                        />
+                                        <span>انتخاب</span>
+                                    </FileUploadLabel>
                                 </ImageItem>
                             </ImageListContainer>
                         </FormGroup>
@@ -548,7 +842,7 @@ const CRUDTable = ({
                         <Input className="checkbox"
                             type="checkbox"
                             name={column.key}
-                            checked={formData[column.key] || false}
+                            checked={value || false}
                             onChange={handleChange}
                         />
                     </FormGroup>
@@ -556,23 +850,74 @@ const CRUDTable = ({
             case 'select':
                 const {pkColumn, options} = refData[column.ref] || (refCallbacks[column.ref]?.() || []);
                 
-                return (
-                    <FormGroup key={column.key}>
-                        <Label>{column.label}</Label>
-                        <Select
-                            name={column.key}
-                            value={formData[column.key]?.[pkColumn] || formData[column.key] || ''}
-                            onChange={handleChange}
-                        >
-                            <option value="">انتخاب کنید</option>
-                            {options?.map(option => (
-                                <option key={option[pkColumn]} value={option[pkColumn]}>
-                                    {option.title}
-                                </option>
-                            ))}
-                        </Select>
-                    </FormGroup>
-                );
+                if (isMultiple) {
+                    const selectedValues = value || [];
+                    const selectedOptions = selectedValues.map(value => 
+                        options?.find(option => option[pkColumn] === value)
+                    ).filter(Boolean);
+        
+                    return (
+                        <FormGroup key={column.key}>
+                            <Label>{column.label}</Label>
+                            <SelectContainer>
+                                <SelectList>
+                                    {options?.map(option => (
+                                        <SelectOption 
+                                            key={option[pkColumn]} 
+                                            onClick={() => {
+                                                if (!selectedValues.includes(option[pkColumn])) {
+                                                    setFormData(prev => ({
+                                                        ...prev,
+                                                        [column.key]: [...(prev[column.key] || []), option[pkColumn]]
+                                                    }));
+                                                }
+                                            }}
+                                        >
+                                            {option.title}
+                                        </SelectOption>
+                                    ))}
+                                </SelectList>
+                                <SelectedItemsContainer>
+                                    {selectedOptions.map(option => (
+                                        <SelectedItem key={option[pkColumn]}>
+                                            <RemoveButton 
+                                                onClick={() => {
+                                                    setFormData(prev => ({
+                                                        ...prev,
+                                                        [column.key]: prev[column.key].filter(
+                                                            value => value !== option[pkColumn]
+                                                        )
+                                                    }));
+                                                }}
+                                            >
+                                                <RemoveIcon>×</RemoveIcon>
+                                            </RemoveButton>
+                                            {option.title}
+                                        </SelectedItem>
+                                    ))}
+                                </SelectedItemsContainer>
+                            </SelectContainer>
+                        </FormGroup>
+                    );
+                } else {
+                    return (
+                        <FormGroup key={column.key}>
+                            <Label>{column.label}</Label>
+                            <Select
+                                name={column.key}
+                                value={value?.[pkColumn] || value}
+                                onChange={handleChange}
+                            >
+                                <option value="">انتخاب کنید</option>
+                                {options?.map(option => (
+                                    <option key={option[pkColumn]} value={option[pkColumn]}>
+                                        {option.title}
+                                    </option>
+                                ))}
+                            </Select>
+                        </FormGroup>
+                    );
+                }
             default:
                 return (
                     <FormGroup key={column.key}>
@@ -580,7 +925,7 @@ const CRUDTable = ({
                         <Input
                             type="text"
                             name={column.key}
-                            value={formData[column.key] || ''}
+                            value={value}
                             onChange={handleChange}
                         />
                     </FormGroup>
@@ -662,13 +1007,22 @@ const CRUDTable = ({
             </PaginationContainer>
 
             {showModal && (
-                <Modal>
-                    <ModalContent>
+                <Modal id="form-modal">
+                    <ModalContent className={isGrid ? 'grid' : ''}>
+                        <CloseButton onClick={() => setShowModal(false)}>×</CloseButton>
                         <h2 className='text-lg font-semibold mb-6'>{editingPK ? 'ویرایش' : 'افزودن'} {title}</h2>
                         <form onSubmit={handleSubmit}>
-                            {formColumns.map(column => (
-                                renderFormField(column)
-                            ))}
+                            {isGrid ? (
+                                <FormGrid>
+                                    {formColumns.map(column => (
+                                        renderFormField(column)
+                                    ))}
+                                </FormGrid>
+                            ) : (
+                                formColumns.map(column => (
+                                    renderFormField(column)
+                                ))
+                            )}
                             <Button className="save" type="submit">ذخیره</Button>
                             <Button className="cancel" type="button" onClick={() => setShowModal(false)}>
                                 انصراف

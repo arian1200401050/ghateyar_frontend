@@ -11,15 +11,18 @@ function SummaryHeader ({product}) {
 			<div className="mb-2">
 				{/* Menu Navigation Bar */}
 				<nav>
-					<ul className="flex space-x-4 m-0">
-						{product.menus.map((menu, index) => (
-							<li key={index} className={`${index < product.menus.length - 1 && "after:content-['/']"}
-								after:relative after:right-2 after:text-xs`}>
-								<Link to={`/menu/${menu.menuId}`} className="!text-sky-400 text-lg md:!text-xs font-bold">
-									{menu.title}
-								</Link>
-							</li>
-						))}
+					<ul className="flex space-x-4 m-0 flex-wrap">
+						{product.menu.map((menu, index) => {
+							console.log(menu)
+							return (
+								<li key={index} className={`${index < product.menu.length - 1 && "after:content-['/']"}
+									after:relative after:right-2 after:text-xs`}>
+									<Link to={`/menu/${menu.menu_id}`} className="!text-sky-400 text-lg md:!text-xs font-bold">
+										{menu.title}
+									</Link>
+								</li>
+							)
+						})}
 					</ul>
 				</nav>
 			</div>
@@ -39,7 +42,7 @@ function SummaryMetaTag ({product}) {
 			{/* Points */}
 			<div className="flex items-center gap-x-1">
 				<span className={`h-0 w-0 p-1.75 inline-block bg-contain bg-no-repeat bg-center`}
-					style={{backgroundImage: `url(${config.MEDIA_ROOT}/icon//star-yellow.png)`}}
+					style={{backgroundImage: `url(/icon/star-yellow.png)`}}
 				></span>
 				<span className="text-base md:!text-sm">{product.score}</span> 
 				<span className="text-md md:!text-xs text-gray-400">(امتیاز {product.buyCount} خرید)</span>
@@ -57,24 +60,9 @@ function SummaryMetaTag ({product}) {
 }
 
 function SummaryProduct ({ product }) {
-	const [activeImage, setActiveImage] = useState(product.images[0]);
+	const [activeImage, setActiveImage] = useState(product?.images?.[0] || null);
 	const summarySection = useRef();
 	const { screenWidth, isMobile } = useScreenWidth();
-
-	// should be substituted with translation solution
-	const getLabel = (label) => {
-		switch (label) {
-			case ('price'): return 'قیمت'
-			case ('color'): return 'رنگ'
-			case ('material'): return 'جنس'
-			case ('weight'): return 'وزن'
-			case ('width'): return 'عرض'
-			case ('length'): return 'طول'
-			case ('height'): return 'ارتفاع'
-			case (''): return ''
-			default: return label
-		}
-	}
 
 	useEffect(() => {
 		const setBlowUp = () => {
@@ -110,7 +98,7 @@ function SummaryProduct ({ product }) {
 				<div>
 					<div className="flex justify-center items-center mb-4 md:!mb-0 md:!p-10">
 						<img
-							src={`${config.MEDIA_ROOT}/product/${activeImage}`} alt={product.title}
+							src={`${activeImage}`} alt={product.title}
 							className="w-[80%] md:!w-full h-auto rounded-lg object-contain"
 							id="product-image"
 						/>
@@ -120,7 +108,7 @@ function SummaryProduct ({ product }) {
 						{product.images.map((image, index) => (
 							<img
 								key={index}
-								src={`${config.MEDIA_ROOT}/product/${image}`}
+								src={`${image}`}
 								alt={`${product.title} thumbnail ${index + 1}`}
 								className="w-20 h-20 cursor-pointer rounded-lg border-1 border-gray-400 hover:shadow-md"
 								onClick={() => setActiveImage(image)}
@@ -141,13 +129,13 @@ function SummaryProduct ({ product }) {
 									<h2 className="text-xl md:!text-base !font-bold mb-4">ویژگی ها</h2>
 								</div>
 								<div className="grid grid-cols-3 gap-x-2 gap-y-2">
-									{Object.entries(product.mainAttributes).map(([label, value], index) => (
-										<div key={index} className="flex  py-3 px-3 !pl-[20%]
+									{Object.entries(product.attributes.primary).map(([key, value], index) => (
+										<div key={index} className="flex py-3 px-3 !pl-[20%]
 											rounded-lg bg-gray-100 !shadow-xs shadow-gray-300">
 											<span className="inline-block text-gray-500 text-lg md:!text-sm 
 												after:content-[':'] after:mr-1 after:ml-2"
 											>
-												{getLabel(label)}
+												{key}
 											</span>
 											<span className="text-lg md:!text-sm mr-1"> {value}</span>
 										</div>
@@ -162,8 +150,8 @@ function SummaryProduct ({ product }) {
 						<div className="mt-auto">
 							{/* Tags (Horizontal List) */}
 							<div className="flex space-x-2 border-t-1 border-gray-400 mt-4 pt-3">
-								{product.categories.map((item, index) => (
-									<Link key={index} to={`/category/${item.categoryId}`} 
+								{product.category_set.map((item, index) => (
+									<Link key={index}
 										className="bg-blue-600 text-xl md:!text-base text-white px-3 py-2 rounded-md !shadow-xs !shadow-gray-800">
 										{item.title}
 									</Link>
@@ -193,10 +181,10 @@ function SummaryProduct ({ product }) {
 									<span className="mr-4 text-xl md:!text-lg font-semibold">ویدیوها</span>
 								</div>
 								<div className="pt-5 pr-5 md:!pt-3 md:!pr-2">
-									<Link to={`/video/${product.video.id}`} className="block w-fit text-blue-500">
+									<Link to={`/video/${product.video.video_id}`} className="block w-fit text-blue-500">
 										<div className="flex w-fit">
 											<div className="w-50 h-30 md:!w-35 md:!h-20 rounded-md overflow-hidden">
-												<img src={`${config.MEDIA_ROOT}/video/${product.video.id}/thumbnail.jpg`} 
+												<img src={`${config.MEDIA_ROOT}/video/${product.video.video_id}/thumbnail.jpg`} 
 													alt={product.video.title}
 													className="w-full h-full object-cover" />
 											</div>
@@ -216,11 +204,11 @@ function SummaryProduct ({ product }) {
 									<span className="mr-4 text-xl md:!text-lg font-semibold">مقالات</span>
 								</div>
 								<div className="pt-5 pr-5 md:!pt-3 md:!pr-2">
-									<Link to={`/mag/${product.article.id}`} className="block w-fit text-blue-500">
+									<Link to={`/mag/${product.article.article_id}`} className="block w-fit text-blue-500">
 										<div className="flex w-fit">
 											<div className="w-50 h-30 md:!w-35 md:!h-20 rounded-md overflow-hidden">
-												<img src={`${config.MEDIA_ROOT}/article/${product.article.id}/thumbnail.jpg`} 
-													alt={product.video.title}
+												<img src={`${config.MEDIA_ROOT}/article/${product.article.article_id}/thumbnail.jpg`} 
+													alt={product.article.title}
 													className="w-full h-full object-cover" />
 											</div>
 											<div className="flex items-center">

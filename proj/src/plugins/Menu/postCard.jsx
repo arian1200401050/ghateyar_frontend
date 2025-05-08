@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import config from '#src/config';
 
 
-function PaginationControl ({ currentPage, totalPages, itemsPerPage, setCurrentPage }) {
+function PaginationControl ({ currentPage, totalPages, postsPerPage, setCurrentPage }) {
   return (
     <div className="flex justify-center items-center space-x-2">
       <span className="text-xl md:!text-md">نمایش : </span>
@@ -19,7 +19,7 @@ function PaginationControl ({ currentPage, totalPages, itemsPerPage, setCurrentP
                   cursor-pointer transition duration-200`}
                 onClick={() => setCurrentPage(index + 1)}
               >
-                {(index * itemsPerPage) + 1}
+                {(index * postsPerPage) + 1}
               </button>
               {index < totalPages - 1 && <span className="text-gray-500 mr-1 ml-2 cursor-default"> &#47; </span>}
             </li>
@@ -31,19 +31,19 @@ function PaginationControl ({ currentPage, totalPages, itemsPerPage, setCurrentP
 }
 
 function PostCard ({ post }) {
-  return (
+  return post && (
     <div className="flex justify-center items-center gap-0 m-2">
-      <Link to={`/product/${post.id}`}
+      <Link to={`/product/${post.product_uuid}/`}
         className="block w-full h-[100%] border-1 border-gray-300 rounded-xl overflow-hidden shadow-xs shadow-slate-400
           hover:shadow-md hover:shadow-slate-500 hover:h-[105%]
           transition-[height] transition-[box-shadow] 
           duration-200 ease-linear">
         <div className="w-full h-65 flex justify-center items-center">
-          <img src={`${config.MEDIA_ROOT}/${post.image}`} alt={post.title} className="size-[90%] object-contain" />
+          <img src={`${post.images[0]}`} alt={post.title} className="size-[90%] object-contain" />
         </div>
         <div className="!p-5 !pt-4 border-stone-300">
           <h3 className="text-2xl md:!text-[.95rem]/6 text-center font-semibold pb-3 md:!pb-0">{post.title}</h3>
-          <p className="text-lg md:!text-sm text-center text-gray-500">{post.content}</p>
+          <p className="text-lg md:!text-sm text-center text-gray-500">{post.description}</p>
         </div>
       </Link>
     </div>
@@ -57,7 +57,7 @@ export default function PostCards( { posts, paginationInfo }) {
         <button className="font-normal text-xl md:!text-md flex items-center
           before:content-['≡'] before:text-3xl before:ml-1">مشاهده فیلترها</button>  
         <PaginationControl currentPage={paginationInfo.currentPage} totalPages={paginationInfo.totalPages} 
-          itemsPerPage={paginationInfo.itemsPerPage} setCurrentPage={paginationInfo.setCurrentPage}
+          postsPerPage={paginationInfo.postsPerPage} setCurrentPage={paginationInfo.setCurrentPage}
         />
       </div>
 

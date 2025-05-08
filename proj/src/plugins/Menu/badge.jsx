@@ -36,11 +36,11 @@ const _Badge = ({badges}) => {
   return (
     <div className="flex flex-wrap gap-4 justify-start mb-4 pr-4 pl-4">  
       {badges.map((badge, index) => (  
-        <Link to={badge.link} key={index} 
+        <Link to={`/menu/${badge.menu_id}/`} key={index} 
           className={`bg-blue-500 text-white font-bold md:!font-normal text-lg md:!text-base py-3 md:!py-2 px-4 rounded-lg 
 	      cursor-pointer hover:bg-blue-600 transition duration-200`}
         >
-          {badge.label}
+          {badge.title}
         </Link>
       ))}  
     </div>

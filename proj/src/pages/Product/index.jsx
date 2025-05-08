@@ -1,88 +1,68 @@
 import { Helmet } from 'react-helmet';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
+import config from '#src/config';
+import NotFound from '#src/plugins/Error/NotFound';
 import Summary from "#src/plugins/Product/summary";
 import Supplementary from "#src/plugins/Product/supplementary";
 
 
 const ProductPage = () => {
-    const product = {
-        title: "موتور جاروبرقی میکا",
-        description: "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.",
-        score: 4.5,
-        price: "150000",
-        mainAttributes: {
-            color: "قرمز",
-            material: "برنز",
-            weight: "900",
-            width: "150",
-            length: "125",
-            height: "30",
-        },
-        otherAttributes: {
-          group1: {
-              feature1: "Feature 1",
-              feature2: "Feature 2",
-          },
-          group2: {
-              feature3: "Feature 3",
-              feature4: "Feature 4",
-              feature5: "Feature 5",
-          },
-        },
-        images: ["product_1.png", "product_2.png", "product_3.png"],
-        menus: [
-            { menuId: 1, title: "محصولات" },
-            { menuId: 2, title: "جاروبرقی" },
-            { menuId: 3, title: "پاکت" },
-        ],
-        categories: [
-            { categoryId: 1, title: "فلزی" },
-            { categoryId: 2, title: "لوازم آشپزخانه" },
-            { categoryId: 3, title: "الکتریکی" },
-        ],
-        video: {
-            id: 1,
-            title: "ویدیو اول",
-            description: "ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است"
-        },
-        article: {
-            id: 1,
-            title: "مقاله اول",
-            description: "کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه "
-        },
-        comments: [
-            {
-                id: 1,
-                text: "This is the first comment.",
-                replies: [
-                    { id: 1, text: "This is a reply to the first comment." },
-                    { id: 2, text: "Another reply to the first comment." },
-                ],
-            },
-            {
-                id: 2,
-                text: "This is the second comment.",
-                replies: [],
-            },
-            {
-                id: 3,
-                text: "This is the third comment.",
-                replies: [{ id: 3, text: "Reply to the third comment." }],
-            },
-        ],
-    };
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);  
+    const [error, setError] = useState(null);  
+    const [product, setProduct] = useState(null);  
+    const { productId } = useParams();
 
-    const { otherAttributes: otherInfo, comments, ...mainInfo } = product;
-    mainInfo.commentsCount = 3;
+    useEffect(() => {
+        console.log(productId);
+
+        const fetchProduct = async (productId) => {
+            try {  
+                const productRes = await axios.get(`${config.BACKEND_URL}/api/v1/product/product/${productId}/`);
+                console.log(productRes);
+                setProduct(productRes.data);  
+                setProduct(prev => ({
+                    ...prev, 
+                    // bug fixes
+                    comments: {total: 0, rows: []},
+                    article: {article_id: 1, title: 'مقاله اول'},
+                    video: {video_id: 1, title: 'ویدیو اول'}
+                }));
+                setLoading(false);  
+            } catch (err) {  
+                setError(err);  
+                setLoading(false);  
+            }  
+        };
+
+        fetchProduct(productId); 
+    }, [])
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        console.log(`Error loading product: ${error.message}`);
+
+        return <NotFound>{`محصول با شناسه "${productId}" یافت نشد!`}</NotFound>
+    }
+
+    if (!product) {
+        return <div>Product not found</div>;
+    }
 
     return (
         <div className="main-container !w-(--main-section-full-width) mx-auto p-5">
-          <Helmet>
-              <title>محصول</title>    
-          </Helmet>
+            <Helmet>
+                <title>{`محصول ${product.title}`}</title>    
+            </Helmet>
 
-          <Summary product={mainInfo} />
-          <Supplementary infoGroup={otherInfo} comments={comments} />
+            <Summary product={product} />
+            <Supplementary attributes={product.attributes.secondary} comments={product.comments} />
         </div>
     );
 };

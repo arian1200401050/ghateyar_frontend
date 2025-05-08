@@ -8,12 +8,12 @@ import config from "../../config.js";
 function SlideItem ({ index, activeIndex, title, description, imagePath, url}) {
     return (
         <div className={`carousel-item w-full ${activeIndex === index ? "block" : "hidden"}`}>  
-            <div className="w-full h-101 relative">  
+            <div className="w-full relative">  
                 <Link to={url}>
-                    <div className="h-100">
+                    <div className="">
                         <img  
                             src={imagePath}  
-                            className="w-full h-full object-cover"  
+                            className="w-full h-full object-contain"  
                             alt={title}  
                         />
                     </div>  
@@ -98,7 +98,7 @@ export default function HomeSlider() {
                 <div  
                     id="home-slider"  
                     className="main-section carousel slide w-(--main-section-width) 
-                        relative my-5 mx-auto border-2 border-gray-300 rounded-lg"  
+                        relative my-5 mx-auto border-2 border-gray-300 rounded-lg overflow-hidden"  
                     data-bs-ride="carousel"  
                 >  
                     <div className="carousel-indicators flex space-x-2 px-2 py-2 m-0 bg-gray-400 z-29
@@ -106,8 +106,7 @@ export default function HomeSlider() {
                         {homeSlides.map((_, index) => (  
                             <button   
                                 key={index} type="button"  
-                                className={`h-0 w-0 py-1 px-5 md:py-[.175rem] md:px-4 rounded-md opacity-100
-                                    ${activeIndex === index ? "bg-white" : "bg-gray-500"}`}  
+                                className={`h-0 w-0 py-1 px-5 md:py-[.175rem] md:px-4 rounded-md opacity-100 cursor-pointer ${activeIndex === index ? "bg-white" : "bg-gray-500"}`}  
                                 data-key={index}
                                 data-bs-target="#home-slider"  
                                 data-bs-slide-to={index}  

@@ -2,38 +2,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const PaginationText = ({ currentPage, itemsPerPage, totalItems}) => {
+const PaginationText = ({ currentPage, postsPerPage, totalPages}) => {
   return (
     <div className="text-lg md:!text-sm text-gray-600">  
-      نمایش {(currentPage - 1) * itemsPerPage + 1}–{Math.min(currentPage * itemsPerPage, totalItems)} از {totalItems} نتیجه  
+      نمایش {(currentPage - 1) * postsPerPage + 1}–{Math.min(currentPage * postsPerPage, totalPages)} از {totalPages} نتیجه  
     </div> 
   )
 }
 
 
-const _Breadcrumb = ({ items }) => {
-  const [menuPath, setMenuPath] = useState();
-  const [loading, setLoading] = useState(null);  
-  const [error, setError] = useState(null);  
-
-  useEffect(() => {  
-    async function fetchData() {  
-      await axios
-          .get(`${config.BACKEND_URL}/api/v1/public/menu-path/`)
-          .then((res) => {
-              setMenuPath(res.data); // Changed state variable  
-              setLoading(false);  
-          })
-          .catch((err) => {
-              setError(err);  
-              setLoading(false);  
-          });
-    }  
-
-    // fetchData();  
-  }, []); 
-
-
+const _Breadcrumb = ({ items, error, loading }) => {
   if (loading) {  
     return <p>Loading...</p>;  
   }  
@@ -45,27 +23,34 @@ const _Breadcrumb = ({ items }) => {
   return (
     <nav className="text-xl md:!text-sm text-gray-600">
       <ul className="flex m-0">
-        {items.map((item, index) => (
+        {items.map((item, index) => {
+          debugger;
+          return (
           <li key={index} className="">
-            <Link to={item.link} className="!text-stone-600 hover:text-blue-600">
-              {item.label}
+            <Link to={`/menu/${item.menu_id}/`} className="!text-stone-600 hover:text-blue-600">
+              {item.title}
             </Link>
             {index < items.length - 1 && <span className="text-stone-600 mr-1 ml-2"> &#47; </span>}
           </li>
-        ))}
+        )})}
       </ul>
     </nav>
   );
 };
 
 
-const Breadcrumb = ({items, paginationInfo}) => {
+const Breadcrumb = ({breadcrumbInfo, paginationInfo}) => {
+  useEffect(() => {
+    console.log(breadcrumbInfo)
+  })
   return (
     <div className="menu-page__breadcrumb-section mb-4">  
       <div className="menu-page__breadcrumb-top flex justify-between border-b-1 border-stone-300 pb-4">
-        <_Breadcrumb items={items}/>
-        <PaginationText currentPage={paginationInfo.currentPage} itemsPerPage={paginationInfo.itemsPerPage}
-          totalItems={paginationInfo.totalItems}
+        <_Breadcrumb items={breadcrumbInfo.items} error={breadcrumbInfo.error} 
+          loading={breadcrumbInfo.loading}
+        />
+        <PaginationText currentPage={paginationInfo.currentPage} postsPerPage={paginationInfo.postsPerPage}
+          totalPages={paginationInfo.totalPages}
         />
       </div>
     </div>

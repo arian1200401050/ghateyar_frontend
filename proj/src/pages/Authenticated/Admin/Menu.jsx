@@ -9,7 +9,7 @@ const MenuPage = () => {
 
     const fetchMenuItems = async () => {
         try {
-            const response = await axios.get(`${config.BACKEND_URL}/api/v1/public/admin/menu/select_combobox/`, {
+            const menuItemsRes = await axios.get(`${config.BACKEND_URL}/api/v1/public/admin/menu/select_combobox/`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                 }
@@ -17,7 +17,7 @@ const MenuPage = () => {
             // reformat the response data to be used in the select element
             const menuItems = {
                 "pkColumn": "menu_uuid",
-                "options": response.data.map(item => (
+                "options": menuItemsRes.data.map(item => (
                     {
                         "menu_uuid":item.menu_uuid, 
                         "title": `${item.parent ? item.parent.title : '#'} -> ${item.title}`

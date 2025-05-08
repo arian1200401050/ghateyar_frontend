@@ -71,8 +71,8 @@ export default function HomeBrands() {
         </div>  
         <div className="flex gap-4 overflow-scroll md:!overflow-hidden" ref={barWrapperRef}>  
           <div className="flex flex-nowrap transition-transform duration-500" ref={barRef}>  
-            {brands.map((item) => (  
-              <div key={item.id} className="w-36 h-16 flex-shrink-0 mx-3 sm:!mx-6 ">  
+            {brands.map((item, index) => (  
+              <div key={index} className="w-36 h-16 flex-shrink-0 mx-3 sm:!mx-6 ">  
                 <CategoryLogo $logo={`${item.brand.logo}`}   
                   className="block bg-white w-full h-full rounded border-1 !border-gray-300 bg-center bg-no-repeat"  
                 />  

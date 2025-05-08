@@ -8,7 +8,7 @@ const CommentsProduct = ({ comments }) => {
     };
     return (
         <div id="comments" className="my-4">
-            {comments.slice(0, visibleComments).map((comment) => (
+            {comments.rows.slice(0, visibleComments).map((comment) => (
                 <div key={comment.id} className="comment">
                     <div className="comment-text">{comment.text}</div>
                     {comment.replies.length > 0 && (
