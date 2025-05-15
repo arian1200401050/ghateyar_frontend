@@ -71,10 +71,10 @@ function SummaryProduct ({ product }) {
 					width : 400, // طول لنز
 					height : 400, // ارتفاع لنز
 					scale : 1,  //مقیاس بزرگنمایی
-					background : '#6e9cdb', // رنگ پس زمینه در صورتی که از تصویر بیرون رفت
-					border : '2px solid #777', // حاشیه لنز
-					round : true, // اینکه لنز گرد باشد یا خیر
-					shadow : 'none' // ویژگی های سایه
+					// background : '#6e9cdb', // رنگ پس زمینه در صورتی که از تصویر بیرون رفت
+					// border : '2px solid #777', // حاشیه لنز
+					// round : true, // اینکه لنز گرد باشد یا خیر
+					// shadow : 'none' // ویژگی های سایه
 				});
 			}
 		}

@@ -36,14 +36,8 @@ const MenuPage = () => {
         fetchMenuItems();
     }, []);
 
-    const columns = [
-        { key: 'title', label: 'عنوان', showInList: true },
-        { key: 'level', label: 'سطح منو', showInList: true },
-        { key: 'order', label: 'ترتیب', showInList: true },
-        { key: 'is_active', label: 'فعال', render: (item) => item.is_active ? 'بله' : 'خیر' }
-    ];
-
     const listColumns = [
+        { key: 'menu_id', label: 'شناسه' },
         { key: 'title', label: 'عنوان' },
         { key: 'order', label: 'ترتیب', },
         { key: 'level', label: 'سطح منو' },

@@ -477,14 +477,14 @@ const CRUDTable = ({
         try {
             setLoading(true);
             const response = await axios.get(`${config.BACKEND_URL}/${endpoint}/`, {
-                params: { page, page_size: pageSize },
+                params: { limit: pageSize, offset: (page - 1) * pageSize },
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                 }
             });
             
-            setListData(response.data);
-            setTotalPages(Math.ceil(response.data.length / pageSize));
+            setListData(response.data.results);
+            setTotalPages(Math.ceil(response.data.count / pageSize));
             setCurrentPage(page);
         } catch (error) {
             console.error('Error fetching items:', error);
