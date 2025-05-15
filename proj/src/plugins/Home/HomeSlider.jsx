@@ -66,18 +66,18 @@ export default function HomeSlider() {
     const [loading, setLoading] = useState(true);  
     const [error, setError] = useState(null);  
 
-    const fetchData = async () => {  
-        try {  
-            const { data } = await axios.get(`${config.BACKEND_URL}/api/v1/public/home-slider/`);  
-            setHomeSlides(data);  
-            setLoading(false);  
-        } catch (err) {  
-            setError(err);  
-            setLoading(false);  
-        }  
-    };  
-
     useEffect(() => {
+        const fetchData = async () => {  
+            try {  
+                const { data } = await axios.get(`${config.BACKEND_URL}/api/v1/public/home-slider/`);  
+                setHomeSlides(data);  
+                setLoading(false);  
+            } catch (err) {  
+                setError(err);  
+                setLoading(false);  
+            }  
+        };  
+        
         fetchData();
     }, []);
 

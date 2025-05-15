@@ -8,6 +8,7 @@ import styled from "styled-components";
 import config from "#src/config.js";
 import { AuthProvider, useAuth } from '#src/context/AuthContext';
 import { AdminProvider } from '#src/context/AdminContext';
+import { MenuProvider } from '#src/context/MenuContext';
 
 import Header from "#src/plugins/Header/index.jsx";
 import Footer from "#src/plugins/Footer/index.jsx";
@@ -105,7 +106,11 @@ export default function App() {
                 </Helmet>
                 <Routes>
                     {/* Routes with Header + Footer */}
-                    <Route element={<HeaderFooterLayout />}>
+                    <Route element={
+                        <MenuProvider>
+                            <HeaderFooterLayout />
+                        </MenuProvider>
+                    }>
                         <Route path="/" element={<HomePage />} />
                         <Route path="/menu/:menuId" element={<MenuPage />} />
                         <Route path="/product/:productId" element={<ProductPage />} />

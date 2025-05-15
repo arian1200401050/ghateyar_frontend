@@ -1,10 +1,9 @@
 import { useEffect, useState, useCallback, useRef } from 'react';   
 import debounce from 'lodash.debounce';   
 import { Link } from 'react-router-dom';  
-import axios from 'axios';  
 import styled from 'styled-components';
 
-import config from '#src/config.js';  
+import { useMenu } from '#src/context/MenuContext';
 import { useScreenWidth } from '#src/context/ScreenWidthContext';
 import './resources/navBar.css';
 
@@ -125,9 +124,7 @@ function DropDown ({ navBar, items, level, isOpen, path }) {
 
 export default function NavBar() {  
     const [isNavOpen, setIsNavOpen] = useState(false);  
-    const [menu, setMenu] = useState([]);  
-    const [loading, setLoading] = useState(true);  
-    const [error, setError] = useState(null);  
+    const { menu, loading, error } = useMenu();
     const [openDropdownIndex, setOpenDropdownIndex] = useState(null);  
     const { screenWidth, isMobile } = useScreenWidth();
     const navBar = useRef(null);
@@ -167,17 +164,6 @@ export default function NavBar() {
     );   
 
     useEffect(() => {  
-        const fetchData = async () => {  
-            try {  
-                const { data } = await axios.get(`${config.BACKEND_URL}/api/v1/public/menu/tree/`);  
-                setMenu(data);  
-                setLoading(false);  
-            } catch (err) {  
-                setError(err);  
-                setLoading(false);  
-            }  
-        };  
-
         function handleClickOutside(event) {  
             // Check if the click was outside the target element  
             if (!navBarInner.current.contains(event.target) && !toggleButton.current.contains(event.target)) {  
@@ -186,11 +172,16 @@ export default function NavBar() {
             }  
         }  
 
-        fetchData();  
         if (isMobile) {
             document.addEventListener('click', handleClickOutside);
         }
-    }, []);  
+
+        return () => {
+            if (isMobile) {
+                document.removeEventListener('click', handleClickOutside);
+            }
+        };
+    }, [isMobile]);  
   
     const toggleNavbar = () => {  
         setIsNavOpen((prev) => !prev);  
@@ -203,6 +194,8 @@ export default function NavBar() {
     if (loading) {
         // return <div>Loading...</div>;
     }
+
+    // Show error state if needed
     if (error) {
         return <div>Error: {error.message}</div>;
     }
