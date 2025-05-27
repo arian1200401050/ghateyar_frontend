@@ -1,11 +1,11 @@
 import { Helmet } from 'react-helmet';
 
 import config from '#src/config.js'
-import HomeSlider from "#src/plugins/Home/HomeSlider.jsx";
-import HomeBrands from "#src/plugins/Home/HomeBrands.jsx";
-import HomeCategories from "#src/plugins/Home/HomeCategories.jsx";
-import HomeArticles from "#src/plugins/Home/HomeArticles.jsx";
-import HomeProducts from "#src/plugins/Home/HomeProducts.jsx";
+import HomeSlider from "#src/plugins/Home/homeSlider.jsx";
+import HomeBrands from "#src/plugins/Home/homeBrands.jsx";
+import HomeCategories from "#src/plugins/Home/homeCategories.jsx";
+import HomeArticles from "#src/plugins/Home/homeArticles.jsx";
+import HomeProducts from "#src/plugins/Home/homeProducts.jsx";
 
 
 export default function HomePage() {

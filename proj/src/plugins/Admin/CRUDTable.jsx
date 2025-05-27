@@ -1,4 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { 
+    ClassicEditor, 
+    Bold, Code, Italic, Strikethrough, Subscript, Superscript, Underline,
+    Font,
+    Heading,
+    Alignment,
+    Indent, IndentBlock,
+} from 'ckeditor5'; 
 import styled from 'styled-components';
 import axios from 'axios';
 import lodash from 'lodash';
@@ -469,9 +477,10 @@ const CRUDTable = ({
     const [pageSize] = useState(10);
     const [scrollPosition, setScrollPosition] = useState(0);
     const [pageNumbersScrollDivision, setPageNumbersScrollDivision] = useState(0);
-    const pageNumbersContainerRef = React.useRef(null);
-    const pageNumberWrapperRef = React.useRef(null);
-    const imageItemsRef = React.useRef([]);
+    const pageNumbersContainerRef = useRef(null);
+    const pageNumberWrapperRef = useRef(null);
+    const imageItemsRef = useRef([]);
+    const wordpadsRef = useRef({});
 
     const fetchList = async (page = 1) => {
         try {
@@ -723,6 +732,50 @@ const CRUDTable = ({
         
     }, [pageNumberWrapperRef.current]);
 
+    useEffect(() => {
+        console.log(wordpadsRef.current)
+        
+        const CKEditorConfig = {
+            licenseKey: '<YOUR_LICENSE_KEY>', // Or 'GPL'.
+            plugins: [ 
+                Bold, Code, Italic, Strikethrough, Subscript, Superscript, Underline,
+                Font,
+                Heading,
+                Alignment,
+                Indent, IndentBlock,
+            ],
+            toolbar: {
+                items: [
+                    'undo', 'redo',
+                    '|',
+                    'heading',
+                    '|',
+                    'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor',
+                    '|',
+                    'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
+                    '|',
+                    'link', 'uploadImage', 'blockQuote', 'codeBlock',
+                    '|',
+                    'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent'
+                ],
+                shouldNotGroupWhenFull: false
+            },
+        };
+
+        for (const columnKey in wordpadsRef.current) {
+            console.log(wordpadsRef.current[columnKey])
+
+            ClassicEditor
+            .create( wordpadsRef.current[columnKey], CKEditorConfig )
+            .then( editor => {
+                console.log(Array.from( editor.ui.componentFactory.names() ));
+            } )
+            .catch( error => {
+                console.error( error );
+            } );
+        }
+    }, [wordpadsRef.current])
+
     const renderFormField = (column) => {
         const isMultiple = column.isMultiple || false;
         const value = getValueByPath(formData, column.key) || '';
@@ -918,6 +971,19 @@ const CRUDTable = ({
                         </FormGroup>
                     );
                 }
+            case 'wordpad': 
+                return (
+                    <FormGroup key={column.key}>
+                        <Label>{column.label}</Label>
+                        <TextArea
+                            id={`wordpad_${column.key}`}
+                            ref={(element) => wordpadsRef.current[column.key] = element}
+                            name={column.key}
+                            value={value}
+                            onChange={handleChange}
+                        />
+                    </FormGroup>
+                );
             default:
                 return (
                     <FormGroup key={column.key}>

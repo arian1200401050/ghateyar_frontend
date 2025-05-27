@@ -18,6 +18,7 @@ import TestPage from "#src/pages/Test/index.jsx";
 import HomePage from "#src/pages/Home/index.jsx";
 import MenuPage from "#src/pages/Menu/index.jsx";
 import ProductPage from "#src/pages/Product/index.jsx";
+import ArticlePage from "#src/pages/Article/index.jsx";
 
 import LoginPage from '#src/pages/Authenticated/Login.jsx';
 import AdminLayout from '#src/pages/Authenticated/Admin/Layout';
@@ -28,6 +29,7 @@ import AdminHomeSliderPage from '#src/pages/Authenticated/Admin/HomeSlider';
 import AdminHomeCategoryPage from '#src/pages/Authenticated/Admin/HomeCategory';
 import AdminHomeBrandPage from '#src/pages/Authenticated/Admin/HomeBrand';
 import AdminProductPage from '#src/pages/Authenticated/Admin/Product';
+import AdminArticlePage from '#src/pages/Authenticated/Admin/Article';
 import AdminUserPage from '#src/pages/Authenticated/Admin/User';
 
 // Import public styles
@@ -114,6 +116,7 @@ export default function App() {
                         <Route path="/" element={<HomePage />} />
                         <Route path="/menu/:menuId" element={<MenuPage />} />
                         <Route path="/product/:productId" element={<ProductPage />} />
+                        <Route path="/article/:articleId" element={<ArticlePage />} />
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/__test" element={<TestPage />} />
                         
@@ -133,6 +136,7 @@ export default function App() {
                         }>
                             <Route path="brand" element={<AdminBrandPage />} />
                             <Route path="category" element={<AdminCategoryPage />} />
+                            <Route path="article" element={<AdminArticlePage />} />
                             <Route path="menu" element={<AdminMenuPage />} />
                             <Route path="home-slider" element={<AdminHomeSliderPage />} />
                             <Route path="home-brand" element={<AdminHomeBrandPage />} />

@@ -17,8 +17,6 @@ const ProductPage = () => {
     const { productId } = useParams();
 
     useEffect(() => {
-        console.log(productId);
-
         const fetchProduct = async (productId) => {
             try {  
                 const productRes = await axios.get(`${config.BACKEND_URL}/api/v1/product/product/${productId}/`);
