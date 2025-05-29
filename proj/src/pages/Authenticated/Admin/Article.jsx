@@ -74,7 +74,7 @@ const ArticlePage = () => {
         { 
             key: 'image', label: 'تصویر اصلی', 
             render: (item) => (
-                item.images ? <img src={item.banner} alt={item.title} style={{ width: '50px' }} /> : '-'
+                item.banner ? <img src={item.banner} alt={item.title} style={{ width: '200px' }} /> : '-'
             )
         },
         { 
@@ -86,10 +86,11 @@ const ArticlePage = () => {
 
     const formColumns = [
         { key: 'title', label: 'نام', elementType: 'text' },
-        { key: 'description', label: 'توضیحات', elementType: 'wordpad' },
-        { key: 'interview', label: 'مقدمه', elementType: 'wordpad' },
-        { key: 'content', label: 'متن', elementType: 'wordpad' },
         { key: 'menu', label: 'منو', elementType: 'select', ref: 'menus' },
+        { key: 'banner', label: 'تصویر اصلی', elementType: 'image', multiple: false },
+        // { key: 'description', label: 'توضیحات', elementType: 'wordpad' },
+        { key: 'interview', label: 'معرفی', elementType: 'wordpad' },
+        { key: 'content', label: 'متن اصلی', elementType: 'wordpad' },
         { 
             key: 'category_set', 
             label: 'دسته‌بندی',
@@ -99,7 +100,6 @@ const ArticlePage = () => {
         },
         { key: 'read_time', label: 'مدت زمان مطالعه', elementType: 'text' },
         { key: 'score', label: 'امتیاز', elementType: 'text' },
-        { key: 'view', label: 'بازدید', elementType: 'text' },
         { key: 'is_active', label: 'فعال', elementType: 'checkbox' },
     ];
 

@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+@media print {
+	body {
+		margin: 0 !important;
+	}
+}
+
+/* .main-container {
+	font-family: 'Lato';
+	width: fit-content;
+	margin-left: auto;
+	margin-right: auto;
+} */
+
+.ck {
+	direction: rtl;
+	text-align: right;
+}
+
+.ck-content {
+	line-height: 1.6;
+	word-break: break-word;
+	/* custom styles */
+	font-family: 'IRANSansX';
+	direction: rtl;
+	text-align: right !important;
+}
+
+.ck.ck-toolbar.ck-toolbar_grouping>.ck-toolbar__items {
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.editor-container_classic-editor .editor-container__editor {
+	min-width: 795px;
+	max-width: 795px;
+}

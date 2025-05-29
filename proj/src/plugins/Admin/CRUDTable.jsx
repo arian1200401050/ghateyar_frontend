@@ -1,13 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-    ClassicEditor, 
-    Bold, Code, Italic, Strikethrough, Subscript, Superscript, Underline,
-    Font,
-    Heading,
-    Alignment,
-    Indent, IndentBlock,
-} from 'ckeditor5'; 
-import styled from 'styled-components';
 import axios from 'axios';
 import lodash from 'lodash';
 
@@ -15,7 +6,11 @@ import config from '#src/config';
 import { useAdmin } from '#src/context/AdminContext';
 import { getValueByPath, setValueByPath } from '#src/utils/objectUtils';
 import { formDataToJson } from '#src/utils/formUtils';
+import { useArticleEditor } from './CKEditorBuild';
 
+import './CRUDTableStyled';
+
+import styled from 'styled-components';
 
 const TableContainer = styled.div`
     margin-top: 20px;
@@ -175,6 +170,11 @@ const FormGroup = styled.div`
     &.group {
         grid-column: 1 / -1;
     }
+
+    &.wordpad {
+        grid-column: 1 / -1;
+        max-width: 65rem;
+    }
 `;
 
 const GroupContainer = styled.div`
@@ -226,6 +226,14 @@ const Input = styled.input`
 `;
 
 const TextArea = styled.textarea`
+    width: 100%;
+    padding: 8px;
+    background-color: white;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+`;
+
+const WordPad = styled.textarea`
     width: 100%;
     padding: 8px;
     background-color: white;
@@ -480,7 +488,10 @@ const CRUDTable = ({
     const pageNumbersContainerRef = useRef(null);
     const pageNumberWrapperRef = useRef(null);
     const imageItemsRef = useRef([]);
-    const wordpadsRef = useRef({});
+    const [editors, setEditors] = useState({});
+    const editorRefs = useRef({});
+    const { editorConfig: ArticleEditorConfig, ClassicEditor } = useArticleEditor()
+
 
     const fetchList = async (page = 1) => {
         try {
@@ -727,54 +738,50 @@ const CRUDTable = ({
                 );
             }, 1000);
         } catch (err) {
-            console.log(err)
+            // console.log(err)
         }
         
     }, [pageNumberWrapperRef.current]);
 
     useEffect(() => {
-        console.log(wordpadsRef.current)
-        
-        const CKEditorConfig = {
-            licenseKey: '<YOUR_LICENSE_KEY>', // Or 'GPL'.
-            plugins: [ 
-                Bold, Code, Italic, Strikethrough, Subscript, Superscript, Underline,
-                Font,
-                Heading,
-                Alignment,
-                Indent, IndentBlock,
-            ],
-            toolbar: {
-                items: [
-                    'undo', 'redo',
-                    '|',
-                    'heading',
-                    '|',
-                    'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor',
-                    '|',
-                    'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
-                    '|',
-                    'link', 'uploadImage', 'blockQuote', 'codeBlock',
-                    '|',
-                    'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent'
-                ],
-                shouldNotGroupWhenFull: false
-            },
+        // Initialize CKEditor for each wordpad field
+        formColumns.forEach(column => {
+            if (column.elementType === 'wordpad') {
+                const element = editorRefs.current[column.key];
+
+                if (element && !editors[column.key]) {
+                    ArticleEditorConfig.initialData = formData[column.key];
+
+                    ClassicEditor
+                        .create(element, ArticleEditorConfig)
+                        .then(editor => {
+                            editor.model.document.on('change:data', () => {
+                                const content = editor.getData();
+                                setFormData(prev => setValueByPath(prev, column.key, content));
+                            });
+
+                            setEditors(prev => ({
+                                ...prev,
+                                [column.key]: editor
+                            }));
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                }
+            }
+        });
+
+        // Cleanup function to destroy editors when component unmounts
+        return () => {
+            Object.keys(editors).forEach(editorKey => {
+                if (!showModal) {
+                    delete editors[editorKey];
+                    console.log('destroy editor!')
+                }
+            });
         };
-
-        for (const columnKey in wordpadsRef.current) {
-            console.log(wordpadsRef.current[columnKey])
-
-            ClassicEditor
-            .create( wordpadsRef.current[columnKey], CKEditorConfig )
-            .then( editor => {
-                console.log(Array.from( editor.ui.componentFactory.names() ));
-            } )
-            .catch( error => {
-                console.error( error );
-            } );
-        }
-    }, [wordpadsRef.current])
+    }, [formColumns, showModal]); // Add showModal to dependencies to reinitialize when modal opens
 
     const renderFormField = (column) => {
         const isMultiple = column.isMultiple || false;
@@ -973,11 +980,11 @@ const CRUDTable = ({
                 }
             case 'wordpad': 
                 return (
-                    <FormGroup key={column.key}>
+                    <FormGroup key={column.key} className="wordpad">
                         <Label>{column.label}</Label>
-                        <TextArea
+                        <WordPad
                             id={`wordpad_${column.key}`}
-                            ref={(element) => wordpadsRef.current[column.key] = element}
+                            ref={el => editorRefs.current[column.key] = el}
                             name={column.key}
                             value={value}
                             onChange={handleChange}

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const CommentsProduct = ({ comments }) => {
+const Comments = ({ comments }) => {
     const [visibleComments, setVisibleComments] = useState(3);
 
     const handleMoreComments = () => {
@@ -31,4 +31,4 @@ const CommentsProduct = ({ comments }) => {
     );
 };
 
-export default CommentsProduct;
+export default Comments;

@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+
+.ckeditor--user {
+    line-height: 2;
+    font-size: 1.05rem
+}
+.ckeditor--user a {
+    color: var(--color-blue-500);
+    /* text-decoration: underline; */
+}
+
+.ckeditor--user h1 {
+    font-weight: 700;
+    margin-top: 1rem;
+    margin-bottom: .5rem;
+}
+
+.ckeditor--user h2 {
+    font-weight: 600;
+    margin-top: 1rem;
+    margin-bottom: .5rem;
+}
+
+.ckeditor--user h3 {
+    font-weight: 500;
+    margin-top: 1rem;
+    margin-bottom: .5rem;
+}
+
+.ckeditor--user h4 {
+    font-weight: 400;
+    margin-top: 1rem;
+    margin-bottom: .5rem;
+}

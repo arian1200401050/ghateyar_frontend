@@ -7,19 +7,13 @@ export default function ArticleBreadcrumb({ path }) {
     }
 
     return (
-        <nav className="text-sm text-gray-600 mb-4">
+        <nav className="text-base text-gray-600 font-bold mb-4">
             <ol className="flex flex-wrap items-center">
-                <li className="flex items-center">
-                    <Link to="/" className="hover:text-primary-500">
-                        خانه
-                    </Link>
-                    <span className="mx-2 text-gray-400">/</span>
-                </li>
                 {path.map((item, index) => (
                     <li key={item.menu_id} className="flex items-center">
                         <Link 
                             to={`/menu/${item.menu_id}`}
-                            className="hover:text-primary-500"
+                            className="hover:text-blue-800"
                         >
                             {item.title}
                         </Link>

@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet';
 import axios from 'axios';
 
 import config from '#src/config.js';
+import NotFound from '#src/plugins/Error/NotFound';
 import ArticleBanner from '#src/plugins/Article/banner';
 import ArticleBreadcrumb from '#src/plugins/Article/breadcrumb';
 import ArticleStats from '#src/plugins/Article/stats';
@@ -13,55 +14,10 @@ import ArticleComments from '#src/plugins/Article/comments';
 
 
 const mockArticle = {
-    id: 1,
-    title: 'راهنمای تعمیر و نگهداری یخچال فریزر',
-    category: 'تعمیرات',
-    banner: `${config.MEDIA_ROOT}/article/1/thumbnail.jpg`,
     author: {
         name: 'علی محمدی',
         avatar: '/images/avatar.jpg'
     },
-    date: '۱۴۰۲/۱۲/۱۵',
-    readTime: '۸ دقیقه',
-    stats: {
-        comments: 24,
-        score: 4.8,
-        views: 1250
-    },
-    introduction: 'در این مقاله به بررسی نکات مهم در تعمیر و نگهداری یخچال فریزر می‌پردازیم. با رعایت این نکات می‌توانید عمر دستگاه خود را افزایش داده و از هزینه‌های اضافی تعمیرات جلوگیری کنید.',
-    content: [
-        {
-            type: 'heading',
-            id: 'section-1',
-            content: 'نکات مهم نگهداری یخچال فریزر'
-        },
-        {
-            type: 'paragraph',
-            content: 'نگهداری صحیح یخچال فریزر می‌تواند به افزایش طول عمر آن کمک کند. در ادامه به مهمترین نکات نگهداری اشاره می‌کنیم.'
-        },
-        {
-            type: 'list',
-            items: [
-                'تمیز کردن منظم کویل‌های کندانسور',
-                'بررسی و تعویض به موقع فیلتر آب',
-                'تنظیم دمای مناسب برای هر بخش',
-                'بستن درب به درستی و بررسی واشرها'
-            ]
-        },
-        {
-            type: 'image',
-            url: `${config.BACKEND_URL}/media/products/images/موتور_آبمیوه_گیری_ناسیونال_176___1060497_bvHU9Mi.png`,
-            alt: 'نگهداری یخچال فریزر',
-            caption: 'نمونه‌ای از کویل‌های کندانسور که نیاز به تمیز کردن دارند'
-        },
-        {
-            type: 'product_link',
-            product_id: 123,
-            title: 'فیلتر تصفیه آب یخچال سامسونگ',
-            image: `${config.BACKEND_URL}/media/products/images/موتور_آبمیوه_گیری_ناسیونال_176___1060497.png`,
-            price: 850000
-        }
-    ],
     tableOfContents: [
         {
             id: 'section-1',
@@ -99,9 +55,20 @@ export default function ArticlePage() {
     useEffect(() => {
         const fetchArticle = async () => {
             try {  
-                // const articleRes = await axios.get(`${config.BACKEND_URL}/api/v1/article/article/${articleId}/`);
-                // setArticle(articleRes.data);  
-                setArticle(mockArticle);  
+                const articleRes = await axios.get(`${config.BACKEND_URL}/api/v1/article/article/${articleId}/`);
+                setArticle(articleRes.data);  
+                setArticle(prev => ({
+                    ...prev, 
+                    // bug fixes
+                    ...mockArticle,
+                    ...{
+                        stats: {
+                            comments: {rows: [], count: 0},
+                            score: articleRes.data.score,
+                            views: articleRes.data.views
+                        }
+                    }
+                }));
                 setLoading(false);  
             } catch (err) {  
                 setError(err);  
@@ -134,32 +101,31 @@ export default function ArticlePage() {
 
             <ArticleBanner 
                 title={article.title}
-                category={article.category}
-                author={article.author}
-                date={article.date}
-                readTime={article.readTime}
+                // category={article.category_set}
                 image={article.banner}
+                date={article.creation_date}
+                readTime={article.read_time}
+                author={article.author}
             />
             
             <div className="mx-auto px-8 py-8">
                 <ArticleBreadcrumb 
-                    category={article.category}
-                    title={article.title}
+                    path={article.menu}
                 />
                 
                 <div className="mt-6">
                     <ArticleStats stats={article.stats} />
                 </div>
 
-                <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
-                    <div className="lg:col-span-8">
+                <div className="mt-8 grid grid-cols-1 md:grid-cols-12 gap-8">
+                    <div className="md:col-span-8">
                         <ArticleContent 
-                            introduction={article.introduction}
+                            interview={article.interview}
                             content={article.content}
                         />
                     </div>
                     
-                    <div className="lg:col-span-4">
+                    <div className="md:col-span-4">
                         <ArticleSidebar 
                             tableOfContents={article.tableOfContents}
                             relatedVideos={article.relatedVideos}

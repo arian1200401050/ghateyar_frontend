@@ -60,7 +60,7 @@ const ProductPage = () => {
             </Helmet>
 
             <Summary product={product} />
-            <Supplementary attributes={product.attributes.secondary} comments={product.comments} />
+            <Supplementary attributes={product.attributes?.secondary} comments={product.comments} />
         </div>
     );
 };

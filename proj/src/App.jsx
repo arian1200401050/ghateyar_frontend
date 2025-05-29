@@ -118,7 +118,6 @@ export default function App() {
                         <Route path="/product/:productId" element={<ProductPage />} />
                         <Route path="/article/:articleId" element={<ArticlePage />} />
                         <Route path="/login" element={<LoginPage />} />
-                        <Route path="/__test" element={<TestPage />} />
                         
                         {/* 404 */}
                         <Route path="/404" element={<NotFoundPage />} />
@@ -127,6 +126,7 @@ export default function App() {
 
                     {/* Pure layout routes (e.g., admin) */}
                     <Route element={<PureLayout />}>
+                        <Route path="/__test" element={<TestPage />} />
                         <Route path="/admin" element={
                             <PrivateRoute>
                                 <AdminProvider>
@@ -136,12 +136,12 @@ export default function App() {
                         }>
                             <Route path="brand" element={<AdminBrandPage />} />
                             <Route path="category" element={<AdminCategoryPage />} />
-                            <Route path="article" element={<AdminArticlePage />} />
                             <Route path="menu" element={<AdminMenuPage />} />
                             <Route path="home-slider" element={<AdminHomeSliderPage />} />
                             <Route path="home-brand" element={<AdminHomeBrandPage />} />
                             <Route path="home-category" element={<AdminHomeCategoryPage />} />
                             <Route path="product" element={<AdminProductPage />} />
+                            <Route path="article" element={<AdminArticlePage />} />
                             <Route path="user" element={<AdminUserPage />} />
                             <Route index element={<Navigate to="menu" />} />
                         </Route>

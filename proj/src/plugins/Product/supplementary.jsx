@@ -40,7 +40,8 @@ const SupplementaryProduct = ({attributes, comments}) => {
 
       {activeTab === 'info' && (
           <div className="accordion md:!w-9/12">
-            {Object.entries(attributes).map(([key, value], index) => (
+            {
+              attributes && Object.entries(attributes).map(([key, value], index) => (
                 <div key={index} className="accordion-group mb-4 flex">
                     <div key={index} className="flex mb-2 w-full md:pr-24">
                         <span className="text-lg md:!text-sm text-gray-500 min-w-3/12 text-nowrap
@@ -49,7 +50,8 @@ const SupplementaryProduct = ({attributes, comments}) => {
                         <span className="text-xl md:!text-sm pb-2 border-b-1 border-gray-400 grow">{value}</span>
                     </div>
                 </div>
-            ))}
+              ))
+            }
         </div>
       )}
 

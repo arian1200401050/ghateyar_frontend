@@ -51,7 +51,7 @@ function RelatedVideos({ videos }) {
             <h3 className="text-lg font-semibold mb-4">ویدیوهای مرتبط</h3>
             <div className="space-y-4">
                 {videos.map((video) => (
-                    <div key={video.id} className="flex gap-4">
+                    <Link key={video.id} className="flex gap-4">
                         <div className="w-24 h-24 flex-shrink-0">
                             <img 
                                 src={video.thumbnail} 
@@ -67,7 +67,7 @@ function RelatedVideos({ videos }) {
                                 {video.duration}
                             </p>
                         </div>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </div>

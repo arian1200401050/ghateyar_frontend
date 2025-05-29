@@ -12,7 +12,7 @@ function SummaryHeader ({product}) {
 				{/* Menu Navigation Bar */}
 				<nav>
 					<ul className="flex space-x-4 m-0 flex-wrap">
-						{product.menu.map((menu, index) => {
+						{product.menu?.map((menu, index) => {
 							console.log(menu)
 							return (
 								<li key={index} className={`${index < product.menu.length - 1 && "after:content-['/']"}
@@ -105,7 +105,7 @@ function SummaryProduct ({ product }) {
 					</div>
 
 					<div className="flex space-x-2">
-						{product.images.map((image, index) => (
+						{product.images?.map((image, index) => (
 							<img
 								key={index}
 								src={`${image}`}
@@ -129,17 +129,19 @@ function SummaryProduct ({ product }) {
 									<h2 className="text-xl md:!text-base !font-bold mb-4">ویژگی ها</h2>
 								</div>
 								<div className="grid grid-cols-3 gap-x-2 gap-y-2">
-									{Object.entries(product.attributes.primary).map(([key, value], index) => (
-										<div key={index} className="flex py-3 px-3 !pl-[20%]
-											rounded-lg bg-gray-100 !shadow-xs shadow-gray-300">
-											<span className="inline-block text-gray-500 text-lg md:!text-sm 
-												after:content-[':'] after:mr-1 after:ml-2"
-											>
-												{key}
-											</span>
-											<span className="text-lg md:!text-sm mr-1"> {value}</span>
-										</div>
-									))}
+									{
+										product.attributes && Object.entries(product.attributes?.primary).map(([key, value], index) => (
+											<div key={index} className="flex py-3 px-3 !pl-[20%]
+												rounded-lg bg-gray-100 !shadow-xs shadow-gray-300">
+												<span className="inline-block text-gray-500 text-lg md:!text-sm 
+													after:content-[':'] after:mr-1 after:ml-2"
+												>
+													{key}
+												</span>
+												<span className="text-lg md:!text-sm mr-1"> {value}</span>
+											</div>
+										))
+									}
 								</div>
 							</div>
 							<div className="mt-4 text-justify leading-8">
