@@ -76,7 +76,7 @@ function DropDown ({ navBar, items, level, isOpen, path }) {
         
                     return (  
                         <li  
-                            className={`main-menu__item main-menu__item--dropdown relative flex items-stretch
+                            className={`main-menu-article__item main-menu-article__item--dropdown relative flex items-stretch
                                 md:!justify-start m-0 w-full border-0 border-gray-600
                                 ${index == 0 ? 'md:rounded-t-sm': ''}
                                 ${index == items.length - 1 ? 'md:rounded-b-sm': ''}`}  
@@ -85,8 +85,8 @@ function DropDown ({ navBar, items, level, isOpen, path }) {
                             onMouseLeave={!isMobile ? handleMouseLeave: null}  
                         >  
                             <Link  
-                                to={`/menu/${item.article_menu_id}`}  
-                                className={`main-menu__link main-menu__link--dropdown relative flex py-4 pr-8 pl-5
+                                to={`/menu-article/${item.article_menu_id}`}  
+                                className={`main-menu-article__link main-menu-article__link--dropdown relative flex py-4 pr-8 pl-5
                                     md:!pr-6 md:!pl-3 md:!py-[.75rem] text-gray-800 text-nowrap text-2xl md:!text-base
                                     transition-all duration-250 ease-in
                                     ${index == 0 ? 'md:rounded-t-sm': ''}
@@ -98,10 +98,10 @@ function DropDown ({ navBar, items, level, isOpen, path }) {
                                 {item.title}  
                             </Link>  
                             {item.children?.length > 0 && (
-                                <span className={`main-menu__icon main-menu__icon--dropdown p-4 mr-1 md:!mr-0 md:!ml-3 cursor-pointer
+                                <span className={`main-menu-article__icon main-menu-article__icon--dropdown p-4 mr-1 md:!mr-0 md:!ml-3 cursor-pointer
                                     bg-no-repeat bg-[50%_50%] taransition-all duration-250 ease-in`}
                                     style={{backgroundImage: 'url("/icon/arrow.svg")',
-				            backgroundSize: isMobile ? '60%' : '40%'}}
+                            backgroundSize: isMobile ? '60%' : '40%'}}
                                     onClick={isMobile ? () => handleMouseClick(index) : null}></span>
                             )}
                             {item.children?.length > 0 && (  
