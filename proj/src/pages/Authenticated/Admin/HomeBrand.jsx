@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import axios from 'axios';
 
 import CRUDTable from '#src/plugins/Admin/CRUDTable';
@@ -71,6 +72,9 @@ export default function HomeBrandPage() {
 
     return (
         <div>
+            <Helmet>
+				<title>مدیریت برندهای صفحه اصلی</title>    
+			</Helmet>
             <h1>مدیریت برندهای صفحه اصلی</h1>
             <CRUDTable
                 title="برند صفحه اصلی"

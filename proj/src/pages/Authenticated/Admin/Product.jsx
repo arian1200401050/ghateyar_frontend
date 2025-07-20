@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import CRUDTable from '../../../plugins/Admin/CRUDTable';
 import config from '../../../config';
@@ -167,6 +168,9 @@ const ProductPage = () => {
 
     return (
         <div>
+            <Helmet>
+				<title>مدیریت محصولات</title>    
+			</Helmet>
             <h1>مدیریت محصولات</h1>
             <CRUDTable
                 title="محصول"

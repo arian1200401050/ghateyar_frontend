@@ -4,31 +4,31 @@ import axios from 'axios';
 import CRUDTable from '#src/plugins/Admin/CRUDTable';
 import config from '#src/config';
 
-const MenuPage = () => {
-    const [menuItems, setMenuItems] = useState([]);
+const ArticleMenuPage = () => {
+    const [articleMenuItems, setArticleMenuItems] = useState([]);
     const [loading, setLoading] = useState(true);
 
     const fetchMenuItems = async () => {
         try {
-            const menuItemsRes = await axios.get(`${config.BACKEND_URL}/api/v1/public/admin/menu/select_combobox/`, {
+            const articleMenuItemsRes = await axios.get(`${config.BACKEND_URL}/api/v1/article/admin/article-menu/select_combobox/`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                 }
             });
             // reformat the response data to be used in the select element
-            const menuItems = {
-                "pkColumn": "menu_uuid",
-                "options": menuItemsRes.data.map(item => (
+            const articleMenuItems = {
+                "pkColumn": "articleMenu_uuid",
+                "options": articleMenuItemsRes.data.map(item => (
                     {
-                        "menu_uuid":item.menu_uuid, 
+                        "article_menu_uuid":item.article_menu_uuid, 
                         "title": `${item.parent ? item.parent.title : '#'} -> ${item.title}`
                     }   
                 ))
             };
-            setMenuItems(menuItems);
+            setArticleMenuItems(articleMenuItems);
             setLoading(false);
         } catch (error) {
-            console.error('Error fetching menu items:', error);
+            console.error('Error fetching article_menu items:', error);
             setLoading(false);
         }
     };
@@ -38,13 +38,13 @@ const MenuPage = () => {
     }, []);
 
     const listColumns = [
-        { key: 'menu_id', label: 'شناسه' },
+        { key: 'article_menu_id', label: 'شناسه' },
         { key: 'title', label: 'عنوان' },
         { key: 'order', label: 'ترتیب', },
         { key: 'level', label: 'سطح منو' },
         { 
             key: 'parent', label: 'منوی والد', 
-            render: (item) => item.parent ? `${item.parent.menu_id}: ${item.parent.title}` : '-' 
+            render: (item) => item.parent ? `${item.parent.article_menu_id}: ${item.parent.title}` : '-' 
         },
         { 
             key: 'is_active', 
@@ -57,7 +57,7 @@ const MenuPage = () => {
         { key: 'title', label: 'عنوان', elementType: "text" },
         { key: 'description', label: 'توضیحات', elementType: "textarea" },
         { key: 'order', label: 'ترتیب', elementType: "text" },
-        { key: 'parent', label: 'منوی والد', elementType: 'select', ref: 'menuItems' },
+        { key: 'parent', label: 'منوی والد', elementType: 'select', ref: 'articleMenuItems' },
         { key: 'is_active', label: 'فعال', elementType: 'checkbox' }
     ];
 
@@ -68,20 +68,20 @@ const MenuPage = () => {
     return (
         <div>
             <Helmet>
-				<title>مدیریت منو</title>    
+				<title>مدیریت منو مقالات</title>    
 			</Helmet>
-            <h1 className='text-xl font-bold'>مدیریت منو</h1>
+            <h1 className='text-xl font-bold'>مدیریت منو مقالات</h1>
             <CRUDTable
                 title="منو"
                 listColumns={listColumns}
                 formColumns={formColumns}
-                pkColumn="menu_uuid"
-                endpoint="api/v1/public/admin/menu"
-                refData={{menuItems}}
+                pkColumn="article_menu_uuid"
+                endpoint="api/v1/article/admin/article-menu"
+                refData={{articleMenuItems}}
                 onDataChange={fetchMenuItems}
             />
         </div>
     );
 };
 
-export default MenuPage; 
+export default ArticleMenuPage; 

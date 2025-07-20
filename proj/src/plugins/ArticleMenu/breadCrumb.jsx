@@ -27,7 +27,7 @@ const _Breadcrumb = ({ items, error, loading }) => {
           debugger;
           return (
           <li key={index} className="">
-            <Link to={`/menu/${item.menu_id}/`} className="!text-stone-600 hover:text-blue-600">
+            <Link to={`/article-menu/${item.article_menu_id}/`} className="!text-stone-600 hover:text-blue-600">
               {item.title}
             </Link>
             {index < items.length - 1 && <span className="text-stone-600 mr-1 ml-2"> &#47; </span>}
@@ -41,7 +41,7 @@ const _Breadcrumb = ({ items, error, loading }) => {
 
 const Breadcrumb = ({breadcrumbInfo, paginationInfo}) => {
   useEffect(() => {
-    // console.log(breadcrumbInfo)
+    // console.log(paginationInfo)
   })
   
   return (

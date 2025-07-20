@@ -10,7 +10,8 @@ export default defineConfig(({ mode }) => {
 	return {
 		define: {
 			'process.env.PORT': env.VITE_PORT,
-			'process.env.REACT_ENV': env.REACT_ENV ? `'${env.REACT_ENV}'` : "'production'"
+			'process.env.REACT_ENV': env.REACT_ENV ? `'${env.REACT_ENV}'` : "'production'",
+			'process.env.REACT_CKEDITOR_LICENSE_KEY': env.REACT_CKEDITOR_LICENSE_KEY ? `'${env.REACT_CKEDITOR_LICENSE_KEY}'` : "",
 		},
 		preview: {
 			port: env.VITE_PORT || 80,

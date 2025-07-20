@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import CRUDTable from '#src/plugins/Admin/CRUDTable';
 import config from '#src/config';
@@ -41,6 +42,9 @@ const HomeSliderPage = () => {
 
     return (
         <div>
+            <Helmet>
+				<title>مدیریت اسلایدر صفحه اصلی</title>    
+			</Helmet>
             <h1>مدیریت اسلایدر صفحه اصلی</h1>
             <CRUDTable
                 title="اسلاید"

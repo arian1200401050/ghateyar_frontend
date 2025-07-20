@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import CRUDTable from '#src/plugins/Admin/CRUDTable';
 import config from '#src/config';
@@ -24,6 +25,9 @@ const CategoryPage = () => {
 
     return (
         <div>
+            <Helmet>
+				<title>مدیریت دسته بندی ها</title>    
+			</Helmet>
             <h1>مدیریت دسته‌بندی‌ها</h1>
             <CRUDTable
                 title="دسته‌بندی"

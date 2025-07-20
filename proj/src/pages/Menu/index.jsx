@@ -10,28 +10,6 @@ import Breadcrumb from '#src/plugins/Menu/breadCrumb';
 import Badges from '#src/plugins/Menu/badge';  
 import PostCards from '#src/plugins/Menu/postCard';  
 
-const breadcrumbItems = [  
-  { label: 'جاروبرقی', link: '/menu/9' },  
-  { label: 'فیلتر', link: '/menu/14' },  
-];  
-
-const badges = [  
-  { label: 'پارس خزر', link: '/menu/43'},  
-  { label: 'زیمنس', link: '/menu/45'},  
-  { label: 'بوش', link: '/menu/56'},  
-  { label: 'فیلیپس', link: '/menu/57'},  
-  { label: 'دوو - اسنوا', link: '/menu/69'},  
-  { label: 'ناسیونال', link: '/menu/75'},  
-];  
-
-// Sample data  
-const posts = Array.from({ length: 43 }, (_, index) => ({  
-  id: index,
-  title: `محصول شماره ${100 + index}`,  
-  content: 'توضیحات محصول ...',  
-  image: `product/product_${index + 1}.png`,  
-}));  
-
 const MenuPage = () => {  
 	// Pagination state  
 	const { menuId } = useParams();
@@ -58,6 +36,7 @@ const MenuPage = () => {
 		const fetchData = async (menuId) => {
 			try {  
 				const menuRes = await axios.get(`${config.BACKEND_URL}/api/v1/public/menu/${menuId}/`);
+				console.log(menuRes.data);
 				setMenu(menuRes.data);  
 				setLoading(false);  
 			} catch (err) {  
@@ -67,7 +46,7 @@ const MenuPage = () => {
 
 			try {  
 				const parentMenusRes = await axios.get(`${config.BACKEND_URL}/api/v1/public/menu/path/${menuId}/`);
-				console.log(parentMenusRes)
+				console.log(parentMenusRes.data);
 				setParentMenus(parentMenusRes.data);  
 				setLoadingParentMenus(false);  
 			} catch (err) {  
@@ -77,6 +56,7 @@ const MenuPage = () => {
 
 			try {  
 				const subMenusRes = await axios.get(`${config.BACKEND_URL}/api/v1/public/menu/children/${menuId}/`);
+				console.log(subMenusRes);
 				setSubMenus(subMenusRes.data);  
 				setLoadingSubMenus(false);  
 			} catch (err) {  

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import CRUDTable from '../../../plugins/Admin/CRUDTable';
 import config from '../../../config';
@@ -32,7 +33,7 @@ const ArticlePage = () => {
                 "pkColumn": "menu_uuid",
                 "options": menusRes.data.map(item => (
                     {
-                        "menu_uuid":item.menu_uuid, 
+                        "article_menu_uuid":item.article_menu_uuid, 
                         "title": `${item.parent ? item.parent.title : '#'} -> ${item.title}`
                     }   
                 ))
@@ -65,7 +66,7 @@ const ArticlePage = () => {
         { key: 'title', label: 'نام' },
         { 
             key: 'parent', label: 'منوی والد', 
-            render: (item) => item.menu ? `${item.menu.menu_id}: ${item.menu.title}` : '-' 
+            render: (item) => item.menu ? `${item.menu.article_menu_id}: ${item.menu.title}` : '-' 
         },
         {
             key: 'read_time', label: 'مدت زمان مطالعه', 
@@ -109,6 +110,9 @@ const ArticlePage = () => {
 
     return (
         <div>
+            <Helmet>
+				<title>مدیریت مقالات</title>    
+			</Helmet>
             <h1>مدیریت مقالات</h1>
             <CRUDTable
                 title="مقاله"

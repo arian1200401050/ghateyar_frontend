@@ -9,6 +9,7 @@ import config from "#src/config.js";
 import { AuthProvider, useAuth } from '#src/context/AuthContext';
 import { AdminProvider } from '#src/context/AdminContext';
 import { MenuProvider } from '#src/context/MenuContext';
+import { ArticleMenuProvider } from '#src/context/ArticleMenuContext';
 
 import Header from "#src/plugins/Header/index.jsx";
 import Footer from "#src/plugins/Footer/index.jsx";
@@ -17,6 +18,7 @@ import TestPage from "#src/pages/Test/index.jsx";
 
 import HomePage from "#src/pages/Home/index.jsx";
 import MenuPage from "#src/pages/Menu/index.jsx";
+import ArticleMenuPage from "#src/pages/ArticleMenu/index.jsx";
 import ProductPage from "#src/pages/Product/index.jsx";
 import ArticlePage from "#src/pages/Article/index.jsx";
 
@@ -30,6 +32,7 @@ import AdminHomeCategoryPage from '#src/pages/Authenticated/Admin/HomeCategory';
 import AdminHomeBrandPage from '#src/pages/Authenticated/Admin/HomeBrand';
 import AdminProductPage from '#src/pages/Authenticated/Admin/Product';
 import AdminArticlePage from '#src/pages/Authenticated/Admin/Article';
+import AdminArticleMenuPage from '#src/pages/Authenticated/Admin/ArticleMenu';
 import AdminUserPage from '#src/pages/Authenticated/Admin/User';
 
 // Import public styles
@@ -115,6 +118,16 @@ export default function App() {
                     }>
                         <Route path="/" element={<HomePage />} />
                         <Route path="/menu/:menuId" element={<MenuPage />} />
+                        <Route path="/article-menu/" element={
+                            <ArticleMenuProvider>
+                                <ArticleMenuPage />
+                            </ArticleMenuProvider>
+                        }/>
+                        <Route path="/article-menu/:menuId" element={
+                            <ArticleMenuProvider>
+                                <ArticleMenuPage />
+                            </ArticleMenuProvider>
+                        } />
                         <Route path="/product/:productId" element={<ProductPage />} />
                         <Route path="/article/:articleId" element={<ArticlePage />} />
                         <Route path="/login" element={<LoginPage />} />
@@ -142,6 +155,7 @@ export default function App() {
                             <Route path="home-category" element={<AdminHomeCategoryPage />} />
                             <Route path="product" element={<AdminProductPage />} />
                             <Route path="article" element={<AdminArticlePage />} />
+                            <Route path="article-menu" element={<AdminArticleMenuPage />} />
                             <Route path="user" element={<AdminUserPage />} />
                             <Route index element={<Navigate to="menu" />} />
                         </Route>

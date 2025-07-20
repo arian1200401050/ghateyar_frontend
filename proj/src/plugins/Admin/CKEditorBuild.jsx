@@ -21,6 +21,7 @@ const useArticleEditor = () => {
 
 	useEffect(() => {
 		setIsLayoutReady(true);
+		console.log(LICENSE_KEY);
 
 		return () => setIsLayoutReady(false);
 	}, []);

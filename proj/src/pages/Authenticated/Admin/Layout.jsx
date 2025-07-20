@@ -17,6 +17,7 @@ const AdminLayout = () => {
         { path: '/admin/home-category', label: 'دسته بندی‌های صفحه خانه' },
         { path: '/admin/home-brand', label: 'برندهای صفحه خانه' },
         { path: '/admin/product', label: 'محصولات' },
+        { path: '/admin/article-menu', label: 'منو مقالات' },
         { path: '/admin/article', label: 'مقالات' },
         { path: '/admin/user', label: 'کاربرها', deactive: true },
     ];
