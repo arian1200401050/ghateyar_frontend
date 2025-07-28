@@ -64,14 +64,22 @@ a {
     html {
         font-size: 12px;
     }
+
+    .container {
+        max-width: var(--main-section-width) !important;
+    }
 }
 
 @media (width >= 1024px) {
     
     :root {
         --main-section-width: 64rem;
-        --main-section-large-width: 80rem;       
+        --main-section-large-width: 85rem;       
         --main-section-full-width: calc(100% - 2rem);
+    }
+
+    .container {
+        max-width: var(--main-section-large-width) !important;
     }
 }
 
@@ -79,11 +87,24 @@ a {
     html {
         font-size: 14px;
     }
+
+    .container {
+        @media (width = 1280px) {
+            max-width: 80rem !important;
+        }
+    }
 }
 
 
 @media (width >= 1396px) {
     :root {
         --main-section-full-width: 96rem;
+    }
+}
+
+
+@media (width > 1536px) {
+    .container {
+        max-width: var(--main-section-full-width) !important;
     }
 }

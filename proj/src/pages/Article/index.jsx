@@ -110,7 +110,7 @@ export default function ArticlePage() {
             
             <div className="mx-auto px-8 py-8">
                 <ArticleBreadcrumb 
-                    path={article.menu}
+                    path={article.article_menu}
                 />
                 
                 <div className="mt-6">

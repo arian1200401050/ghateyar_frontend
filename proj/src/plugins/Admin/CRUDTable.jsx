@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import lodash from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
 
 import config from '#src/config';
 import { useAdmin } from '#src/context/AdminContext';
@@ -613,19 +614,18 @@ const CRUDTable = ({
                 }
             });
 
+            const customHeaders = {
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                'Content-Type': 'multipart/form-data'
+            };
+
             if (editingPK) {
                 await axios.patch(`${config.BACKEND_URL}/${endpoint}/${editingPK}/`, formDataToSend, {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                        'Content-Type': 'multipart/form-data'
-                    }
+                    headers: customHeaders
                 });
             } else {
                 await axios.post(`${config.BACKEND_URL}/${endpoint}/`, formDataToSend, {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                        'Content-Type': 'multipart/form-data'
-                    }
+                    headers: customHeaders
                 });
             }
             setShowModal(false);
@@ -727,6 +727,7 @@ const CRUDTable = ({
 
     useEffect(() => {
         fetchList();
+
     }, []);
 
     useEffect(() => {
@@ -738,7 +739,7 @@ const CRUDTable = ({
                 );
             }, 1000);
         } catch (err) {
-            // console.log(err)
+            console.log(err)
         }
         
     }, [pageNumberWrapperRef.current]);
@@ -747,13 +748,29 @@ const CRUDTable = ({
         // Initialize CKEditor for each wordpad field
         formColumns.forEach(column => {
             if (column.elementType === 'wordpad') {
+                // console.log(formData);
                 const element = editorRefs.current[column.key];
-
+                
                 if (element && !editors[column.key]) {
-                    ArticleEditorConfig.initialData = formData[column.key];
+                    const newArticleEditorConfig = lodash.cloneDeep(ArticleEditorConfig);
+                    newArticleEditorConfig.initialData = formData[column.key];
+                    
+                    // set upload url for image uploding
+                    const uploadUrl = element.dataset?.uploadUrl;
+                    if (uploadUrl) {
+                        // generate pk_uuid for image uploading
+                        if (!formData[pkColumn]) {
+                            formData[pkColumn] = uuidv4();
+                        } 
+                        newArticleEditorConfig.simpleUpload.uploadUrl = `${config.BACKEND_URL}/${uploadUrl}/${formData[pkColumn]}/`;
+                    } else {
+                        newArticleEditorConfig.toolbar.items = newArticleEditorConfig.toolbar.items.filter(title => title != 'insertImage')
+                    }
+
+                    console.log(newArticleEditorConfig.simpleUpload.uploadUrl);
 
                     ClassicEditor
-                        .create(element, ArticleEditorConfig)
+                        .create(element, newArticleEditorConfig)
                         .then(editor => {
                             editor.model.document.on('change:data', () => {
                                 const content = editor.getData();
@@ -988,6 +1005,7 @@ const CRUDTable = ({
                             name={column.key}
                             value={value}
                             onChange={handleChange}
+                            data-upload-url={column.uploadUrl}
                         />
                     </FormGroup>
                 );

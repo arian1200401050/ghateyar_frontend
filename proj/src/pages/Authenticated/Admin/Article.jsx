@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
+
 import CRUDTable from '../../../plugins/Admin/CRUDTable';
 import config from '../../../config';
 
@@ -13,7 +15,7 @@ const ArticlePage = () => {
         try {
             const [categoriesRes, menusRes] = await Promise.all([
                 axios.get(`${config.BACKEND_URL}/api/v1/public/category/`),
-                axios.get(`${config.BACKEND_URL}/api/v1/public/admin/menu/select_combobox/`, {
+                axios.get(`${config.BACKEND_URL}/api/v1/article/admin/article-menu/select_combobox/`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                     }
@@ -30,10 +32,10 @@ const ArticlePage = () => {
                 ))
             };
             const menus = {
-                "pkColumn": "menu_uuid",
+                "pkColumn": "article_menu_uuid",
                 "options": menusRes.data.map(item => (
                     {
-                        "article_menu_uuid":item.article_menu_uuid, 
+                        "article_menu_uuid": item.article_menu_uuid, 
                         "title": `${item.parent ? item.parent.title : '#'} -> ${item.title}`
                     }   
                 ))
@@ -65,8 +67,8 @@ const ArticlePage = () => {
     const listColumns = [
         { key: 'title', label: 'نام' },
         { 
-            key: 'parent', label: 'منوی والد', 
-            render: (item) => item.menu ? `${item.menu.article_menu_id}: ${item.menu.title}` : '-' 
+            key: 'article_menu', label: 'منوی والد', 
+            render: (item) => item.article_menu ? `${item.article_menu.article_menu_id}: ${item.article_menu.title}` : '-' 
         },
         {
             key: 'read_time', label: 'مدت زمان مطالعه', 
@@ -87,11 +89,11 @@ const ArticlePage = () => {
 
     const formColumns = [
         { key: 'title', label: 'نام', elementType: 'text' },
-        { key: 'menu', label: 'منو', elementType: 'select', ref: 'menus' },
+        { key: 'article_menu', label: 'منو', elementType: 'select', ref: 'menus' },
         { key: 'banner', label: 'تصویر اصلی', elementType: 'image', multiple: false },
         // { key: 'description', label: 'توضیحات', elementType: 'wordpad' },
         { key: 'interview', label: 'معرفی', elementType: 'wordpad' },
-        { key: 'content', label: 'متن اصلی', elementType: 'wordpad' },
+        { key: 'content', label: 'متن اصلی', elementType: 'wordpad', uploadUrl: 'api/v1/article/admin/article/upload-image' },
         { 
             key: 'category_set', 
             label: 'دسته‌بندی',
@@ -102,6 +104,7 @@ const ArticlePage = () => {
         { key: 'read_time', label: 'مدت زمان مطالعه', elementType: 'text' },
         { key: 'score', label: 'امتیاز', elementType: 'text' },
         { key: 'is_active', label: 'فعال', elementType: 'checkbox' },
+        { key: 'generated_article_uuid', elementType: 'hidden', value: () => uuidv4() },
     ];
 
     if (loading) {

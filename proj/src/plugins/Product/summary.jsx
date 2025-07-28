@@ -13,7 +13,7 @@ function SummaryHeader ({product}) {
 				<nav>
 					<ul className="flex space-x-4 m-0 flex-wrap">
 						{product.menu?.map((menu, index) => {
-							console.log(menu)
+							// console.log(menu)
 							return (
 								<li key={index} className={`${index < product.menu.length - 1 && "after:content-['/']"}
 									after:relative after:right-2 after:text-xs`}>
@@ -66,16 +66,20 @@ function SummaryProduct ({ product }) {
 
 	useEffect(() => {
 		const setBlowUp = () => {
-			if (typeof $ !== 'undefined') {  
-				$("#product-image").blowup({
-					width : 400, // طول لنز
-					height : 400, // ارتفاع لنز
-					scale : 1,  //مقیاس بزرگنمایی
-					// background : '#6e9cdb', // رنگ پس زمینه در صورتی که از تصویر بیرون رفت
-					// border : '2px solid #777', // حاشیه لنز
-					// round : true, // اینکه لنز گرد باشد یا خیر
-					// shadow : 'none' // ویژگی های سایه
-				});
+			try {
+				if (typeof $ !== 'undefined') {  
+					$("#product-image").blowup({
+						width : 400, // طول لنز
+						height : 400, // ارتفاع لنز
+						scale : 1,  //مقیاس بزرگنمایی
+						// background : '#6e9cdb', // رنگ پس زمینه در صورتی که از تصویر بیرون رفت
+						// border : '2px solid #777', // حاشیه لنز
+						// round : true, // اینکه لنز گرد باشد یا خیر
+						// shadow : 'none' // ویژگی های سایه
+					});
+				}
+			} catch(err) {
+				console.log(err);
 			}
 		}
 

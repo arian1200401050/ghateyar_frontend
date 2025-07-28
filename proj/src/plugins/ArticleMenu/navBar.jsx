@@ -85,7 +85,7 @@ function DropDown ({ navBar, items, level, isOpen, path }) {
                             onMouseLeave={!isMobile ? handleMouseLeave: null}  
                         >  
                             <Link  
-                                to={`/menu-article/${item.article_menu_id}`}  
+                                to={`/article-menu/${item.article_menu_id}`}  
                                 className={`main-menu-article__link main-menu-article__link--dropdown relative flex py-4 pr-8 pl-5
                                     md:!pr-6 md:!pl-3 md:!py-[.75rem] text-gray-800 text-nowrap text-2xl md:!text-base
                                     transition-all duration-250 ease-in
@@ -241,7 +241,7 @@ export default function NavBar({ menu, loading, error }) {
                                         onMouseLeave={!isMobile ? handleMouseLeave: null}  
                                     >  
                                         <Link   
-                                            to={`/menu/${item.article_menu_id}`}   
+                                            to={`/article-menu/${item.article_menu_id}`}   
                                             className={`main-menu__link main-menu__link--navbar
                                                 px-3 pt-3 pb-4 md:!pt-3 md:!pb-3 md:!pl-10 md:!pr-8 text-gray-600 text-2xl md:!text-[1.125rem]
                                                 transition-all duration-250 ease-in`}
@@ -268,21 +268,6 @@ export default function NavBar({ menu, loading, error }) {
                                 );  
                             })  
                         }  
-
-                        <li className={`main-menu__item main-menu__item--navbar relative flex items-stretch
-                            md:!justify-start md:rounded-b-sm`}  
-                            key="article" 
-                            >  
-                                <Link   
-                                    to={`/article-menu`}   
-                                    className={`main-menu__link main-menu__link--navbar
-                                        px-3 pt-3 pb-4 md:!pt-3 md:!pb-3 md:!pl-10 md:!pr-8 text-gray-600 text-2xl md:!text-[1.125rem]
-                                        transition-all duration-250 ease-in`}
-                                    aria-haspopup="true"  
-                                >  
-                                    مقالات 
-                                </Link>  
-                            </li>
                     </ul>  
                 </div>  
             </nav>  

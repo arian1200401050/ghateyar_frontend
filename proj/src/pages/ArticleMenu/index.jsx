@@ -11,6 +11,7 @@ import NotFound from '#src/plugins/Error/NotFound';
 import BreadCrumb from '#src/plugins/ArticleMenu/breadCrumb';  
 import Badges from '#src/plugins/ArticleMenu/badge';  
 import PostCards from '#src/plugins/ArticleMenu/postCard';  
+import LeftSideBar from '#src/plugins/ArticleMenu/leftSideBar';  
 
 
 const menuMockData = {
@@ -138,7 +139,7 @@ const postsMockData = [
                 "title": "خرطومی"
             }
         ],
-        "banner": "http://localhost:8000/media/products/images/1_rYleoGj.png"
+        "banner": "http://ghateyar.com/media/articles/banners/motor_2.png"
     }
 ]
 
@@ -170,9 +171,9 @@ const ArticleMenuPage = () => {
 
 		const fetchData = async (menuId) => {
 			try {  
-				// const menuRes = await axios.get(`${config.BACKEND_URL}/api/v1/article/menu/${menuId ? `${menuId}/` : ''}`);
-				// setMenu(menuRes.data);  
-				setMenu(menuMockData);  
+                const menuRes = await axios.get(`${config.BACKEND_URL}/api/v1/article/article-menu/${menuId ? `${menuId}/` : ''}`);
+                setMenu(menuRes.data);  
+                // setMenu(menuMockData);  
 				setLoading(false);  
 			} catch (err) {  
 				setError(err);  
@@ -180,20 +181,20 @@ const ArticleMenuPage = () => {
 			} 
 
 			try {  
-				// const parentMenusRes = menuId ? await axios.get(`${config.BACKEND_URL}/api/v1/article/menu/path/${menuId}/`) : [];
-				// console.log(parentMenusRes)
-				// setParentMenus(parentMenusRes.data);  
-				setParentMenus(parentMenuMockData);  
-				setLoadingParentMenus(false);  
+                const parentMenusRes = menuId ? await axios.get(`${config.BACKEND_URL}/api/v1/article/article-menu/path/${menuId}/`) : [];
+                // console.log(parentMenusRes)
+                setParentMenus(parentMenusRes.data);  
+                // setParentMenus(parentMenuMockData);  
+                setLoadingParentMenus(false);  
 			} catch (err) {  
 				setErrorParentMenus(err);  
 				setLoadingParentMenus(false);  
 			} 
 
 			try {  
-				// const subMenusRes = await axios.get(`${config.BACKEND_URL}/api/v1/article/menu/children/${menuId ? `${menuId}/` : ''}`);
-				// setSubMenus(subMenusRes.data);  
-				setSubMenus(subMenuMockData);  
+                const subMenusRes = await axios.get(`${config.BACKEND_URL}/api/v1/article/article-menu/children/${menuId ? `${menuId}/` : ''}`);
+                setSubMenus(subMenusRes.data);  
+                // setSubMenus(subMenuMockData);  
 				setLoadingSubMenus(false);  
 			} catch (err) {  
 				setErrorSubMenus(err);  
@@ -203,9 +204,15 @@ const ArticleMenuPage = () => {
 			
 		};
 
-		fetchData(menuId); 
-		setPosts([]);
-		fetchPosts();
+        if (menuId) {
+            fetchData(menuId); 
+            setPosts([]);
+            fetchPosts();
+        } else {
+            setLoading(false);  
+            setLoadingParentMenus(false);  
+            setLoadingSubMenus(false);  
+        }
 	}, [menuId])
 
 	const fetchPosts = async () => {
@@ -213,15 +220,15 @@ const ArticleMenuPage = () => {
 			const offset = (currentPage - 1) * postsPerPage;
 			// if this page did not fetched fetch it
 			if (!posts[offset]) {
-				// const newPostsRes = await axios.get(
-				// 	`${config.BACKEND_URL}/api/v1/article/article/by-menu/${menuId}/?limit=${postsPerPage}&offset=${offset}`
-				// );
-				// const updatedPosts = [...posts]
-				// for (let i = 0; i < postsPerPage; i++) {  
-				// 	updatedPosts[offset + i] = newPostsRes.data[i];
-				// } 
-				// setPosts(updatedPosts);
-				setPosts(postsMockData);
+				const newPostsRes = await axios.get(
+					`${config.BACKEND_URL}/api/v1/article/article/by-menu/${menuId}/?limit=${postsPerPage}&offset=${offset}`
+				);
+				const updatedPosts = [...posts]
+				for (let i = 0; i < postsPerPage; i++) {  
+					updatedPosts[offset + i] = newPostsRes.data[i];
+				} 
+				setPosts(updatedPosts);
+				// setPosts(postsMockData);
 				setLoadingPosts(false)
 			}
 			
@@ -252,9 +259,11 @@ const ArticleMenuPage = () => {
     }
 
     if (error) {
-        console.log(`Error loading menu: ${error.message}`);
+        if (menuId) {
+            console.log(`Error loading menu: ${error.message}`);
+            return <NotFound>{`منو با شناسه "${menuId}" یافت نشد!`}</NotFound>
+        }
 
-        return <NotFound>{`منو با شناسه "${menuId}" یافت نشد!`}</NotFound>
     }
 
     if (!menu) {
@@ -275,10 +284,10 @@ const ArticleMenuPage = () => {
 			<Helmet>
 				<title>{`مقالات ${menu['title']}`}</title>    
 			</Helmet>
-            <div className="w-3/12">
+            <div className="w-5/24">
                 <NavBar menu={menuTree} loading={menuTreeLoading} error={menuTreeError} />
             </div>
-            <div className="w-9/12">
+            <div className="w-14/24">
                 <BreadCrumb 
                     breadcrumbInfo={{items: parentMenus, error: errorParentMenus, loading: loadingParentMenus}} 
                     paginationInfo={{totalPages, postsPerPage, currentPage, setCurrentPage, totalPosts}} 
@@ -310,6 +319,9 @@ const ArticleMenuPage = () => {
                     </button>  
                     </div> 
                 </div>
+            </div>
+            <div className="w-5/24">
+                <LeftSideBar menuId={menuId} />
             </div>
 		</div>  
 	);  

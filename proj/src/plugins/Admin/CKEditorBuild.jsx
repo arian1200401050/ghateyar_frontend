@@ -21,7 +21,6 @@ const useArticleEditor = () => {
 
 	useEffect(() => {
 		setIsLayoutReady(true);
-		console.log(LICENSE_KEY);
 
 		return () => setIsLayoutReady(false);
 	}, []);
@@ -86,7 +85,9 @@ const useArticleEditor = () => {
 			TableToolbar,
 			TextTransformation,
 			TodoList,
-			Underline
+			Underline,
+			ImageInsert,
+			SimpleUploadAdapter
 		} = cloud.CKEditor;
 
 		return {
@@ -113,6 +114,7 @@ const useArticleEditor = () => {
 						'link',
 						'bookmark',
 						'insertImageViaUrl',
+						'insertImage',
 						'mediaEmbed',
 						'insertTable',
 						'highlight',
@@ -182,7 +184,9 @@ const useArticleEditor = () => {
 					TableToolbar,
 					TextTransformation,
 					TodoList,
-					Underline
+					Underline,
+					ImageInsert,
+					SimpleUploadAdapter
 				],
 				balloonToolbar: ['bold', 'italic', '|', 'link', '|', 'bulletedList', 'numberedList'],
 				fullscreen: {
@@ -280,6 +284,18 @@ const useArticleEditor = () => {
 				placeholder: 'Type or paste your content here!',
 				table: {
 					contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
+				},
+				simpleUpload: {
+					// The URL that the images are uploaded to.
+					// Keep this to avoid warning but should set when instanciate it!
+					uploadUrl: 'http://example.com',
+		
+					withCredentials: false	,
+		
+					// Headers sent along with the XMLHttpRequest to the upload server.
+					headers: {
+						'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+					}
 				}
 			}
 		};

@@ -10,9 +10,9 @@ export default function ArticleBreadcrumb({ path }) {
         <nav className="text-base text-gray-600 font-bold mb-4">
             <ol className="flex flex-wrap items-center">
                 {path.map((item, index) => (
-                    <li key={item.menu_id} className="flex items-center">
+                    <li key={item.article_menu_id} className="flex items-center">
                         <Link 
-                            to={`/menu/${item.menu_id}`}
+                            to={`/article-menu/${item.article_menu_id}`}
                             className="hover:text-blue-800"
                         >
                             {item.title}

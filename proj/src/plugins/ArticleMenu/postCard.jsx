@@ -32,18 +32,17 @@ function PaginationControl ({ currentPage, totalPages, postsPerPage, setCurrentP
 
 function PostCard ({ post }) {
   return post && (
-    <div className="flex justify-center items-center gap-0 m-2">
+    <div className="flex justify-center items-center gap-0">
       <Link to={`/article/${post.article_uuid}/`}
         className="block w-full h-[100%] border-1 border-gray-300 rounded-xl overflow-hidden shadow-xs shadow-slate-400
-          hover:shadow-md hover:shadow-slate-500 hover:h-[105%]
-          transition-[height] transition-[box-shadow] 
-          duration-200 ease-linear">
-        <div className="w-full h-65 flex justify-center items-center">
+          hover:shadow-md hover:shadow-slate-500 hover:scale-[1.02]
+          transition duration-200 ease-linear">
+        <div className="w-full h-58 flex justify-center items-center">
           <img src={`${post.banner}`} alt={post.title} className="size-[90%] object-contain" />
         </div>
         <div className="!p-5 !pt-4 border-stone-300">
           <h3 className="text-2xl md:!text-[.95rem]/6 text-center font-semibold pb-3 md:!pb-0">{post.title}</h3>
-          <p className="text-lg md:!text-sm max-h-32 md:!max-h-24 text-center text-gray-500 mt-2 overflow-hidden text-justify">{post.description}</p>
+          <p className="text-lg md:!text-sm max-h-32 md:!max-h-22 text-center text-gray-500 mt-2 overflow-hidden text-justify">{post.description}</p>
         </div>
       </Link>
     </div>
@@ -62,7 +61,7 @@ export default function PostCards( { posts, paginationInfo }) {
       </div>
 
       <div className="menu-page__post-card-body">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">  
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">  
           {posts.map((post, index) => (  
             <PostCard key={index} post={post} />  
           ))}  

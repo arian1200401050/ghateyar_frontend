@@ -17,10 +17,10 @@ export function ArticleMenuProvider({ children }) {
 
         const fetchMenu = async () => {
             try {
-                // const { data } = await axios.get(`${config.BACKEND_URL}/api/v1/article/menu/tree/`);
+                const { data } = await axios.get(`${config.BACKEND_URL}/api/v1/article/article-menu/tree/`);
                 if (isMounted) {
-                    // setMenu(data);
-                    setMenu(dataMockData);
+                    setMenu(data);
+                    // setMenu(dataMockData);
                     setLoading(false);
                 }
             } catch (err) {
